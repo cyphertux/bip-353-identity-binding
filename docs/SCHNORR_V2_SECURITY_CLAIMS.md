@@ -72,9 +72,20 @@ Do not read **TESTED** as “production-audited” or “universally proven.”
 
 ## Independent implementation
 
-**NOT AVAILABLE** for this snapshot.
+**PASS** (Phase 8) — see [`SCHNORR_V2_INDEPENDENT_REVIEW.md`](SCHNORR_V2_INDEPENDENT_REVIEW.md).
 
-Evidence uses `embit==0.8.0` plus independent `hashlib` TaggedHash cross-checks and official BIP-340 verify vectors exercised through embit. A second Schnorr stack was not built.
+Stack: Node.js + `@noble/curves` / `@noble/hashes` (not Python/embit).
+
+Still explicitly:
+
+* No formal proof  
+* No production security audit  
+* No human identity guarantee  
+* No freshness guarantee  
+* No rollback resistance  
+* No split-view resistance  
+
+**NOT AVAILABLE** previously (Phase 6); superseded by Phase 8 reproduction.
 
 ---
 

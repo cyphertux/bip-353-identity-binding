@@ -1,0 +1,147 @@
+{
+  "stack": {
+    "language": "JavaScript",
+    "runtime": "v22.22.1",
+    "libraries": {
+      "@noble/curves": "1.8.1",
+      "@noble/hashes": "1.7.1",
+      "cbor": "hand-written subset (RFC 8949 core)",
+      "bitcoin": "hand-written tx/merkle/header parse"
+    }
+  },
+  "bip340": "see bip340_check.mjs",
+  "components": {
+    "cbor": [
+      {
+        "name": "deterministic",
+        "pass": true
+      },
+      {
+        "name": "reject-nonminimal",
+        "pass": true
+      },
+      {
+        "name": "reject-trailing",
+        "pass": true
+      },
+      {
+        "name": "reject-indefinite",
+        "pass": true
+      }
+    ]
+  },
+  "vectors": [
+    {
+      "id": "V2-BTC-INVALID-001",
+      "expected": "TXID_MISMATCH",
+      "actual": "TXID_MISMATCH",
+      "result": "pass"
+    },
+    {
+      "id": "V2-BTC-INVALID-002",
+      "expected": "WRONG_MERKLE_PROOF",
+      "actual": "WRONG_MERKLE_PROOF",
+      "result": "pass"
+    },
+    {
+      "id": "V2-BTC-INVALID-003",
+      "expected": "WRONG_MERKLE_PROOF",
+      "actual": "WRONG_MERKLE_PROOF",
+      "result": "pass"
+    },
+    {
+      "id": "V2-BTC-INVALID-004",
+      "expected": "WRONG_MERKLE_PROOF",
+      "actual": "WRONG_MERKLE_PROOF",
+      "result": "pass"
+    },
+    {
+      "id": "V2-BTC-INVALID-005",
+      "expected": "WRONG_TX_COMMITMENT",
+      "actual": "WRONG_TX_COMMITMENT",
+      "result": "pass"
+    },
+    {
+      "id": "V2-BTC-INVALID-006",
+      "expected": "NO_B353S2_OUTPUT",
+      "actual": "NO_B353S2_OUTPUT",
+      "result": "pass"
+    },
+    {
+      "id": "V2-BTC-INVALID-007",
+      "expected": "AMBIGUOUS_B353S2_OUTPUTS",
+      "actual": "AMBIGUOUS_B353S2_OUTPUTS",
+      "result": "pass"
+    },
+    {
+      "id": "V2-BTC-VALID-001",
+      "expected": null,
+      "actual": "valid",
+      "result": "pass",
+      "dual_binding": true
+    },
+    {
+      "id": "V2-INVALID-001",
+      "expected": "INVALID_SUBKEY_BINDING",
+      "actual": "INVALID_SUBKEY_BINDING",
+      "result": "pass"
+    },
+    {
+      "id": "V2-INVALID-002",
+      "expected": "INVALID_IDENTITY_SIGNATURE",
+      "actual": "INVALID_IDENTITY_SIGNATURE",
+      "result": "pass"
+    },
+    {
+      "id": "V2-INVALID-003",
+      "expected": "ANCHOR_MISMATCH",
+      "actual": "ANCHOR_MISMATCH",
+      "result": "pass"
+    },
+    {
+      "id": "V2-INVALID-004",
+      "expected": "PAYMENT_BINDING_MISMATCH",
+      "actual": "PAYMENT_BINDING_MISMATCH",
+      "result": "pass"
+    },
+    {
+      "id": "V2-INVALID-005",
+      "expected": "INVALID_IDENTITY_SIGNATURE",
+      "actual": "INVALID_IDENTITY_SIGNATURE",
+      "result": "pass"
+    },
+    {
+      "id": "V2-VALID-001",
+      "checks": {
+        "binding_hash": true,
+        "binding_sig": true,
+        "binding_cbor_roundtrip": true,
+        "payment_hash": true,
+        "identity_hash": true,
+        "identity_sig": true,
+        "signed_cbor_match": true,
+        "payment_in_doc": true,
+        "anchor_commitment": true,
+        "op_return": true
+      },
+      "error": null,
+      "actual": {
+        "identity_verified": true,
+        "payment_verified": true,
+        "identity_anchored": false,
+        "continuity_verified": false
+      },
+      "result": "pass"
+    }
+  ],
+  "ambiguities": [
+    "V2-VALID-001: expected.identity_anchored=true in Phase-4 JSON, but mini-spec dual-binding requires bitcoin_proof; independent sets identity_anchored=false"
+  ],
+  "divergences": [],
+  "summary": {
+    "vector_pass": 14,
+    "vector_fail": 0,
+    "fail_ids": [],
+    "cbor_pass": true
+  }
+}
