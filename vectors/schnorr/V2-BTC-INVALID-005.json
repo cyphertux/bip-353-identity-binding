@@ -1,0 +1,26 @@
+{
+  "id": "V2-BTC-INVALID-005",
+  "description": "raw_tx B353S2 commitment != expected AnchorMessage commitment.",
+  "root_pubkey": "1b84c5567b126440995d3ed5aaba0565d71e1834604819ff9c17f5e9d5dd078f",
+  "domain": "example.test",
+  "identifier": "alice@example.test",
+  "anchor_commitment": "c7334a150e5d436e6b62fcf6cf7fb9e6853cda44c26c4187f9f6529d24372768",
+  "bitcoin_proof": {
+    "chain": "regtest",
+    "raw_tx": "02000000010000000000000000000000000000000000000000000000000000000000000000ffffffff00ffffffff010000000000000000296a2742333533533201c6334a150e5d436e6b62fcf6cf7fb9e6853cda44c26c4187f9f6529d2437276800000000",
+    "txid": "6ddd901b0ba281388a6afc8c91e81247eddc4e2a87b2f881870cbb22b5566ed8",
+    "txid_internal": "d86e56b522bb0c8781f8b2872a4edced4712e8918cfc6a8a3881a20b1b90dd6d",
+    "block_header": "000000200000000000000000000000000000000000000000000000000000000000000000d86e56b522bb0c8781f8b2872a4edced4712e8918cfc6a8a3881a20b1b90dd6d00f15365ffff7f2000000000",
+    "tx_index": 0,
+    "merkle_branch": [],
+    "commitment": "c6334a150e5d436e6b62fcf6cf7fb9e6853cda44c26c4187f9f6529d24372768",
+    "block_height": 0,
+    "header_context": "trusted",
+    "op_return_tag": "B353S2",
+    "op_return_version": 1
+  },
+  "expected": {
+    "result": "invalid",
+    "error_code": "WRONG_TX_COMMITMENT"
+  }
+}

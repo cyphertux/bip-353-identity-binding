@@ -1,0 +1,17 @@
+{
+  "name": "schnorr-v2-independent",
+  "private": true,
+  "type": "module",
+  "version": "0.0.0-experimental",
+  "description": "Independent reproduction of experimental Schnorr V2 — NOT part of V1",
+  "scripts": {
+    "verify": "node src/run.mjs",
+    "bip340": "node src/bip340_check.mjs",
+    "adversarial": "node src/adversarial_diff.mjs",
+    "phase11-utf8": "node src/phase11_utf8.mjs"
+  },
+  "dependencies": {
+    "@noble/curves": "1.8.1",
+    "@noble/hashes": "1.7.1"
+  }
+}

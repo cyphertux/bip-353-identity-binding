@@ -1,0 +1,500 @@
+{
+  "phase": 11,
+  "seed": "a3535210",
+  "finding": "ADV-M1",
+  "minimal_case": {
+    "id": "ADV-M1-minimal",
+    "input_bytes_hex": "61ff",
+    "description": "CBOR text string length 1 whose single byte is 0xFF (not valid UTF-8)",
+    "python": {
+      "status": "reject",
+      "error": "invalid UTF-8",
+      "exception": "CBORError"
+    },
+    "javascript_expected_without_fix": {
+      "status": "ACCEPT",
+      "decoded": "�",
+      "reencode_hex": "63efbfbd",
+      "library": "TextDecoder() default non-fatal"
+    },
+    "expected_per_rfc8949_and_v2_subset": "reject"
+  },
+  "layer_analysis": {
+    "cbor_framing": "OK — both parse major type 3 length 1",
+    "utf8_validation": "DIVERGES — Python strict; JS TextDecoder replaces",
+    "application_string_validation": "Not reached for ADV-M1-minimal (fails at CBOR text decode in Python)",
+    "unicode_normalization": "Not involved in ADV-M1-minimal",
+    "library_specific": "JS TextDecoder without {fatal:true}"
+  },
+  "rfc8949": {
+    "references": [
+      "RFC 8949 §3.1 major type 3 — text string: UTF-8 encoded text",
+      "RFC 8949 §4.2.1 Core Deterministic Encoding — shortest lengths, sorted keys",
+      "RFC 8949 does not require Unicode NFC/NFD normalization for CBOR text"
+    ],
+    "valid_utf8": "Byte sequence that is well-formed UTF-8 per Unicode / RFC 3629",
+    "invalid_utf8": "Overlong, surrogates, truncated, bad continuations, >U+10FFFF",
+    "normalization_required": false,
+    "normalization_forbidden": false,
+    "normalization_part_of_v2": false,
+    "noncharacters_accepted": "Yes as UTF-8 code points if well-formed (e.g. U+FFFF)",
+    "control_characters_accepted": "Yes at CBOR layer if well-formed UTF-8",
+    "v2_mini_spec": "Reuses V1 deterministic CBOR subset; text fields are UTF-8 domain/identifier. Does not define NFC/NFD. Canonical CBOR ≠ Unicode normalization.",
+    "application_level": "Domain/identifier have additional rules (no '@' in domain, identifier endswith @domain) — separate from UTF-8 well-formedness."
+  },
+  "hash_impact": {
+    "invalid_utf8_python_decode": "reject",
+    "decode_error": "invalid UTF-8",
+    "python_dumps_cannot_emit_0xff_text_payload": true,
+    "replacement_char_U+FFFD_is_valid_unicode": true,
+    "replacement_cbor_hex": "63efbfbd",
+    "identity_digest_over_raw_bytes": "TaggedHash(TAG_IDENTITY, raw_cbor). If implementations hash the wire bytes, invalid UTF-8 never verifies as a Python-accepted document. If JS decodes→re-encodes before hash, digest differs from wire (61ff → 63efbfbd).",
+    "wire_to_reencode_divergence_hex": {
+      "input": "61ff",
+      "js_reencode_after_replacement": "63efbfbd"
+    },
+    "same_identity_different_signed_bytes_via_valid_utf8": false,
+    "protocol_impact": "MEDIUM",
+    "rationale": "Interop accept/reject diverge on invalid UTF-8 CBOR text. Not a dual-accept of one valid identity with two different digests for well-formed UTF-8. Risk is JS-only acceptance of malformed wire or decode→re-encode hash skew."
+  },
+  "unicode_normalization": "NOT PART OF V2",
+  "matrix_python": [
+    {
+      "name": "ADV-M1-minimal",
+      "raw_hex": "61ff",
+      "payload_hex": null,
+      "python": {
+        "status": "reject",
+        "error": "invalid UTF-8",
+        "exception": "CBORError"
+      }
+    },
+    {
+      "name": "ascii_hello",
+      "raw_hex": "6568656c6c6f",
+      "payload_hex": "68656c6c6f",
+      "python": {
+        "status": "accept",
+        "decoded": "hello",
+        "decoded_codepoints": [
+          "U+0068",
+          "U+0065",
+          "U+006C",
+          "U+006C",
+          "U+006F"
+        ],
+        "reencode_hex": "6568656c6c6f",
+        "roundtrip_same": true,
+        "error": null
+      }
+    },
+    {
+      "name": "nul_U+0000",
+      "raw_hex": "6100",
+      "payload_hex": "00",
+      "python": {
+        "status": "accept",
+        "decoded": "\u0000",
+        "decoded_codepoints": [
+          "U+0000"
+        ],
+        "reencode_hex": "6100",
+        "roundtrip_same": true,
+        "error": null
+      }
+    },
+    {
+      "name": "control_U+000A",
+      "raw_hex": "610a",
+      "payload_hex": "0a",
+      "python": {
+        "status": "accept",
+        "decoded": "\n",
+        "decoded_codepoints": [
+          "U+000A"
+        ],
+        "reencode_hex": "610a",
+        "roundtrip_same": true,
+        "error": null
+      }
+    },
+    {
+      "name": "ascii_DEL_U+007F",
+      "raw_hex": "617f",
+      "payload_hex": "7f",
+      "python": {
+        "status": "accept",
+        "decoded": "",
+        "decoded_codepoints": [
+          "U+007F"
+        ],
+        "reencode_hex": "617f",
+        "roundtrip_same": true,
+        "error": null
+      }
+    },
+    {
+      "name": "utf8_2byte_U+00A9",
+      "raw_hex": "62c2a9",
+      "payload_hex": "c2a9",
+      "python": {
+        "status": "accept",
+        "decoded": "©",
+        "decoded_codepoints": [
+          "U+00A9"
+        ],
+        "reencode_hex": "62c2a9",
+        "roundtrip_same": true,
+        "error": null
+      }
+    },
+    {
+      "name": "utf8_3byte_U+20AC",
+      "raw_hex": "63e282ac",
+      "payload_hex": "e282ac",
+      "python": {
+        "status": "accept",
+        "decoded": "€",
+        "decoded_codepoints": [
+          "U+20AC"
+        ],
+        "reencode_hex": "63e282ac",
+        "roundtrip_same": true,
+        "error": null
+      }
+    },
+    {
+      "name": "utf8_4byte_U+1F600",
+      "raw_hex": "64f09f9880",
+      "payload_hex": "f09f9880",
+      "python": {
+        "status": "accept",
+        "decoded": "😀",
+        "decoded_codepoints": [
+          "U+1F600"
+        ],
+        "reencode_hex": "64f09f9880",
+        "roundtrip_same": true,
+        "error": null
+      }
+    },
+    {
+      "name": "boundary_U+0000",
+      "raw_hex": "6100",
+      "payload_hex": "00",
+      "python": {
+        "status": "accept",
+        "decoded": "\u0000",
+        "decoded_codepoints": [
+          "U+0000"
+        ],
+        "reencode_hex": "6100",
+        "roundtrip_same": true,
+        "error": null
+      }
+    },
+    {
+      "name": "boundary_U+007F",
+      "raw_hex": "617f",
+      "payload_hex": "7f",
+      "python": {
+        "status": "accept",
+        "decoded": "",
+        "decoded_codepoints": [
+          "U+007F"
+        ],
+        "reencode_hex": "617f",
+        "roundtrip_same": true,
+        "error": null
+      }
+    },
+    {
+      "name": "boundary_U+0080",
+      "raw_hex": "62c280",
+      "payload_hex": "c280",
+      "python": {
+        "status": "accept",
+        "decoded": "",
+        "decoded_codepoints": [
+          "U+0080"
+        ],
+        "reencode_hex": "62c280",
+        "roundtrip_same": true,
+        "error": null
+      }
+    },
+    {
+      "name": "boundary_U+07FF",
+      "raw_hex": "62dfbf",
+      "payload_hex": "dfbf",
+      "python": {
+        "status": "accept",
+        "decoded": "߿",
+        "decoded_codepoints": [
+          "U+07FF"
+        ],
+        "reencode_hex": "62dfbf",
+        "roundtrip_same": true,
+        "error": null
+      }
+    },
+    {
+      "name": "boundary_U+0800",
+      "raw_hex": "63e0a080",
+      "payload_hex": "e0a080",
+      "python": {
+        "status": "accept",
+        "decoded": "ࠀ",
+        "decoded_codepoints": [
+          "U+0800"
+        ],
+        "reencode_hex": "63e0a080",
+        "roundtrip_same": true,
+        "error": null
+      }
+    },
+    {
+      "name": "boundary_U+D7FF",
+      "raw_hex": "63ed9fbf",
+      "payload_hex": "ed9fbf",
+      "python": {
+        "status": "accept",
+        "decoded": "퟿",
+        "decoded_codepoints": [
+          "U+D7FF"
+        ],
+        "reencode_hex": "63ed9fbf",
+        "roundtrip_same": true,
+        "error": null
+      }
+    },
+    {
+      "name": "boundary_U+E000",
+      "raw_hex": "63ee8080",
+      "payload_hex": "ee8080",
+      "python": {
+        "status": "accept",
+        "decoded": "",
+        "decoded_codepoints": [
+          "U+E000"
+        ],
+        "reencode_hex": "63ee8080",
+        "roundtrip_same": true,
+        "error": null
+      }
+    },
+    {
+      "name": "boundary_U+FFFF",
+      "raw_hex": "63efbfbf",
+      "payload_hex": "efbfbf",
+      "python": {
+        "status": "accept",
+        "decoded": "￿",
+        "decoded_codepoints": [
+          "U+FFFF"
+        ],
+        "reencode_hex": "63efbfbf",
+        "roundtrip_same": true,
+        "error": null
+      }
+    },
+    {
+      "name": "boundary_U+10000",
+      "raw_hex": "64f0908080",
+      "payload_hex": "f0908080",
+      "python": {
+        "status": "accept",
+        "decoded": "𐀀",
+        "decoded_codepoints": [
+          "U+10000"
+        ],
+        "reencode_hex": "64f0908080",
+        "roundtrip_same": true,
+        "error": null
+      }
+    },
+    {
+      "name": "boundary_U+10FFFF",
+      "raw_hex": "64f48fbfbf",
+      "payload_hex": "f48fbfbf",
+      "python": {
+        "status": "accept",
+        "decoded": "􏿿",
+        "decoded_codepoints": [
+          "U+10FFFF"
+        ],
+        "reencode_hex": "64f48fbfbf",
+        "roundtrip_same": true,
+        "error": null
+      }
+    },
+    {
+      "name": "overlong_slash_C0_AF",
+      "raw_hex": "62c0af",
+      "payload_hex": "c0af",
+      "python": {
+        "status": "reject",
+        "error": "invalid UTF-8",
+        "exception": "CBORError"
+      }
+    },
+    {
+      "name": "overlong_nul_C0_80",
+      "raw_hex": "62c080",
+      "payload_hex": "c080",
+      "python": {
+        "status": "reject",
+        "error": "invalid UTF-8",
+        "exception": "CBORError"
+      }
+    },
+    {
+      "name": "surrogate_ED_A0_80",
+      "raw_hex": "63eda080",
+      "payload_hex": "eda080",
+      "python": {
+        "status": "reject",
+        "error": "invalid UTF-8",
+        "exception": "CBORError"
+      }
+    },
+    {
+      "name": "surrogate_ED_BF_BF",
+      "raw_hex": "63edbfbf",
+      "payload_hex": "edbfbf",
+      "python": {
+        "status": "reject",
+        "error": "invalid UTF-8",
+        "exception": "CBORError"
+      }
+    },
+    {
+      "name": "truncated_E2_82",
+      "raw_hex": "62e282",
+      "payload_hex": "e282",
+      "python": {
+        "status": "reject",
+        "error": "invalid UTF-8",
+        "exception": "CBORError"
+      }
+    },
+    {
+      "name": "invalid_cont_C2_00",
+      "raw_hex": "62c200",
+      "payload_hex": "c200",
+      "python": {
+        "status": "reject",
+        "error": "invalid UTF-8",
+        "exception": "CBORError"
+      }
+    },
+    {
+      "name": "stray_cont_80",
+      "raw_hex": "6180",
+      "payload_hex": "80",
+      "python": {
+        "status": "reject",
+        "error": "invalid UTF-8",
+        "exception": "CBORError"
+      }
+    },
+    {
+      "name": "impossible_F5_80_80_80",
+      "raw_hex": "64f5808080",
+      "payload_hex": "f5808080",
+      "python": {
+        "status": "reject",
+        "error": "invalid UTF-8",
+        "exception": "CBORError"
+      }
+    },
+    {
+      "name": "ff_lone",
+      "raw_hex": "61ff",
+      "payload_hex": "ff",
+      "python": {
+        "status": "reject",
+        "error": "invalid UTF-8",
+        "exception": "CBORError"
+      }
+    },
+    {
+      "name": "norm_NFC_e_acute",
+      "raw_hex": "62c3a9",
+      "payload_hex": "c3a9",
+      "python": {
+        "status": "accept",
+        "decoded": "é",
+        "decoded_codepoints": [
+          "U+00E9"
+        ],
+        "reencode_hex": "62c3a9",
+        "roundtrip_same": true,
+        "error": null
+      }
+    },
+    {
+      "name": "norm_NFD_e_acute",
+      "raw_hex": "6365cc81",
+      "payload_hex": "65cc81",
+      "python": {
+        "status": "accept",
+        "decoded": "é",
+        "decoded_codepoints": [
+          "U+0065",
+          "U+0301"
+        ],
+        "reencode_hex": "6365cc81",
+        "roundtrip_same": true,
+        "error": null
+      }
+    },
+    {
+      "name": "norm_NFKC_fi_ligature",
+      "raw_hex": "626669",
+      "payload_hex": "6669",
+      "python": {
+        "status": "accept",
+        "decoded": "fi",
+        "decoded_codepoints": [
+          "U+0066",
+          "U+0069"
+        ],
+        "reencode_hex": "626669",
+        "roundtrip_same": true,
+        "error": null
+      }
+    },
+    {
+      "name": "norm_NFKD_fi_ligature",
+      "raw_hex": "626669",
+      "payload_hex": "6669",
+      "python": {
+        "status": "accept",
+        "decoded": "fi",
+        "decoded_codepoints": [
+          "U+0066",
+          "U+0069"
+        ],
+        "reencode_hex": "626669",
+        "roundtrip_same": true,
+        "error": null
+      }
+    }
+  ],
+  "decision": {
+    "class": "C",
+    "label": "implementation defect",
+    "defective_component": "independent/schnorr_v2/src/lib.mjs cborDecode text path",
+    "spec_clear": true,
+    "patch_in_phase_11": false,
+    "reason": "Silent patch forbidden; dedicated fix phase required"
+  },
+  "normalization_pair": {
+    "nfc_hex": "62c3a9",
+    "nfd_hex": "6365cc81",
+    "encodings_equal": false,
+    "expected": "different encodings (no Unicode normalization in V2)",
+    "ok": true
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "id": "V2-BTC-INVALID-003",
+  "description": "tx_index flipped for Merkle path.",
+  "root_pubkey": "1b84c5567b126440995d3ed5aaba0565d71e1834604819ff9c17f5e9d5dd078f",
+  "domain": "example.test",
+  "identifier": "alice@example.test",
+  "anchor_commitment": "c7334a150e5d436e6b62fcf6cf7fb9e6853cda44c26c4187f9f6529d24372768",
+  "bitcoin_proof": {
+    "chain": "regtest",
+    "raw_tx": "02000000010000000000000000000000000000000000000000000000000000000000000000ffffffff00ffffffff010000000000000000296a2742333533533201c7334a150e5d436e6b62fcf6cf7fb9e6853cda44c26c4187f9f6529d2437276800000000",
+    "txid": "a1594d2d4ec0fec29bf790602bc00944faef5df398437322305e33f7d229cb3f",
+    "txid_internal": "3fcb29d2f7335e3022734398f35deffa4409c02b6090f79bc2fec04e2d4d59a1",
+    "block_header": "000000200000000000000000000000000000000000000000000000000000000000000000728c57e4de57f715495da94750383d286fd1f47e4aa4c1d748d9a678309f253600f15365ffff7f2000000000",
+    "tx_index": 1,
+    "merkle_branch": [
+      "1111111111111111111111111111111111111111111111111111111111111111"
+    ],
+    "commitment": "c7334a150e5d436e6b62fcf6cf7fb9e6853cda44c26c4187f9f6529d24372768",
+    "block_height": 0,
+    "header_context": "trusted",
+    "op_return_tag": "B353S2",
+    "op_return_version": 1
+  },
+  "expected": {
+    "result": "invalid",
+    "error_code": "WRONG_MERKLE_PROOF"
+  }
+}

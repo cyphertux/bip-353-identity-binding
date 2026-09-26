@@ -1,0 +1,23 @@
+{
+  "id": "V2-BTC-INVALID-006",
+  "description": "Transaction has OP_RETURN but not B353S2.",
+  "root_pubkey": "1b84c5567b126440995d3ed5aaba0565d71e1834604819ff9c17f5e9d5dd078f",
+  "domain": "example.test",
+  "identifier": "alice@example.test",
+  "anchor_commitment": "c7334a150e5d436e6b62fcf6cf7fb9e6853cda44c26c4187f9f6529d24372768",
+  "bitcoin_proof": {
+    "chain": "regtest",
+    "raw_tx": "02000000010000000000000000000000000000000000000000000000000000000000000000ffffffff00ffffffff010000000000000000036a017800000000",
+    "txid": "e55d85a553011cf47268ab0da69e1d8af40ce50674e064d8e4a6368ee21bc091",
+    "txid_internal": "91c01be28e36a6e4d864e07406e50cf48a1d9ea60dab6872f41c0153a5855de5",
+    "block_header": "00000020000000000000000000000000000000000000000000000000000000000000000091c01be28e36a6e4d864e07406e50cf48a1d9ea60dab6872f41c0153a5855de500f15365ffff7f2000000000",
+    "tx_index": 0,
+    "merkle_branch": [],
+    "commitment": "c7334a150e5d436e6b62fcf6cf7fb9e6853cda44c26c4187f9f6529d24372768",
+    "header_context": "trusted"
+  },
+  "expected": {
+    "result": "invalid",
+    "error_code": "NO_B353S2_OUTPUT"
+  }
+}
