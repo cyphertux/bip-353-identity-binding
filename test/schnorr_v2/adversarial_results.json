@@ -1,0 +1,904 @@
+{
+  "seed": "a3535210",
+  "seed_int": 2740146704,
+  "baseline_ref": "schnorr-v2-experimental-2",
+  "case_total": 92,
+  "case_pass": 92,
+  "case_fail": 0,
+  "failed_cases": [],
+  "findings": [
+    {
+      "id": "ADV-I1",
+      "severity": "INFORMATIONAL",
+      "title": "Block header non-merkle fields are not validated",
+      "detail": "Mutating timestamp/nBits/nonce/prev_hash/version while keeping merkle_root leaves dual-binding inclusion PASS. Matches stated non-claim: no PoW/best-chain/finality.",
+      "reproduction": {
+        "seed": "a3535210",
+        "mutation": "header[68]^=1"
+      }
+    },
+    {
+      "id": "ADV-I2",
+      "severity": "INFORMATIONAL",
+      "title": "ROLLBACK RESISTANCE = NOT PROVIDED",
+      "detail": "Optional sequence is carried in IdentityDocument but V2 does not compare sequences across documents or reject decreases. Documented non-claim; adversarial suite confirms absence.",
+      "reproduction": {
+        "seed": "a3535210"
+      }
+    },
+    {
+      "id": "ADV-L2",
+      "severity": "LOW",
+      "title": "build_signed_map accepts negative created_at before CBOR",
+      "detail": "identity.build_signed_map does not reject created_at < 0. Canonical CBOR encoding refuses negatives, so wire/sign/verify cannot succeed. Boundary robustness gap only; not a crypto bypass.",
+      "reproduction": {
+        "seed": "a3535210",
+        "created_at": -1,
+        "mutation": "build_signed_map(created_at=-1)"
+      }
+    },
+    {
+      "id": "ADV-L1",
+      "severity": "LOW",
+      "title": "F-S2 (pre-existing): dict-based verify API",
+      "detail": "Verifier accepts Python dicts rather than raw CBOR bytes as sole input. Accepted for experimental freeze; not a new Phase-10 discovery. Prefer CBOR-bytes API in a future phase.",
+      "reproduction": {}
+    },
+    {
+      "id": "ADV-I3",
+      "severity": "INFORMATIONAL",
+      "title": "F-S4 (pre-existing): SubkeyBinding omits domain",
+      "detail": "By design in mini-spec; domain is bound in IdentityDocument.",
+      "reproduction": {}
+    },
+    {
+      "id": "ADV-M1",
+      "severity": "MEDIUM",
+      "title": "Cross-impl CBOR: invalid UTF-8 accepted by JS decoder",
+      "detail": "Python reference/cbor.loads rejects text strings with invalid UTF-8. Independent JS cborDecode uses TextDecoder without {fatal:true}, accepting bytes and replacing with U+FFFD; re-encoding diverges from input. Not a BIP-340 bypass when digests are over raw CBOR bytes, but Python-reject / JS-accept parser divergence. DO NOT PATCH in Phase 10 \u2014 deferred to a future fix phase.",
+      "reproduction": {
+        "seed": "a3535210",
+        "input_hex": "61ff",
+        "python": "reject",
+        "javascript": "ACCEPT (replacement U+FFFD)"
+      }
+    }
+  ],
+  "severity_counts": {
+    "CRITICAL": 0,
+    "HIGH": 0,
+    "MEDIUM": 1,
+    "LOW": 2,
+    "INFORMATIONAL": 3
+  },
+  "cases": [
+    {
+      "suite": "CBOR",
+      "name": "property_A_encode_stable",
+      "expected": "equal",
+      "actual": "equal",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "CBOR",
+      "name": "property_B_roundtrip",
+      "expected": "equal",
+      "actual": "equal",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "CBOR",
+      "name": "trailing_byte",
+      "expected": "reject",
+      "actual": "reject:CBORError:",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "CBOR",
+      "name": "truncated",
+      "expected": "reject",
+      "actual": "reject:CBORError:",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "CBOR",
+      "name": "non_shortest_uint_0",
+      "expected": "reject",
+      "actual": "reject:CBORError:",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "CBOR",
+      "name": "indefinite_array",
+      "expected": "reject",
+      "actual": "reject:CBORError:",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "CBOR",
+      "name": "indefinite_map",
+      "expected": "reject",
+      "actual": "reject:CBORError:",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "CBOR",
+      "name": "float16",
+      "expected": "reject",
+      "actual": "reject:CBORError:",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "CBOR",
+      "name": "true",
+      "expected": "reject",
+      "actual": "reject:CBORError:",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "CBOR",
+      "name": "null",
+      "expected": "reject",
+      "actual": "reject:CBORError:",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "CBOR",
+      "name": "tag_date",
+      "expected": "reject",
+      "actual": "reject:CBORError:",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "CBOR",
+      "name": "empty_then_extra",
+      "expected": "reject",
+      "actual": "reject:CBORError:",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "CBOR",
+      "name": "dup_key_map",
+      "expected": "reject",
+      "actual": "reject:CBORError:",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "CBOR",
+      "name": "unsorted_keys",
+      "expected": "reject",
+      "actual": "reject:CBORError:",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "CBOR",
+      "name": "invalid_utf8_text",
+      "expected": "reject",
+      "actual": "reject:CBORError:",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "CBOR",
+      "name": "oversized_bstr_len",
+      "expected": "reject",
+      "actual": "reject:CBORError:",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "CBOR",
+      "name": "map_insertion_order_canonical",
+      "expected": "equal",
+      "actual": "equal",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "SIGNATURE",
+      "name": "baseline_verify",
+      "expected": "accept",
+      "actual": "accept",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "SIGNATURE",
+      "name": "flip_bit0",
+      "expected": "reject",
+      "actual": "reject",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "SIGNATURE",
+      "name": "truncate",
+      "expected": "reject",
+      "actual": "reject",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "SIGNATURE",
+      "name": "append_byte",
+      "expected": "reject",
+      "actual": "reject",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "SIGNATURE",
+      "name": "zero_R",
+      "expected": "reject",
+      "actual": "reject",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "SIGNATURE",
+      "name": "zero_s",
+      "expected": "reject",
+      "actual": "reject",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "SIGNATURE",
+      "name": "replace_all_ff",
+      "expected": "reject",
+      "actual": "reject",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "SIGNATURE",
+      "name": "sig_A_message_B",
+      "expected": "reject",
+      "actual": "reject",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "SIGNATURE",
+      "name": "sig_valid_pubkey_B",
+      "expected": "reject",
+      "actual": "reject",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "DOMAIN",
+      "name": "all_tags_distinct_digest",
+      "expected": "distinct",
+      "actual": "distinct",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "DOMAIN",
+      "name": "sign_IDENTITY_verify_PAYMENT",
+      "expected": "reject",
+      "actual": "reject",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "DOMAIN",
+      "name": "sign_IDENTITY_verify_SUBKEY-BINDING",
+      "expected": "reject",
+      "actual": "reject",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "DOMAIN",
+      "name": "sign_IDENTITY_verify_ANCHOR",
+      "expected": "reject",
+      "actual": "reject",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "ROOT_SIGNING",
+      "name": "A_binds_B_baseline",
+      "expected": "accept",
+      "actual": "accept",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "ROOT_SIGNING",
+      "name": "binding_signing_substituted_stale_sig",
+      "expected": "reject",
+      "actual": "reject:VerifyError:INVALID_SUBKEY_BINDING",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "ROOT_SIGNING",
+      "name": "presented_root_alt",
+      "expected": "reject",
+      "actual": "reject:VerifyError:INVALID_SUBKEY_BINDING",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "ROOT_SIGNING",
+      "name": "swap_root_and_signing_presented",
+      "expected": "reject",
+      "actual": "reject:VerifyError:INVALID_SUBKEY_BINDING",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "ROOT_SIGNING",
+      "name": "doc_signing_C_binding_B",
+      "expected": "reject",
+      "actual": "reject:VerifyError:INVALID_SUBKEY_BINDING",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "ROOT_SIGNING",
+      "name": "binding_signed_by_alt_root",
+      "expected": "reject",
+      "actual": "reject:VerifyError:INVALID_SUBKEY_BINDING",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "IDENTITY",
+      "name": "mutate_domain",
+      "expected": "reject",
+      "actual": "reject:VerifyError:INVALID_IDENTITY_SIGNATURE",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "IDENTITY",
+      "name": "mutate_identifier",
+      "expected": "reject",
+      "actual": "reject:VerifyError:INVALID_IDENTITY_SIGNATURE",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "IDENTITY",
+      "name": "mutate_root",
+      "expected": "reject",
+      "actual": "reject:VerifyError:INVALID_SUBKEY_BINDING",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "IDENTITY",
+      "name": "mutate_signing",
+      "expected": "reject",
+      "actual": "reject:VerifyError:INVALID_SUBKEY_BINDING",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "IDENTITY",
+      "name": "mutate_created_at",
+      "expected": "reject",
+      "actual": "reject:VerifyError:INVALID_IDENTITY_SIGNATURE",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "IDENTITY",
+      "name": "mutate_expires_at",
+      "expected": "reject",
+      "actual": "reject:VerifyError:INVALID_IDENTITY_SIGNATURE",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "IDENTITY",
+      "name": "mutate_payment_hash",
+      "expected": "reject",
+      "actual": "reject:VerifyError:PAYMENT_BINDING_MISMATCH",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "IDENTITY",
+      "name": "mutate_version",
+      "expected": "reject",
+      "actual": "reject:VerifyError:UNSUPPORTED_VERSION",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "IDENTITY",
+      "name": "mutate_signature_flip",
+      "expected": "reject",
+      "actual": "reject:VerifyError:INVALID_IDENTITY_SIGNATURE",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "IDENTITY",
+      "name": "remove_domain",
+      "expected": "reject",
+      "actual": "reject:KeyError:",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "IDENTITY",
+      "name": "remove_payment_hash",
+      "expected": "reject",
+      "actual": "reject:VerifyError:PAYMENT_BINDING_MISMATCH",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "IDENTITY",
+      "name": "remove_signature",
+      "expected": "reject",
+      "actual": "reject:VerifyError:INVALID_IDENTITY_SIGNATURE",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "IDENTITY",
+      "name": "type_sub_domain_bytes",
+      "expected": "reject",
+      "actual": "reject:VerifyError:INVALID_DOMAIN",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "PAYMENT",
+      "name": "different_spk_different_hash",
+      "expected": "differ",
+      "actual": "differ",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "PAYMENT",
+      "name": "different_method_type_different_hash",
+      "expected": "differ",
+      "actual": "differ",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "PAYMENT",
+      "name": "duplicate_identical_method_collapsed",
+      "expected": "equal",
+      "actual": "equal",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": "build_payment_binding collapses duplicate (type,destination)"
+    },
+    {
+      "suite": "PAYMENT",
+      "name": "two_distinct_methods_different_hash",
+      "expected": "differ",
+      "actual": "differ",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "PAYMENT",
+      "name": "excluded_fields_absent_from_cbor",
+      "expected": "absent",
+      "actual": "absent",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "PAYMENT",
+      "name": "same_spk_same_hash",
+      "expected": "equal",
+      "actual": "equal",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "PAYMENT",
+      "name": "verify_with_mutated_payment",
+      "expected": "reject",
+      "actual": "reject:VerifyError:PAYMENT_BINDING_MISMATCH",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "B353S2",
+      "name": "different_anchor_different_commitment",
+      "expected": "differ",
+      "actual": "differ",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "B353S2",
+      "name": "wrong_root_commitment_vs_identity",
+      "expected": "reject",
+      "actual": "reject:BitcoinProofError:WRONG_TX_COMMITMENT",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "B353S2",
+      "name": "missing_B353S2",
+      "expected": "reject",
+      "actual": "reject:BitcoinProofError:NO_B353S2_OUTPUT",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "B353S2",
+      "name": "one_B353S2",
+      "expected": "accept",
+      "actual": "accept",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "B353S2",
+      "name": "two_B353S2",
+      "expected": "reject",
+      "actual": "reject:BitcoinProofError:AMBIGUOUS_B353S2_OUTPUTS",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "B353S2",
+      "name": "three_B353S2",
+      "expected": "reject",
+      "actual": "reject:BitcoinProofError:AMBIGUOUS_B353S2_OUTPUTS",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "B353S2",
+      "name": "wrong_tag_B353ID",
+      "expected": "reject",
+      "actual": "reject:BitcoinProofError:NO_B353S2_OUTPUT",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "B353S2",
+      "name": "wrong_tag_B353S3",
+      "expected": "reject",
+      "actual": "reject:BitcoinProofError:NO_B353S2_OUTPUT",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "B353S2",
+      "name": "truncated_payload",
+      "expected": "reject",
+      "actual": "reject:BitcoinProofError:NO_B353S2_OUTPUT",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "B353S2",
+      "name": "extra_payload",
+      "expected": "reject",
+      "actual": "reject:BitcoinProofError:NO_B353S2_OUTPUT",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "B353S2",
+      "name": "wrong_version",
+      "expected": "reject",
+      "actual": "reject:BitcoinProofError:NO_B353S2_OUTPUT",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "B353S2",
+      "name": "B353ID_not_confused_with_B353S2",
+      "expected": "reject",
+      "actual": "reject",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": "B353ID OP_RETURN rejected by extract_commitment_from_opreturn"
+    },
+    {
+      "suite": "BTC",
+      "name": "baseline_dual_binding",
+      "expected": "accept",
+      "actual": "accept",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "BTC",
+      "name": "raw_tx_mutation_changes_txid",
+      "expected": "differ",
+      "actual": "differ",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "BTC",
+      "name": "matrix_valid_tx_invalid_merkle",
+      "expected": "reject",
+      "actual": "reject:BitcoinProofError:WRONG_MERKLE_PROOF",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "BTC",
+      "name": "matrix_missing_B353S2",
+      "expected": "reject",
+      "actual": "reject:BitcoinProofError:NO_B353S2_OUTPUT",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "BTC",
+      "name": "matrix_duplicate_B353S2",
+      "expected": "reject",
+      "actual": "reject:BitcoinProofError:AMBIGUOUS_B353S2_OUTPUTS",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "BTC",
+      "name": "matrix_wrong_commitment",
+      "expected": "reject",
+      "actual": "reject:BitcoinProofError:WRONG_TX_COMMITMENT",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "BTC",
+      "name": "matrix_mutated_raw_stale_txid",
+      "expected": "reject",
+      "actual": "reject:BitcoinProofError:TXID_MISMATCH",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "BTC",
+      "name": "matrix_wrong_header_merkle_root",
+      "expected": "reject",
+      "actual": "reject:BitcoinProofError:WRONG_MERKLE_PROOF",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "BTC",
+      "name": "merkle_even_index_with_sibling",
+      "expected": "accept",
+      "actual": "accept",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "BTC",
+      "name": "merkle_wrong_index",
+      "expected": "reject",
+      "actual": "reject:BitcoinProofError:WRONG_MERKLE_PROOF",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "BTC",
+      "name": "merkle_extra_sibling",
+      "expected": "reject",
+      "actual": "reject:BitcoinProofError:WRONG_MERKLE_PROOF",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "BTC",
+      "name": "header_timestamp_mutation_still_passes_inclusion",
+      "expected": "accept_inclusion_only",
+      "actual": "accept",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": "V2 does not validate PoW/timestamp; INFORMATIONAL"
+    },
+    {
+      "suite": "STATE",
+      "name": "verified_without_btc_not_anchored",
+      "expected": "iv=T,pv=T,ia=F,cv=F",
+      "actual": "iv=True,pv=True,ia=False,cv=False",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "STATE",
+      "name": "full_dual_binding_anchored",
+      "expected": "all_true",
+      "actual": "{'identity_verified': True, 'payment_verified': True, 'identity_anchored': True, 'continuity_verified': True, 'errors': []}",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "STATE",
+      "name": "logical_opreturn_not_anchored",
+      "expected": "ia=false",
+      "actual": "ia=False",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "SEQUENCE_TIME",
+      "name": "sequence_zero_accepted_in_document",
+      "expected": "accept",
+      "actual": "accept",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "SEQUENCE_TIME",
+      "name": "sequence_one_accepted_in_document",
+      "expected": "accept",
+      "actual": "accept",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "SEQUENCE_TIME",
+      "name": "sequence_u32max_accepted_in_document",
+      "expected": "accept",
+      "actual": "accept",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "SEQUENCE_TIME",
+      "name": "sequence_2_32_encodable",
+      "expected": "accept_encode",
+      "actual": "accept",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": "No protocol max; ROLLBACK RESISTANCE NOT PROVIDED"
+    },
+    {
+      "suite": "SEQUENCE_TIME",
+      "name": "created_gt_expires_build",
+      "expected": "reject",
+      "actual": "reject:IdentityError:",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "SEQUENCE_TIME",
+      "name": "created_eq_expires_build",
+      "expected": "accept",
+      "actual": "accept",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "SEQUENCE_TIME",
+      "name": "now_outside_equal_window",
+      "expected": "reject",
+      "actual": "reject:VerifyError:INVALID_IDENTITY_SIGNATURE",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "SEQUENCE_TIME",
+      "name": "negative_created_encode_rejects",
+      "expected": "encode_reject",
+      "actual": "encode_reject",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    },
+    {
+      "suite": "PROPERTY",
+      "name": "property_C_mutation_rejects",
+      "expected": "covered",
+      "actual": "covered",
+      "ok": true,
+      "seed": "a3535210",
+      "notes": ""
+    }
+  ]
+}

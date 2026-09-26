@@ -46,3 +46,13 @@ Produces `independent-results.json`.
   `identity_anchored` is `false` without `bitcoin_proof`.
 * `V2-VALID-002` requires dual-binding → `identity_anchored=true`.
 * `V2-VALID-003` is explicitly non-anchored.
+
+## Adversarial differential (Phase 10)
+
+```bash
+# from repo root (after Python emits differential_cases.json via test_adversarial setup)
+PYTHONPATH=. reference/schnorr_v2/.venv/bin/python test/schnorr_v2/test_adversarial.py
+npm run adversarial
+```
+
+See [`docs/SCHNORR_V2_ADVERSARIAL_REVIEW.md`](../../docs/SCHNORR_V2_ADVERSARIAL_REVIEW.md).

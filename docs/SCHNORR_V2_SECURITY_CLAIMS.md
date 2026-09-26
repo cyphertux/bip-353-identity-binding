@@ -94,6 +94,17 @@ Still explicitly:
 
 ---
 
+## Adversarial review (Phase 10)
+
+See [`SCHNORR_V2_ADVERSARIAL_REVIEW.md`](SCHNORR_V2_ADVERSARIAL_REVIEW.md).
+
+* CRITICAL: 0  
+* HIGH: 0  
+* MEDIUM: 1 (`ADV-M1` JS invalid UTF-8 CBOR — documented, not patched)  
+* Dual-binding remains mandatory for `identity_anchored`
+
+---
+
 ## Reproducibility (lab)
 
 ```bash

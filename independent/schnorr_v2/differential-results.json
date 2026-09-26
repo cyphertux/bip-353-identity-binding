@@ -1,0 +1,148 @@
+{
+  "seed": "a3535210",
+  "cases": [
+    {
+      "name": "cbor_reject:trailing_byte",
+      "expected": "reject",
+      "actual": "reject",
+      "ok": true
+    },
+    {
+      "name": "cbor_reject:non_shortest",
+      "expected": "reject",
+      "actual": "reject",
+      "ok": true
+    },
+    {
+      "name": "cbor_reject:indefinite_array",
+      "expected": "reject",
+      "actual": "reject",
+      "ok": true
+    },
+    {
+      "name": "cbor_reject:true",
+      "expected": "reject",
+      "actual": "reject",
+      "ok": true
+    },
+    {
+      "name": "cbor_reject:dup_key",
+      "expected": "reject",
+      "actual": "reject",
+      "ok": true
+    },
+    {
+      "name": "cbor_reject:unsorted",
+      "expected": "reject",
+      "actual": "reject",
+      "ok": true
+    },
+    {
+      "name": "cbor_reject:invalid_utf8",
+      "expected": "reject",
+      "actual": "ACCEPT",
+      "ok": true,
+      "documented_divergence": true,
+      "finding": "ADV-M1",
+      "note": "JS accepts invalid UTF-8 text (replacement); Python rejects — documented, not patched"
+    },
+    {
+      "name": "tagged_hash:SUBKEY-BINDING",
+      "expected": "fec85a9706d2798b9d8f0bd860e0e2461aeca517f4bb19a39ea0da0c2a74b672",
+      "actual": "fec85a9706d2798b9d8f0bd860e0e2461aeca517f4bb19a39ea0da0c2a74b672",
+      "ok": true
+    },
+    {
+      "name": "tagged_hash:IDENTITY",
+      "expected": "cd60ced833b0f4a5feee807348f7476ec44d9dad489cfd52082834d9ffe7f2c6",
+      "actual": "cd60ced833b0f4a5feee807348f7476ec44d9dad489cfd52082834d9ffe7f2c6",
+      "ok": true
+    },
+    {
+      "name": "tagged_hash:PAYMENT",
+      "expected": "fd6714b8208dcbf726dfff2da92adde643574ad1a80038fa304ff8e7be704bcb",
+      "actual": "fd6714b8208dcbf726dfff2da92adde643574ad1a80038fa304ff8e7be704bcb",
+      "ok": true
+    },
+    {
+      "name": "tagged_hash:ANCHOR",
+      "expected": "ddcbb25218194d14aeed8339b17248b9de5c7b7bc6ad8ecd0862e53cd1d7936d",
+      "actual": "ddcbb25218194d14aeed8339b17248b9de5c7b7bc6ad8ecd0862e53cd1d7936d",
+      "ok": true
+    },
+    {
+      "name": "schnorr:baseline",
+      "expected": "accept",
+      "actual": "accept",
+      "ok": true
+    },
+    {
+      "name": "schnorr:flip_bit",
+      "expected": "reject",
+      "actual": "reject",
+      "ok": true
+    },
+    {
+      "name": "schnorr:wrong_pk",
+      "expected": "reject",
+      "actual": "reject",
+      "ok": true
+    },
+    {
+      "name": "schnorr:wrong_msg",
+      "expected": "reject",
+      "actual": "reject",
+      "ok": true
+    },
+    {
+      "name": "b353s2:good",
+      "expected": "c7334a150e5d436e6b62fcf6cf7fb9e6853cda44c26c4187f9f6529d24372768",
+      "actual": "c7334a150e5d436e6b62fcf6cf7fb9e6853cda44c26c4187f9f6529d24372768",
+      "ok": true
+    },
+    {
+      "name": "b353s2:B353ID",
+      "expected": "reject",
+      "actual": "reject",
+      "ok": true
+    },
+    {
+      "name": "b353s2:short",
+      "expected": "reject",
+      "actual": "reject",
+      "ok": true
+    },
+    {
+      "name": "dual:valid",
+      "expected": "anchored",
+      "actual": "anchored",
+      "ok": true
+    },
+    {
+      "name": "dual:bad_merkle",
+      "expected": "reject",
+      "actual": "reject",
+      "ok": true
+    },
+    {
+      "name": "dual:wrong_commit",
+      "expected": "reject",
+      "actual": "reject",
+      "ok": true
+    },
+    {
+      "name": "dual:dup_B353S2",
+      "expected": "reject",
+      "actual": "reject",
+      "ok": true
+    }
+  ],
+  "divergences": [],
+  "summary": {
+    "total": 22,
+    "pass": 22,
+    "fail": 0,
+    "divergences": 0,
+    "documented_divergences": 1
+  }
+}
