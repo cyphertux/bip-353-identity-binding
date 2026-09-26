@@ -130,6 +130,12 @@ what V2 proves, depends on, and does not provide. No claim upgrades.
 
 ---
 
+## Publication / reproducibility (Phase 15)
+
+See [`SCHNORR_V2_PUBLICATION.md`](SCHNORR_V2_PUBLICATION.md) and the repository root README.
+
+---
+
 ## Reproducibility (lab)
 
 ```bash
