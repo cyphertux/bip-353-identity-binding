@@ -121,6 +121,15 @@ incorporation by reference). Blocking ambiguities: **0**.
 
 ---
 
+## Threat model (Phase 14)
+
+See [`SCHNORR_V2_THREAT_MODEL.md`](SCHNORR_V2_THREAT_MODEL.md).
+
+Security claims above are consistent with the threat-model boundary:
+what V2 proves, depends on, and does not provide. No claim upgrades.
+
+---
+
 ## Reproducibility (lab)
 
 ```bash
