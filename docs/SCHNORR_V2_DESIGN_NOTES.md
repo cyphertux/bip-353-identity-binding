@@ -6,8 +6,8 @@
 |-------|--------|
 | Working title | Experimental Schnorr Identity Root |
 | Branch | `experiment/schnorr-identity-v2` |
-| Phase | 2 — Mini-spec decisions recorded |
-| Status | Design notes + pointer to experimental mini-spec |
+| Phase | 5 — Documentation & README integration |
+| Status | Experimental docs on branch; mini-spec remains non-normative |
 | Normative authority | **None.** V1 remains `BIP-XXX.md` / `PROTOCOL_FREEZE_V1.md` |
 | Decisions document | [`docs/SCHNORR_V2_MINI_SPEC.md`](SCHNORR_V2_MINI_SPEC.md) (**EXPERIMENTAL**, not frozen) |
 
@@ -329,17 +329,13 @@ That file is **EXPERIMENTAL / NON-NORMATIVE / NOT FROZEN / NOT PART OF V1**.
 
 ### Next Phase
 
-**Phase 3 — Minimal reference implementation** (code + new paths only; never modify V1):
+**Phase 6 — Independent review / hardening** (no promise of schedule):
 
-1. BIP-340 helpers + TaggedHash.
-2. SubkeyBinding sign/verify (Option B).
-3. IdentityDocument sign/verify.
-4. Payment hash via `TAG_PAYMENT`.
-5. Anchor commitment via `TAG_ANCHOR`.
-6. Later: `V2-VALID-001` / `V2-INVALID-00x` under a **new** directory (not `vectors/` V1 trees).
+* external reading of mini-spec + vectors;
+* optional second implementation;
+* threat-model review without expanding V1 claims.
 
-**Success criterion for the overall experiment:**  
-Show that a Schnorr construction can reproduce V1’s *necessary* verifier guarantees (payment binding under a root; optional historical continuity) with less parsing surface — without pretending the hard problems (freshness, root theft, first contact) disappeared.
+**Still true:** V1 is FROZEN; this experiment is NON-NORMATIVE and NOT FROZEN.
 
 ---
 

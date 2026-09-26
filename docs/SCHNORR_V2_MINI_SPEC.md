@@ -8,9 +8,10 @@
 | Field | Value |
 |-------|--------|
 | Branch | `experiment/schnorr-identity-v2` |
-| Phase | 2 — Mini-spec decisions |
+| Phase | 2 decisions + Phase 3–5 lab (still experimental) |
 | Companion | `docs/SCHNORR_V2_DESIGN_NOTES.md` |
-| Implementation | Phase 3 minimal reference: `reference/schnorr_v2/` |
+| Implementation | `reference/schnorr_v2/` (embit==0.8.0) |
+| Vectors | `vectors/schnorr/` (experimental fixtures) |
 | Compatibility with V1 | **None claimed** |
 
 This document records **experimental design decisions** for a future MVP.  
