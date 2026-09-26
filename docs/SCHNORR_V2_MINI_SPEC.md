@@ -10,7 +10,7 @@
 | Branch | `experiment/schnorr-identity-v2` |
 | Phase | 2 — Mini-spec decisions |
 | Companion | `docs/SCHNORR_V2_DESIGN_NOTES.md` |
-| Implementation | **None yet** (Phase 3) |
+| Implementation | Phase 3 minimal reference: `reference/schnorr_v2/` |
 | Compatibility with V1 | **None claimed** |
 
 This document records **experimental design decisions** for a future MVP.  
@@ -33,7 +33,7 @@ Decisions below are marked **DECIDED (experimental)** or **OPEN**.
 | Anchor commitment | **DECIDED** | BIP-340 TaggedHash with V2 ANCHOR tag (= 32-byte commitment) |
 | Continuity | **DECIDED** | `presented root_pubkey == anchored root_pubkey` |
 | Failure states | **DECIDED** | Minimal MVP set |
-| HD / revocation / freshness | **OUT OF SCOPE** | — |
+| OP_RETURN tag | **DECIDED (experimental)** | ASCII `B353S2` ≠ V1 `B353ID` |
 
 ---
 
@@ -161,7 +161,7 @@ BIP-340 `TaggedHash(tag, msg)` with these **exact** ASCII tag strings (no traili
 
 | Constant | ASCII tag string | Len (bytes) | Context |
 |----------|------------------|-------------|---------|
-| `TAG_SUBKEY_BINDING` | `BIP353-IDENTITY/V2/SUBKEY-BINDING` | 34 | Root authorizes signing key |
+| `TAG_SUBKEY_BINDING` | `BIP353-IDENTITY/V2/SUBKEY-BINDING` | 33 | Root authorizes signing key |
 | `TAG_IDENTITY` | `BIP353-IDENTITY/V2/IDENTITY` | 27 | Identity document authenticity |
 | `TAG_PAYMENT` | `BIP353-IDENTITY/V2/PAYMENT` | 26 | Payment hash domain |
 | `TAG_ANCHOR` | `BIP353-IDENTITY/V2/ANCHOR` | 25 | Anchor commitment |
@@ -308,9 +308,22 @@ identity_commitment = TaggedHash(
 
 * Output length: **32 bytes**.
 * Not V1 `SHA256(ANCHOR_DOMAIN_SEPARATOR || …)`.
-* Confusion with V1 commitments: prevented by different hash construction **and** different tag/content; experimental on-chain tag/version for OP_RETURN is **OPEN** for Phase 3 wiring (must not collide with V1 `B353ID||0x01` when implemented).
+* Confusion with V1 commitments: prevented by different hash construction **and** different tag/content.
 
-**OPEN (Phase 3):** exact OP_RETURN tag bytes for experimental anchors (must be distinct from V1).
+### OP_RETURN experimental tag — DECIDED (Phase 3, experimental)
+
+| Field | Value |
+|-------|--------|
+| Status | **DECIDED (experimental)** — still **NOT FROZEN** / **NON-NORMATIVE** |
+| Tag ASCII | `B353S2` |
+| Tag bytes | `42 33 35 33 53 32` |
+| Version | `0x01` |
+| Payload | `B353S2 \|\| 0x01 \|\| identity_commitment` (39 bytes) |
+| scriptPubKey | `OP_RETURN` + push(payload) |
+
+**Must not** use V1 tag `B353ID` (`42 33 35 33 49 44`).
+
+Rationale: six-byte ASCII tag parallel to V1 length, clearly marked Schnorr/experimental (`S2`), zero overlap with `B353ID`.
 
 ---
 
@@ -427,9 +440,9 @@ HD derivation (`m/353'/…`), revocation protocol, recovery, freshness, transpar
 
 | Item | Why open |
 |------|----------|
-| Experimental OP_RETURN tag/version bytes | Need distinct on-chain tag from V1; no implementation yet |
+| Experimental OP_RETURN tag/version bytes | **DECIDED Phase 3:** `B353S2` \|\| `0x01` \|\| 32-byte commitment (still experimental, not frozen) |
 | Whether `sequence` appears in first vectors | Optional field; MVP can omit |
 | Binding object `version` numbering vs document `protocol_version` | Provisional (`binding version=1`, `protocol_version=2`) — revisit if confusing |
-| Library choice for BIP-340 in reference code | Implementation detail |
+| Library choice for BIP-340 in reference code | **DECIDED Phase 3:** `embit==0.8.0` |
 
 If any DECIDED item above proves unjustifiable during implementation, revert it to OPEN in a follow-up note rather than silently changing V1 or shipping ambiguity.

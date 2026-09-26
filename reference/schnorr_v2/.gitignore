@@ -1,0 +1,5 @@
+# Local tooling for experimental Schnorr V2 reference only
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
