@@ -123,26 +123,55 @@ dual-binding subset.
 
 | ID | Severity | Title | Action |
 |----|----------|-------|--------|
-| **ADV-M1** | **MEDIUM** | JS CBOR accepts invalid UTF-8 text (`61ff`); Python rejects | **DO NOT PATCH** (Phase 10) |
+| **ADV-M1** | **MEDIUM** | JS CBOR accepts invalid UTF-8 text (`61ff`); Python rejects | **implementation defect** (Phase 11); **not patched** |
 | ADV-L1 | LOW | F-S2 dict verify API (pre-existing) | accepted for freeze |
 | ADV-L2 | LOW | `build_signed_map` accepts `created_at < 0` before CBOR | **DO NOT PATCH**; encode path rejects |
 | ADV-I1 | INFORMATIONAL | Non-merkle header fields not validated | matches non-claim (no PoW) |
 | ADV-I2 | INFORMATIONAL | `ROLLBACK RESISTANCE = NOT PROVIDED` | sequence not compared |
 | ADV-I3 | INFORMATIONAL | F-S4 binding omits domain | by design |
 
-### ADV-M1 — reproduction
+### ADV-M1 — reproduction (Phase 10) + resolution (Phase 11)
 
 ```text
-seed: a3535210
-input_hex: 61ff          # CBOR text(1) + 0xFF
-python:  cbor.loads → CBORError (invalid UTF-8)
-javascript: cborDecode → ACCEPT (U+FFFD replacement); re-encode ≠ input
+seed:              a3535210
+minimal case:      ADV-M1-minimal
+input_bytes_hex:   61ff          # CBOR major-type-3, length 1, payload 0xFF
+python:            reject  CBORError("invalid UTF-8")
+javascript:        ACCEPT  decoded U+FFFD; reencode 63efbfbd (≠ input)
+expected (RFC 8949 + V2 subset): reject
 ```
 
-**Impact:** Parser accept/reject divergence. Digests computed over **raw CBOR
-bytes** (vector path) are unaffected. Risk appears if an implementation
-decodes → re-encodes before hashing. Deferred fix: JS `TextDecoder(..., {fatal:true})`
-in a future explicit phase.
+**Layer:** UTF-8 validation inside CBOR text-string decode (not framing, not
+application domain rules, not Unicode normalization).
+
+**Root cause (decision C — implementation defect):**  
+`independent/schnorr_v2/src/lib.mjs` uses `new TextDecoder().decode(...)` without
+`{ fatal: true }`. Python `bytes.decode("utf-8")` is strict. Spec / RFC 8949
+require well-formed UTF-8 for major type 3.
+
+**Phase 11 matrix (seed `a3535210`):**
+
+| Input class | Python | JavaScript | Encoding same? | Protocol impact |
+|-------------|--------|------------|----------------|-----------------|
+| ASCII / valid 2–4 byte / boundaries | accept | accept | **YES** | none |
+| NFC vs NFD pair | accept | accept | each stable; NFC≠NFD | intentional (no Unicode norm) |
+| overlong / surrogate / truncated / bad cont / `61ff` | reject | ACCEPT | n/a | **ADV-M1 class** |
+
+Both-accept encoding mismatches: **0** (no CRITICAL dual-digest on valid UTF-8).
+
+**Signature / hash impact:**  
+If digests use **wire bytes**, Python never accepts `61ff` as a document.  
+If JS **decodes → re-encodes** then hashes, `TaggedHash(TAG_IDENTITY, 61ff)` ≠
+`TaggedHash(TAG_IDENTITY, 63efbfbd)` (demonstrated). That is decode/re-encode skew
+on **invalid** UTF-8, not two different valid encodings of one accepted identity.
+
+**Resolution:** Documented as implementation defect. **No silent patch in Phase 11.**  
+Fix candidate for a future dedicated phase: `TextDecoder("utf-8", { fatal: true })`.  
+Snapshot `schnorr-v2-experimental-2` **unchanged**.
+
+**Remaining limitation:** Independent JS still accepts invalid UTF-8 CBOR text until fixed.
+
+**Unicode normalization:** `NOT PART OF V2` — see [`SCHNORR_V2_CBOR_UTF8.md`](SCHNORR_V2_CBOR_UTF8.md).
 
 ### Dual-binding matrix (summary)
 
