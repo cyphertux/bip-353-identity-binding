@@ -112,6 +112,15 @@ formal security guarantee.
 
 ---
 
+## Specification audit (Phase 13)
+
+See [`SCHNORR_V2_SPEC_AUDIT.md`](SCHNORR_V2_SPEC_AUDIT.md).
+
+Spec-only reproducibility against frozen vectors: **PASS** (with V1 CBOR/Payment/Merkle
+incorporation by reference). Blocking ambiguities: **0**.
+
+---
+
 ## Reproducibility (lab)
 
 ```bash
