@@ -52,11 +52,8 @@ function record(name, expected, actual, ok, extra = {}) {
 
 function run() {
   const cases = loadCases();
-  // Documented Phase-10 divergence (DO NOT PATCH in this phase):
-  // JS TextDecoder replaces invalid UTF-8; Python cbor.loads rejects.
-  const DOCUMENTED = new Set(["cbor_reject:invalid_utf8"]);
 
-  // CBOR rejects
+  // CBOR rejects — Phase 12: JS must match Python (strict UTF-8)
   for (const c of cases.cbor_reject) {
     let rejected = false;
     try {
@@ -67,15 +64,7 @@ function run() {
     const name = `cbor_reject:${c.name}`;
     const actual = rejected ? "reject" : "ACCEPT";
     const matchesPython = rejected && c.python === "reject";
-    if (DOCUMENTED.has(name) && !matchesPython) {
-      record(name, "reject", actual, true, {
-        documented_divergence: true,
-        finding: "ADV-M1",
-        note: "JS accepts invalid UTF-8 text (replacement); Python rejects — documented, not patched",
-      });
-    } else {
-      record(name, "reject", actual, matchesPython);
-    }
+    record(name, "reject", actual, matchesPython);
   }
 
   // TaggedHash cross-tag
@@ -140,18 +129,15 @@ function run() {
     record(`dual:${c.name}`, c.expected, actual, actual === c.expected);
   }
 
-    results.summary = {
+        results.summary = {
     total: results.cases.length,
     pass: results.cases.filter((x) => x.ok).length,
     fail: results.cases.filter((x) => !x.ok).length,
     divergences: results.divergences.length,
-    documented_divergences: results.cases.filter((x) => x.documented_divergence)
-      .length,
   };
   fs.writeFileSync(OUT_PATH, JSON.stringify(results, null, 2) + "\n");
   console.log(JSON.stringify(results.summary, null, 2));
   console.log("wrote", OUT_PATH);
-  // Fail only on unexplained mismatches
   process.exit(results.summary.fail ? 1 : 0);
 }
 

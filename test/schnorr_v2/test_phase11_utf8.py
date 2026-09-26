@@ -1,6 +1,6 @@
-"""Phase 11 property tests: UTF-8 CBOR accept/reject + canonical encode stability.
+"""Phase 11/12 property tests: UTF-8 CBOR — both impls reject invalid, match on valid.
 
-Does not patch JS. Documents ADV-M1 as known implementation defect.
+Phase 12: ADV-M1 resolved in independent JS (fatal TextDecoder).
 """
 
 from __future__ import annotations
@@ -17,7 +17,6 @@ CASES = ROOT / "test" / "schnorr_v2" / "phase11_utf8_cases.json"
 JS_RESULTS = ROOT / "test" / "schnorr_v2" / "phase11_utf8_js_results.json"
 SEED = "a3535210"
 
-# Invalid UTF-8 cases where JS currently diverges (ADV-M1 class) — must reject in Python
 INVALID_NAMES = {
     "ADV-M1-minimal",
     "overlong_slash_C0_AF",
@@ -50,21 +49,23 @@ def test_python_rejects_invalid() -> None:
     print("PROPERTY invalid→Python reject / valid→stable encode: PASS")
 
 
-def test_js_results_encoding_agreement_on_accept() -> None:
-    """Both-accept cases must have identical canonical CBOR (from recorded JS run)."""
+def test_js_matches_python_utf8() -> None:
+    """After Phase 12: invalid → both reject; valid → both accept + same CBOR."""
     if not JS_RESULTS.is_file():
         print("SKIP JS results (run independent/.../phase11_utf8.mjs first)")
         return
     js = json.loads(JS_RESULTS.read_text(encoding="utf-8"))
     assert js["summary"]["encoding_mismatch_both_accept"] == 0
+    assert js["summary"]["diverge"] == 0, js["summary"]
+    assert js["minimal"]["javascript"]["status"] == "reject"
     for row in js["rows"]:
+        assert row["status_same"] is True, row
         if row["name"] in INVALID_NAMES:
-            assert row["python"] == "reject"
-            assert row["javascript"] == "accept"  # known ADV-M1 defect
+            assert row["python"] == "reject" and row["javascript"] == "reject"
         elif row["python"] == "accept":
             assert row["javascript"] == "accept"
             assert row["encoding_same"] is True
-    print("PROPERTY both-accept encodings equal; ADV-M1 class documented: PASS")
+    print("PROPERTY Py==JS UTF-8 accept/reject + canonical bytes: PASS")
 
 
 def test_normalization_not_collapsed() -> None:
@@ -91,5 +92,5 @@ if __name__ == "__main__":
     test_adv_m1_minimal()
     test_python_rejects_invalid()
     test_normalization_not_collapsed()
-    test_js_results_encoding_agreement_on_accept()
-    print("PHASE 11 PROPERTY TESTS: PASS")
+    test_js_matches_python_utf8()
+    print("PHASE 12 UTF-8 PROPERTY TESTS: PASS")

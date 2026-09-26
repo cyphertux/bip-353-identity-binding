@@ -4,29 +4,22 @@
     "id": "ADV-M1-minimal",
     "input_hex": "61ff",
     "javascript": {
-      "status": "accept",
-      "decoded": "�",
-      "decoded_codepoints": [
-        "U+FFFD"
-      ],
-      "reencode_hex": "63efbfbd",
-      "roundtrip_same": false,
-      "error": null
+      "status": "reject",
+      "error": "invalid UTF-8",
+      "exception": "Error"
     },
     "python_status": "reject"
   },
   "hash_impact_demo": {
     "wire_hex": "61ff",
-    "js_accepts_wire": true,
-    "reencode_hex": "63efbfbd",
-    "digest_wire": "4206e4253e4a31999a2bb0ea53eef846ea2c34b685db30d0f5c829dd620754da",
-    "digest_reencode": "3e65ead17262cd4645742087209e0968a42f900c496824dbdc2fc4b76dd5b572",
-    "digests_equal": false
+    "js_rejects_wire": true,
+    "reencode_hex": null,
+    "note": "invalid UTF-8 rejected before any V2 hash/sign path"
   },
   "summary": {
     "total": 31,
-    "status_or_encoding_agree": 21,
-    "diverge": 10,
+    "status_or_encoding_agree": 31,
+    "diverge": 0,
     "encoding_mismatch_both_accept": 0
   },
   "rows": [
@@ -34,20 +27,15 @@
       "name": "ADV-M1-minimal",
       "raw_hex": "61ff",
       "python": "reject",
-      "javascript": "accept",
-      "status_same": false,
+      "javascript": "reject",
+      "status_same": true,
       "encoding_same": null,
       "python_reencode_hex": null,
-      "javascript_reencode_hex": "63efbfbd",
+      "javascript_reencode_hex": null,
       "javascript_detail": {
-        "status": "accept",
-        "decoded": "�",
-        "decoded_codepoints": [
-          "U+FFFD"
-        ],
-        "reencode_hex": "63efbfbd",
-        "roundtrip_same": false,
-        "error": null
+        "status": "reject",
+        "error": "invalid UTF-8",
+        "exception": "Error"
       }
     },
     {
@@ -398,190 +386,135 @@
       "name": "overlong_slash_C0_AF",
       "raw_hex": "62c0af",
       "python": "reject",
-      "javascript": "accept",
-      "status_same": false,
+      "javascript": "reject",
+      "status_same": true,
       "encoding_same": null,
       "python_reencode_hex": null,
-      "javascript_reencode_hex": "66efbfbdefbfbd",
+      "javascript_reencode_hex": null,
       "javascript_detail": {
-        "status": "accept",
-        "decoded": "��",
-        "decoded_codepoints": [
-          "U+FFFD",
-          "U+FFFD"
-        ],
-        "reencode_hex": "66efbfbdefbfbd",
-        "roundtrip_same": false,
-        "error": null
+        "status": "reject",
+        "error": "invalid UTF-8",
+        "exception": "Error"
       }
     },
     {
       "name": "overlong_nul_C0_80",
       "raw_hex": "62c080",
       "python": "reject",
-      "javascript": "accept",
-      "status_same": false,
+      "javascript": "reject",
+      "status_same": true,
       "encoding_same": null,
       "python_reencode_hex": null,
-      "javascript_reencode_hex": "66efbfbdefbfbd",
+      "javascript_reencode_hex": null,
       "javascript_detail": {
-        "status": "accept",
-        "decoded": "��",
-        "decoded_codepoints": [
-          "U+FFFD",
-          "U+FFFD"
-        ],
-        "reencode_hex": "66efbfbdefbfbd",
-        "roundtrip_same": false,
-        "error": null
+        "status": "reject",
+        "error": "invalid UTF-8",
+        "exception": "Error"
       }
     },
     {
       "name": "surrogate_ED_A0_80",
       "raw_hex": "63eda080",
       "python": "reject",
-      "javascript": "accept",
-      "status_same": false,
+      "javascript": "reject",
+      "status_same": true,
       "encoding_same": null,
       "python_reencode_hex": null,
-      "javascript_reencode_hex": "69efbfbdefbfbdefbfbd",
+      "javascript_reencode_hex": null,
       "javascript_detail": {
-        "status": "accept",
-        "decoded": "���",
-        "decoded_codepoints": [
-          "U+FFFD",
-          "U+FFFD",
-          "U+FFFD"
-        ],
-        "reencode_hex": "69efbfbdefbfbdefbfbd",
-        "roundtrip_same": false,
-        "error": null
+        "status": "reject",
+        "error": "invalid UTF-8",
+        "exception": "Error"
       }
     },
     {
       "name": "surrogate_ED_BF_BF",
       "raw_hex": "63edbfbf",
       "python": "reject",
-      "javascript": "accept",
-      "status_same": false,
+      "javascript": "reject",
+      "status_same": true,
       "encoding_same": null,
       "python_reencode_hex": null,
-      "javascript_reencode_hex": "69efbfbdefbfbdefbfbd",
+      "javascript_reencode_hex": null,
       "javascript_detail": {
-        "status": "accept",
-        "decoded": "���",
-        "decoded_codepoints": [
-          "U+FFFD",
-          "U+FFFD",
-          "U+FFFD"
-        ],
-        "reencode_hex": "69efbfbdefbfbdefbfbd",
-        "roundtrip_same": false,
-        "error": null
+        "status": "reject",
+        "error": "invalid UTF-8",
+        "exception": "Error"
       }
     },
     {
       "name": "truncated_E2_82",
       "raw_hex": "62e282",
       "python": "reject",
-      "javascript": "accept",
-      "status_same": false,
+      "javascript": "reject",
+      "status_same": true,
       "encoding_same": null,
       "python_reencode_hex": null,
-      "javascript_reencode_hex": "63efbfbd",
+      "javascript_reencode_hex": null,
       "javascript_detail": {
-        "status": "accept",
-        "decoded": "�",
-        "decoded_codepoints": [
-          "U+FFFD"
-        ],
-        "reencode_hex": "63efbfbd",
-        "roundtrip_same": false,
-        "error": null
+        "status": "reject",
+        "error": "invalid UTF-8",
+        "exception": "Error"
       }
     },
     {
       "name": "invalid_cont_C2_00",
       "raw_hex": "62c200",
       "python": "reject",
-      "javascript": "accept",
-      "status_same": false,
+      "javascript": "reject",
+      "status_same": true,
       "encoding_same": null,
       "python_reencode_hex": null,
-      "javascript_reencode_hex": "64efbfbd00",
+      "javascript_reencode_hex": null,
       "javascript_detail": {
-        "status": "accept",
-        "decoded": "�\u0000",
-        "decoded_codepoints": [
-          "U+FFFD",
-          "U+0000"
-        ],
-        "reencode_hex": "64efbfbd00",
-        "roundtrip_same": false,
-        "error": null
+        "status": "reject",
+        "error": "invalid UTF-8",
+        "exception": "Error"
       }
     },
     {
       "name": "stray_cont_80",
       "raw_hex": "6180",
       "python": "reject",
-      "javascript": "accept",
-      "status_same": false,
+      "javascript": "reject",
+      "status_same": true,
       "encoding_same": null,
       "python_reencode_hex": null,
-      "javascript_reencode_hex": "63efbfbd",
+      "javascript_reencode_hex": null,
       "javascript_detail": {
-        "status": "accept",
-        "decoded": "�",
-        "decoded_codepoints": [
-          "U+FFFD"
-        ],
-        "reencode_hex": "63efbfbd",
-        "roundtrip_same": false,
-        "error": null
+        "status": "reject",
+        "error": "invalid UTF-8",
+        "exception": "Error"
       }
     },
     {
       "name": "impossible_F5_80_80_80",
       "raw_hex": "64f5808080",
       "python": "reject",
-      "javascript": "accept",
-      "status_same": false,
+      "javascript": "reject",
+      "status_same": true,
       "encoding_same": null,
       "python_reencode_hex": null,
-      "javascript_reencode_hex": "6cefbfbdefbfbdefbfbdefbfbd",
+      "javascript_reencode_hex": null,
       "javascript_detail": {
-        "status": "accept",
-        "decoded": "����",
-        "decoded_codepoints": [
-          "U+FFFD",
-          "U+FFFD",
-          "U+FFFD",
-          "U+FFFD"
-        ],
-        "reencode_hex": "6cefbfbdefbfbdefbfbdefbfbd",
-        "roundtrip_same": false,
-        "error": null
+        "status": "reject",
+        "error": "invalid UTF-8",
+        "exception": "Error"
       }
     },
     {
       "name": "ff_lone",
       "raw_hex": "61ff",
       "python": "reject",
-      "javascript": "accept",
-      "status_same": false,
+      "javascript": "reject",
+      "status_same": true,
       "encoding_same": null,
       "python_reencode_hex": null,
-      "javascript_reencode_hex": "63efbfbd",
+      "javascript_reencode_hex": null,
       "javascript_detail": {
-        "status": "accept",
-        "decoded": "�",
-        "decoded_codepoints": [
-          "U+FFFD"
-        ],
-        "reencode_hex": "63efbfbd",
-        "roundtrip_same": false,
-        "error": null
+        "status": "reject",
+        "error": "invalid UTF-8",
+        "exception": "Error"
       }
     },
     {

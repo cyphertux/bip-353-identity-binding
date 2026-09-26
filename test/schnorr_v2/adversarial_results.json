@@ -53,21 +53,30 @@
     },
     {
       "id": "ADV-M1",
-      "severity": "MEDIUM",
-      "title": "Cross-impl CBOR: invalid UTF-8 accepted by JS decoder",
-      "detail": "Python reference/cbor.loads rejects text strings with invalid UTF-8. Independent JS cborDecode uses TextDecoder without {fatal:true}, accepting bytes and replacing with U+FFFD; re-encoding diverges from input. Not a BIP-340 bypass when digests are over raw CBOR bytes, but Python-reject / JS-accept parser divergence. DO NOT PATCH in Phase 10 \u2014 deferred to a future fix phase.",
+      "severity": "RESOLVED",
+      "title": "Cross-impl CBOR invalid UTF-8 (RESOLVED \u2014 IMPLEMENTATION DEFECT)",
+      "detail": "Phase 10/11: JS TextDecoder non-fatal accepted invalid UTF-8 (e.g. 61ff). Phase 12: independent lib.mjs uses TextDecoder('utf-8', {fatal:true}). Python and JS now both reject. Protocol unchanged; snapshot unchanged.",
       "reproduction": {
         "seed": "a3535210",
         "input_hex": "61ff",
         "python": "reject",
-        "javascript": "ACCEPT (replacement U+FFFD)"
+        "javascript": "reject",
+        "status": "RESOLVED"
       }
     }
   ],
   "severity_counts": {
     "CRITICAL": 0,
     "HIGH": 0,
-    "MEDIUM": 1,
+    "MEDIUM": 0,
+    "LOW": 2,
+    "INFORMATIONAL": 3,
+    "RESOLVED": 1
+  },
+  "open_severity_counts": {
+    "CRITICAL": 0,
+    "HIGH": 0,
+    "MEDIUM": 0,
     "LOW": 2,
     "INFORMATIONAL": 3
   },

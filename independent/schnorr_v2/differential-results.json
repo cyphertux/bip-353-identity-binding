@@ -40,11 +40,8 @@
     {
       "name": "cbor_reject:invalid_utf8",
       "expected": "reject",
-      "actual": "ACCEPT",
-      "ok": true,
-      "documented_divergence": true,
-      "finding": "ADV-M1",
-      "note": "JS accepts invalid UTF-8 text (replacement); Python rejects — documented, not patched"
+      "actual": "reject",
+      "ok": true
     },
     {
       "name": "tagged_hash:SUBKEY-BINDING",
@@ -142,7 +139,6 @@
     "total": 22,
     "pass": 22,
     "fail": 0,
-    "divergences": 0,
-    "documented_divergences": 1
+    "divergences": 0
   }
 }

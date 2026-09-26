@@ -52,7 +52,8 @@ function main() {
       encoding_same = js.reencode_hex === c.python_reencode_hex;
       if (!encoding_same) encoding_mismatch_on_accept++;
     }
-    if (status_same && encoding_same !== false) agree++;
+    const ok = status_same && encoding_same !== false;
+    if (ok) agree++;
     else diverge++;
 
     rows.push({
@@ -69,27 +70,23 @@ function main() {
   }
 
   const minimal = jsDecode(cases.minimal_hex || "61ff");
-  // Hash impact demo: digest of wire vs digest of re-encoded replacement
+  // Hash impact: invalid UTF-8 must not be hashable via decode→reencode path
   const wire = hexToBytes("61ff");
-  let reenc;
+  let decode_rejected = false;
+  let reenc = null;
   try {
     const s = cborDecode(wire);
     reenc = cborEncode(s);
   } catch {
-    reenc = null;
+    decode_rejected = true;
   }
   const hash_impact = {
     wire_hex: "61ff",
-    js_accepts_wire: minimal.status === "accept",
+    js_rejects_wire: decode_rejected,
     reencode_hex: reenc ? bytesToHex(reenc) : null,
-    digest_wire: bytesToHex(taggedHash(TAG_IDENTITY, wire)),
-    digest_reencode: reenc
-      ? bytesToHex(taggedHash(TAG_IDENTITY, reenc))
-      : null,
-    digests_equal: reenc
-      ? bytesToHex(taggedHash(TAG_IDENTITY, wire)) ===
-        bytesToHex(taggedHash(TAG_IDENTITY, reenc))
-      : null,
+    note: decode_rejected
+      ? "invalid UTF-8 rejected before any V2 hash/sign path"
+      : "UNEXPECTED accept",
   };
 
   const report = {
@@ -110,9 +107,19 @@ function main() {
     rows,
   };
   fs.writeFileSync(OUT, JSON.stringify(report, null, 2) + "\n");
-  console.log(JSON.stringify({ wrote: OUT, ...report.summary, minimal_js: minimal.status, hash: hash_impact }, null, 2));
-  // Fail only if both accept but encodings differ (CRITICAL investigation)
-  process.exit(encoding_mismatch_on_accept ? 2 : 0);
+  console.log(
+    JSON.stringify(
+      {
+        wrote: OUT,
+        ...report.summary,
+        minimal_js: minimal.status,
+        hash: hash_impact,
+      },
+      null,
+      2
+    )
+  );
+  process.exit(diverge || encoding_mismatch_on_accept || !decode_rejected ? 1 : 0);
 }
 
 main();

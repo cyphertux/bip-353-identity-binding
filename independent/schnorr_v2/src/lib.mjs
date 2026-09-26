@@ -159,7 +159,14 @@ function decodeItem(data, offset) {
   if (major === 3) {
     const b = data.slice(offset, offset + value);
     if (b.length !== value) throw new Error("truncated tstr");
-    return { value: new TextDecoder().decode(b), offset: offset + value };
+    // RFC 8949 / V2: text strings MUST be well-formed UTF-8 (no U+FFFD replacement)
+    let text;
+    try {
+      text = new TextDecoder("utf-8", { fatal: true }).decode(b);
+    } catch {
+      throw new Error("invalid UTF-8");
+    }
+    return { value: text, offset: offset + value };
   }
   if (major === 4) {
     const arr = [];

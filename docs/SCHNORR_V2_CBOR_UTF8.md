@@ -1,4 +1,4 @@
-# Experimental Schnorr V2 — CBOR UTF-8 rules (Phase 11)
+# Experimental Schnorr V2 — CBOR UTF-8 rules (Phase 11–12)
 
 **EXPERIMENTAL — NON-NORMATIVE — NOT AN OFFICIAL BIP**
 
@@ -14,7 +14,7 @@ V2 mini-spec / V1 CBOR subset reuse (canonical encode + reject non-canonical)
         ↓
 Python reference/cbor.py  →  strict UTF-8 decode
         ↓
-JavaScript independent lib.mjs  →  TextDecoder() non-fatal  ← ADV-M1
+JavaScript independent lib.mjs  →  TextDecoder("utf-8", { fatal: true })  (Phase 12)
 ```
 
 ## What is valid / invalid UTF-8
@@ -38,7 +38,9 @@ They are separate from UTF-8 well-formedness.
 |------|--------|
 | Minimal case | `ADV-M1-minimal` / `61ff` |
 | Seed | `a3535210` |
-| Root cause | **implementation defect** (JS `cborDecode` text path) |
-| Fix in Phase 11 | **No** (silent patch forbidden) |
+| Root cause | **implementation defect** (JS `cborDecode` text path, non-fatal `TextDecoder`) |
+| Status | **RESOLVED — IMPLEMENTATION DEFECT** (Phase 12) |
+| Fix | `new TextDecoder("utf-8", { fatal: true })` |
+| Protocol / snapshot | unchanged |
 
 See [`SCHNORR_V2_ADVERSARIAL_REVIEW.md`](SCHNORR_V2_ADVERSARIAL_REVIEW.md).

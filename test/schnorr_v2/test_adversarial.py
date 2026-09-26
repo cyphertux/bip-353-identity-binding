@@ -1136,22 +1136,20 @@ class AdversarialHarness:
         self.findings.append(
             Finding(
                 id="ADV-M1",
-                severity="MEDIUM",
-                title="Cross-impl CBOR: invalid UTF-8 accepted by JS decoder",
+                severity="RESOLVED",
+                title="Cross-impl CBOR invalid UTF-8 (RESOLVED — IMPLEMENTATION DEFECT)",
                 detail=(
-                    "Python reference/cbor.loads rejects text strings with invalid "
-                    "UTF-8. Independent JS cborDecode uses TextDecoder without "
-                    "{fatal:true}, accepting bytes and replacing with U+FFFD; "
-                    "re-encoding diverges from input. "
-                    "Not a BIP-340 bypass when digests are over raw CBOR bytes, "
-                    "but Python-reject / JS-accept parser divergence. "
-                    "DO NOT PATCH in Phase 10 — deferred to a future fix phase."
+                    "Phase 10/11: JS TextDecoder non-fatal accepted invalid UTF-8 "
+                    "(e.g. 61ff). Phase 12: independent lib.mjs uses "
+                    "TextDecoder('utf-8', {fatal:true}). Python and JS now both reject. "
+                    "Protocol unchanged; snapshot unchanged."
                 ),
                 reproduction={
                     "seed": SEED_HEX,
                     "input_hex": "61ff",
                     "python": "reject",
-                    "javascript": "ACCEPT (replacement U+FFFD)",
+                    "javascript": "reject",
+                    "status": "RESOLVED",
                 },
             )
         )
@@ -1170,9 +1168,17 @@ class AdversarialHarness:
         self.suite_properties_and_known()
 
         failed = [c for c in self.cases if not c.ok]
-        by_sev = {"CRITICAL": 0, "HIGH": 0, "MEDIUM": 0, "LOW": 0, "INFORMATIONAL": 0}
+        by_sev = {"CRITICAL": 0, "HIGH": 0, "MEDIUM": 0, "LOW": 0, "INFORMATIONAL": 0, "RESOLVED": 0}
         for f in self.findings:
             by_sev[f.severity] = by_sev.get(f.severity, 0) + 1
+
+        open_counts = {
+            "CRITICAL": by_sev["CRITICAL"],
+            "HIGH": by_sev["HIGH"],
+            "MEDIUM": by_sev["MEDIUM"],
+            "LOW": by_sev["LOW"],
+            "INFORMATIONAL": by_sev["INFORMATIONAL"],
+        }
 
         report = {
             "seed": SEED_HEX,
@@ -1184,6 +1190,7 @@ class AdversarialHarness:
             "failed_cases": [c.__dict__ for c in failed],
             "findings": [f.__dict__ for f in self.findings],
             "severity_counts": by_sev,
+            "open_severity_counts": open_counts,
             "cases": [c.__dict__ for c in self.cases],
         }
         OUT.write_text(json.dumps(report, indent=2) + "\n", encoding="utf-8")
@@ -1191,7 +1198,8 @@ class AdversarialHarness:
             f"ADVERSARIAL: {report['case_pass']}/{report['case_total']} PASS "
             f"(seed={SEED_HEX})"
         )
-        print("FINDINGS:", by_sev)
+        print("FINDINGS (incl. resolved):", by_sev)
+        print("OPEN:", open_counts)
         if failed:
             print("FAILED CASES:", [c.name for c in failed])
             return report

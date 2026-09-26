@@ -94,14 +94,21 @@ Still explicitly:
 
 ---
 
-## Adversarial review (Phase 10)
+## Adversarial review (Phase 10–12)
 
 See [`SCHNORR_V2_ADVERSARIAL_REVIEW.md`](SCHNORR_V2_ADVERSARIAL_REVIEW.md).
 
+Open counts (post Phase 12):
+
 * CRITICAL: 0  
 * HIGH: 0  
-* MEDIUM: 1 (`ADV-M1` JS invalid UTF-8 CBOR — documented, not patched)  
-* Dual-binding remains mandatory for `identity_anchored`
+* MEDIUM: 0 (`ADV-M1` **RESOLVED** — independent JS fatal UTF-8 decode)  
+* LOW: 2  
+* INFORMATIONAL: 3  
+
+Dual-binding remains mandatory for `identity_anchored`. Resolving ADV-M1 means
+the independent implementation conforms to the documented UTF-8 rule — not a new
+formal security guarantee.
 
 ---
 
