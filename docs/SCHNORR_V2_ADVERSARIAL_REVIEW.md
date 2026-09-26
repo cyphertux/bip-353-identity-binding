@@ -175,7 +175,8 @@ Logical OP_RETURN alone does **not** set `identity_anchored`.
 * Mutation coverage is extensive but not exhaustive (no infinite fuzz budget).  
 * No consensus/PoW/chain validation.  
 * No network / DNS / BIP-353 resolution adversarial tests.  
-* Independent JS UTF-8 gap (`ADV-M1`) remains open until a fix phase.  
+* Independent JS UTF-8 gap (`ADV-M1`) root-caused in Phase 11 as implementation
+  defect; remains open until an explicit fix phase.  
 
 ---
 

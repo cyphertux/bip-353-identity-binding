@@ -1,0 +1,192 @@
+{
+  "seed": "a3535210",
+  "minimal_hex": "61ff",
+  "cases": [
+    {
+      "name": "ADV-M1-minimal",
+      "raw_hex": "61ff",
+      "python_status": "reject",
+      "python_reencode_hex": null
+    },
+    {
+      "name": "ascii_hello",
+      "raw_hex": "6568656c6c6f",
+      "python_status": "accept",
+      "python_reencode_hex": "6568656c6c6f"
+    },
+    {
+      "name": "nul_U+0000",
+      "raw_hex": "6100",
+      "python_status": "accept",
+      "python_reencode_hex": "6100"
+    },
+    {
+      "name": "control_U+000A",
+      "raw_hex": "610a",
+      "python_status": "accept",
+      "python_reencode_hex": "610a"
+    },
+    {
+      "name": "ascii_DEL_U+007F",
+      "raw_hex": "617f",
+      "python_status": "accept",
+      "python_reencode_hex": "617f"
+    },
+    {
+      "name": "utf8_2byte_U+00A9",
+      "raw_hex": "62c2a9",
+      "python_status": "accept",
+      "python_reencode_hex": "62c2a9"
+    },
+    {
+      "name": "utf8_3byte_U+20AC",
+      "raw_hex": "63e282ac",
+      "python_status": "accept",
+      "python_reencode_hex": "63e282ac"
+    },
+    {
+      "name": "utf8_4byte_U+1F600",
+      "raw_hex": "64f09f9880",
+      "python_status": "accept",
+      "python_reencode_hex": "64f09f9880"
+    },
+    {
+      "name": "boundary_U+0000",
+      "raw_hex": "6100",
+      "python_status": "accept",
+      "python_reencode_hex": "6100"
+    },
+    {
+      "name": "boundary_U+007F",
+      "raw_hex": "617f",
+      "python_status": "accept",
+      "python_reencode_hex": "617f"
+    },
+    {
+      "name": "boundary_U+0080",
+      "raw_hex": "62c280",
+      "python_status": "accept",
+      "python_reencode_hex": "62c280"
+    },
+    {
+      "name": "boundary_U+07FF",
+      "raw_hex": "62dfbf",
+      "python_status": "accept",
+      "python_reencode_hex": "62dfbf"
+    },
+    {
+      "name": "boundary_U+0800",
+      "raw_hex": "63e0a080",
+      "python_status": "accept",
+      "python_reencode_hex": "63e0a080"
+    },
+    {
+      "name": "boundary_U+D7FF",
+      "raw_hex": "63ed9fbf",
+      "python_status": "accept",
+      "python_reencode_hex": "63ed9fbf"
+    },
+    {
+      "name": "boundary_U+E000",
+      "raw_hex": "63ee8080",
+      "python_status": "accept",
+      "python_reencode_hex": "63ee8080"
+    },
+    {
+      "name": "boundary_U+FFFF",
+      "raw_hex": "63efbfbf",
+      "python_status": "accept",
+      "python_reencode_hex": "63efbfbf"
+    },
+    {
+      "name": "boundary_U+10000",
+      "raw_hex": "64f0908080",
+      "python_status": "accept",
+      "python_reencode_hex": "64f0908080"
+    },
+    {
+      "name": "boundary_U+10FFFF",
+      "raw_hex": "64f48fbfbf",
+      "python_status": "accept",
+      "python_reencode_hex": "64f48fbfbf"
+    },
+    {
+      "name": "overlong_slash_C0_AF",
+      "raw_hex": "62c0af",
+      "python_status": "reject",
+      "python_reencode_hex": null
+    },
+    {
+      "name": "overlong_nul_C0_80",
+      "raw_hex": "62c080",
+      "python_status": "reject",
+      "python_reencode_hex": null
+    },
+    {
+      "name": "surrogate_ED_A0_80",
+      "raw_hex": "63eda080",
+      "python_status": "reject",
+      "python_reencode_hex": null
+    },
+    {
+      "name": "surrogate_ED_BF_BF",
+      "raw_hex": "63edbfbf",
+      "python_status": "reject",
+      "python_reencode_hex": null
+    },
+    {
+      "name": "truncated_E2_82",
+      "raw_hex": "62e282",
+      "python_status": "reject",
+      "python_reencode_hex": null
+    },
+    {
+      "name": "invalid_cont_C2_00",
+      "raw_hex": "62c200",
+      "python_status": "reject",
+      "python_reencode_hex": null
+    },
+    {
+      "name": "stray_cont_80",
+      "raw_hex": "6180",
+      "python_status": "reject",
+      "python_reencode_hex": null
+    },
+    {
+      "name": "impossible_F5_80_80_80",
+      "raw_hex": "64f5808080",
+      "python_status": "reject",
+      "python_reencode_hex": null
+    },
+    {
+      "name": "ff_lone",
+      "raw_hex": "61ff",
+      "python_status": "reject",
+      "python_reencode_hex": null
+    },
+    {
+      "name": "norm_NFC_e_acute",
+      "raw_hex": "62c3a9",
+      "python_status": "accept",
+      "python_reencode_hex": "62c3a9"
+    },
+    {
+      "name": "norm_NFD_e_acute",
+      "raw_hex": "6365cc81",
+      "python_status": "accept",
+      "python_reencode_hex": "6365cc81"
+    },
+    {
+      "name": "norm_NFKC_fi_ligature",
+      "raw_hex": "626669",
+      "python_status": "accept",
+      "python_reencode_hex": "626669"
+    },
+    {
+      "name": "norm_NFKD_fi_ligature",
+      "raw_hex": "626669",
+      "python_status": "accept",
+      "python_reencode_hex": "626669"
+    }
+  ]
+}

@@ -7,7 +7,8 @@
   "scripts": {
     "verify": "node src/run.mjs",
     "bip340": "node src/bip340_check.mjs",
-    "adversarial": "node src/adversarial_diff.mjs"
+    "adversarial": "node src/adversarial_diff.mjs",
+    "phase11-utf8": "node src/phase11_utf8.mjs"
   },
   "dependencies": {
     "@noble/curves": "1.8.1",
