@@ -57,9 +57,9 @@ Phase 4 JSON fixtures were **not** modified (byte-identical).
 
 | ID | Severity | Status |
 |----|----------|--------|
-| F-S2 | LOW | OPEN — verify() dict API without CBOR round-trip |
+| F-S2 | LOW | OPEN — verify() dict API without CBOR round-trip — **accepted for experimental freeze** |
 | F-S3 | INFORMATIONAL | **RESOLVED** for tx-level extract — `AMBIGUOUS_B353S2_OUTPUTS` |
-| F-S4 | INFORMATIONAL | OPEN — binding omits domain (by design) |
+| F-S4 | INFORMATIONAL | OPEN — binding omits domain (by design) — **accepted for experimental freeze** |
 
 | Severity | Count (open) |
 |----------|----------------|

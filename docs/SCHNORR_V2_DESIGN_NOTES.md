@@ -6,8 +6,8 @@
 |-------|--------|
 | Working title | Experimental Schnorr Identity Root |
 | Branch | `experiment/schnorr-identity-v2` |
-| Phase | 5 — Documentation & README integration |
-| Status | Experimental docs on branch; mini-spec remains non-normative |
+| Phase | 7 — Experimental freeze gate |
+| Status | Experimental snapshot freeze (non-normative) |
 | Normative authority | **None.** V1 remains `BIP-XXX.md` / `PROTOCOL_FREEZE_V1.md` |
 | Decisions document | [`docs/SCHNORR_V2_MINI_SPEC.md`](SCHNORR_V2_MINI_SPEC.md) (**EXPERIMENTAL**, not frozen) |
 
@@ -329,13 +329,11 @@ That file is **EXPERIMENTAL / NON-NORMATIVE / NOT FROZEN / NOT PART OF V1**.
 
 ### Next Phase
 
-**Phase 6 — Independent review / hardening** (no promise of schedule):
+**No further protocol development** unless a new experimental phase is explicitly opened.
 
-* external reading of mini-spec + vectors;
-* optional second implementation;
-* threat-model review without expanding V1 claims.
+Snapshot tag (local): `schnorr-v2-experimental-1`  
+Meaning: reproducible experimental state — **not** a standard, **not** production-ready.
 
-**Still true:** V1 is FROZEN; this experiment is NON-NORMATIVE and NOT FROZEN.
 
 ---
 

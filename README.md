@@ -13,7 +13,9 @@ It is **not** an accepted or official BIP.
 Normative V1 specification (unchanged on this branch): [`BIP-XXX.md`](BIP-XXX.md).
 
 Experimental design: [`docs/SCHNORR_V2_MINI_SPEC.md`](docs/SCHNORR_V2_MINI_SPEC.md)  
-Design inventory: [`docs/SCHNORR_V2_DESIGN_NOTES.md`](docs/SCHNORR_V2_DESIGN_NOTES.md)
+Design inventory: [`docs/SCHNORR_V2_DESIGN_NOTES.md`](docs/SCHNORR_V2_DESIGN_NOTES.md)  
+Security review: [`docs/SCHNORR_V2_SECURITY_REVIEW.md`](docs/SCHNORR_V2_SECURITY_REVIEW.md)  
+Security claims: [`docs/SCHNORR_V2_SECURITY_CLAIMS.md`](docs/SCHNORR_V2_SECURITY_CLAIMS.md)
 
 ---
 
@@ -23,10 +25,24 @@ Design inventory: [`docs/SCHNORR_V2_DESIGN_NOTES.md`](docs/SCHNORR_V2_DESIGN_NOT
 |-------|--------|
 | V1 OpenPGP protocol | **FROZEN** (M7–M9 PASS on `main`) |
 | This branch | **EXPERIMENTAL** research |
-| Experimental Schnorr constructions | **NON-NORMATIVE**, **NOT FROZEN** |
+| Experimental Schnorr snapshot | **NON-NORMATIVE** experimental freeze (see below) |
 | Official BIP / bitcoin/bips | **No** — draft only; number `XXX` not assigned |
 
 Do **not** treat this branch as production-ready, standard, accepted BIP, or a drop-in replacement for V1.
+
+---
+
+## Experimental Freeze
+
+This branch is frozen as an **experimental snapshot**.
+
+The freeze means that the documented implementation and vectors are
+**reproducible and internally consistent** at tag `schnorr-v2-experimental-1`.
+
+It does **NOT** mean that the protocol is standardized, production-ready,
+security-audited, or an official BIP.
+
+See [`docs/SCHNORR_V2_SECURITY_CLAIMS.md`](docs/SCHNORR_V2_SECURITY_CLAIMS.md).
 
 ---
 
@@ -298,7 +314,10 @@ Phase 1 — Design inventory              PASS
 Phase 2 — Mini-spec                     PASS
 Phase 3 — Reference implementation      PASS
 Phase 4 — Experimental vectors          PASS
-Phase 5 — Documentation                 CURRENT
+Phase 5 — Documentation                 PASS
+Phase 6 — Security review               FAIL (F-S1)
+Phase 6.1 — Bitcoin dual-binding        PASS (F-S1 RESOLVED)
+Phase 7 — Experimental freeze gate      CURRENT
 ```
 
 Possible future research (not promised):

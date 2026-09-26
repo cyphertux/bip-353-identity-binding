@@ -326,6 +326,25 @@ identity_commitment = TaggedHash(
 
 Rationale: six-byte ASCII tag parallel to V1 length, clearly marked Schnorr/experimental (`S2`), zero overlap with `B353ID`.
 
+### Bitcoin dual-binding proof — DECIDED (Phase 6.1, experimental)
+
+`identity_anchored = true` REQUIRES all of:
+
+1. `raw_tx` → `txid = SHA256d(non-witness serialization)` (auxiliary `txid` cross-checked only);
+2. `txid` + `merkle_branch` + `tx_index` → `block_header.merkle_root`;
+3. `raw_tx` → **exactly one** matching `B353S2` output → commitment extracted from that output;
+4. extracted commitment == `TaggedHash(TAG_ANCHOR, CanonicalCBOR(AnchorMessage))`.
+
+Error codes used by the experimental reference include:
+`TXID_MISMATCH`, `WRONG_MERKLE_PROOF`, `BAD_BLOCK_HEADER`, `WRONG_TX_COMMITMENT`,
+`NO_B353S2_OUTPUT`, `AMBIGUOUS_B353S2_OUTPUTS`, `TX_PARSE_ERROR`.
+
+A logical OP_RETURN script check alone MUST NOT set `identity_anchored`.
+
+Header best-chain / PoW validation remains wallet-local (`header_context`); absolute finality is **NOT PROVIDED**.
+
+Reference: `reference/schnorr_v2/bitcoin_proof.py`. Fixtures: `vectors/schnorr/V2-BTC-*`.
+
 ---
 
 ## 10. Continuity model
@@ -376,7 +395,7 @@ Do not expand taxonomy further in Phase 2.
 | Root → signing key binding | **PROVEN** under Option B construction |
 | Identity document authenticity | **PROVEN** if BIP-340 verify under `signing_pubkey` succeeds |
 | Payment destination binding | **PROVEN** if `payment_hash` matches TaggedHash(PAYMENT, PaymentBinding) and BIP-353 semantics match binding |
-| Bitcoin identity commitment | **PROVEN** if dual-binding inclusion proof validates for `TaggedHash(ANCHOR, AnchorMessage)` *(once OP_RETURN wiring exists)* |
+| Bitcoin identity commitment + inclusion (dual-binding) | **TESTED** in experimental reference with synthetic regtest fixtures (`V2-BTC-*`) |
 | Historical continuity | **PROVEN** only as byte equality of rooted keys given `identity_anchored` |
 | Freshness | **NOT PROVIDED** |
 | Rollback resistance | **NOT PROVIDED** |
