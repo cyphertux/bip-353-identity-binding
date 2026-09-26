@@ -1,0 +1,89 @@
+{
+  "expected": {
+    "openpgp_version": 6,
+    "domain": "example.test",
+    "identifier": "alice-v6@example.test",
+    "kroot_fingerprint": "06951ac6b194ead55cb3b139a7a3e9d81f78a8c0521b2d65cf9df81ee36427bc",
+    "ksign_fingerprint": "e855280752edb2622febf1da2b633bed3d0d83f01269a320881d1dd9aad32bc9",
+    "kroot_fingerprint_len": 32,
+    "ksign_fingerprint_len": 32,
+    "payment_hash": "35bc7db73b5091938aa3e3c4a3da97e360b6b086fb95f9b084126d665e938629",
+    "identity_commitment": "f23b639adfe69667b5b81ab8793e51fa0d697b833be01b8294530587b9c42e89",
+    "signature_valid_sequoia": true,
+    "created_at": 1790428729,
+    "expires_at": 1821964729,
+    "sequence": 1,
+    "domain_separator_hex": "4249503335332d4944454e544954590001",
+    "message_len": 176,
+    "note": "Independent v6 fixture generated with Sequoia --profile rfc9580. Does not replace M1 v4 vectors. Secret key is NOT stored in vectors/.",
+    "verification_time": 1790432329
+  },
+  "report": {
+    "checks": {
+      "v6_sequoia_kroot": {
+        "result": "PASS",
+        "detail": "06951ac6b194ead55cb3b139a7a3e9d81f78a8c0521b2d65cf9df81ee36427bc"
+      },
+      "v6_sequoia_ksign": {
+        "result": "PASS",
+        "detail": "e855280752edb2622febf1da2b633bed3d0d83f01269a320881d1dd9aad32bc9"
+      },
+      "v6_packet_version_6": {
+        "result": "PASS",
+        "detail": ""
+      },
+      "v6_binding_0x18": {
+        "result": "PASS",
+        "detail": ""
+      },
+      "v6_binding_0x19": {
+        "result": "PASS",
+        "detail": ""
+      },
+      "v6_sequoia_signature": {
+        "result": "PASS",
+        "detail": "Authenticated signature made by 06951AC6B194EAD55CB3B139A7A3E9D81F78A8C0521B2D65CF9DF81EE36427BC (BIP353 Identity Test V6)\n\n1 authenticated signature.\n"
+      },
+      "v6_openpgpjs_parse": {
+        "result": "PASS",
+        "detail": "6"
+      },
+      "v6_openpgpjs_kroot": {
+        "result": "PASS",
+        "detail": "06951ac6b194ead55cb3b139a7a3e9d81f78a8c0521b2d65cf9df81ee36427bc"
+      },
+      "v6_openpgpjs_ksign": {
+        "result": "PASS",
+        "detail": "[\"a024f8125c0405d5f395302fcc5d5fb65c2cdee958e646971cc7a69b01d6c93f\",\"e855280752edb2622febf1da2b633bed3d0d83f01269a320881d1dd9aad32bc9\",\"aa15a5c680998611c88ad02255d059f8d23d9cbb971938e27913998f6a4e2ff2\"]"
+      },
+      "v6_openpgpjs_0x18": {
+        "result": "PASS",
+        "detail": "24"
+      },
+      "v6_openpgpjs_0x19": {
+        "result": "PASS",
+        "detail": ""
+      },
+      "v6_openpgpjs_signature": {
+        "result": "PASS",
+        "detail": ""
+      },
+      "v6_gnupg_import": {
+        "result": "UNSUPPORTED",
+        "detail": "gpg: le trousseau local « /tmp/m3-gpg-v6-RvOCp7/pubring.kbx » a été créé\ngpg: packet(6) with unknown version 6\ngpg: read_block: read error: Paquet incorrect\ngpg: import from 'vectors/v6/root-v6.asc' failed: Porte-clefs incorrect\ngpg: Quantité totale traitée : 0\n"
+      },
+      "v6_fpr_len_32": {
+        "result": "PASS",
+        "detail": ""
+      },
+      "H_domain_separator_unchanged": {
+        "result": "PASS",
+        "detail": ""
+      },
+      "v6_commitment_present": {
+        "result": "PASS",
+        "detail": ""
+      }
+    }
+  }
+}

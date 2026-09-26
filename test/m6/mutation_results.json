@@ -1,0 +1,73 @@
+[
+  {
+    "mutation": "op_return",
+    "expected": "WRONG_TX_COMMITMENT",
+    "actual": [
+      "WRONG_TX_COMMITMENT"
+    ],
+    "anchor_included": false,
+    "reason": "must not report included if binding broken",
+    "pass": true
+  },
+  {
+    "mutation": "txid",
+    "expected": "TXID_MISMATCH",
+    "actual": [
+      "TXID_MISMATCH"
+    ],
+    "anchor_included": false,
+    "reason": "must not report included if binding broken",
+    "pass": true
+  },
+  {
+    "mutation": "commitment_field",
+    "expected": "WRONG_TX_COMMITMENT",
+    "actual": [
+      "WRONG_TX_COMMITMENT"
+    ],
+    "anchor_included": false,
+    "reason": "must not report included if binding broken",
+    "pass": true
+  },
+  {
+    "mutation": "raw_tx_trailing",
+    "expected": "TX_PARSE_ERROR",
+    "actual": [
+      "TX_PARSE_ERROR:trailing bytes after transaction (1)"
+    ],
+    "anchor_included": false,
+    "reason": "must not report included if binding broken",
+    "pass": true
+  },
+  {
+    "mutation": "merkle_branch",
+    "expected": "WRONG_MERKLE_PROOF",
+    "actual": [
+      "WRONG_MERKLE_PROOF"
+    ],
+    "anchor_included": false,
+    "reason": "must not report included if binding broken",
+    "pass": true
+  },
+  {
+    "mutation": "merkle_root",
+    "expected": "WRONG_MERKLE_PROOF",
+    "actual": [
+      "WRONG_MERKLE_PROOF"
+    ],
+    "anchor_included": false,
+    "reason": "must not report included if binding broken",
+    "pass": true
+  },
+  {
+    "mutation": "header_non_merkle",
+    "expected": "human_verified=false; wallet must re-bind header hash",
+    "actual": {
+      "inclusion_proof_valid": true,
+      "human_verified": false
+    },
+    "anchor_included": true,
+    "reason": "PoW/tip binding is wallet header_context responsibility",
+    "pass": true
+  }
+]

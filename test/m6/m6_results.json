@@ -1,0 +1,136 @@
+{
+  "pass": 26,
+  "fail": 0,
+  "results": [
+    {
+      "id": "raw_tx_to_txid",
+      "pass": true,
+      "detail": "59fb1a68fe40e8b862c3fbcb1821385fe2ce217ef595a006a0909ced75dbd461"
+    },
+    {
+      "id": "full_chain_ok",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "extract_valid",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "wrong_tag",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "wrong_version",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "truncated",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "extra_bytes",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "multiple_b353id_rejected",
+      "pass": true,
+      "detail": "AMBIGUOUS_B353ID_OUTPUTS"
+    },
+    {
+      "id": "mut_op_return",
+      "pass": true,
+      "detail": "expected~WRONG_TX_COMMITMENT actual=['WRONG_TX_COMMITMENT'] included=False"
+    },
+    {
+      "id": "mut_txid",
+      "pass": true,
+      "detail": "expected~TXID_MISMATCH actual=['TXID_MISMATCH'] included=False"
+    },
+    {
+      "id": "mut_commitment_field",
+      "pass": true,
+      "detail": "expected~WRONG_TX_COMMITMENT actual=['WRONG_TX_COMMITMENT'] included=False"
+    },
+    {
+      "id": "mut_raw_tx_trailing",
+      "pass": true,
+      "detail": "expected~TX_PARSE_ERROR actual=['TX_PARSE_ERROR:trailing bytes after transaction (1)'] included=False"
+    },
+    {
+      "id": "mut_merkle_branch",
+      "pass": true,
+      "detail": "expected~WRONG_MERKLE_PROOF actual=['WRONG_MERKLE_PROOF'] included=False"
+    },
+    {
+      "id": "mut_merkle_root",
+      "pass": true,
+      "detail": "expected~WRONG_MERKLE_PROOF actual=['WRONG_MERKLE_PROOF'] included=False"
+    },
+    {
+      "id": "mut_header_non_merkle_no_human",
+      "pass": true,
+      "detail": "{'payment_verified': None, 'identity_verified': None, 'identity_anchored': True, 'anchor_included': True, 'anchor_status': 'anchor_confirmed', 'freshness': 'unknown', 'freshness_status': 'unknown', 'rollback_resistance': 'not_provided', 'revocation_status': 'unknown', 'trust_state': 'first_seen', 'human_verified': False, 'header_context': 'trusted', 'transaction_valid': True, 'inclusion_proof_valid': True, 'bitcoin': {'transaction_valid': True, 'inclusion_proof_valid': True, 'header_context': 'trusted', 'status': 'anchor_confirmed', 'extracted_commitment': '82282ed2aebfcbe223a040db5689e569925503f321e643163eeab0ceb47968ae', 'computed_txid': '59fb1a68fe40e8b862c3fbcb1821385fe2ce217ef595a006a0909ced75dbd461'}, 'freshness_detail': {'status': 'unknown'}, 'revocation': {'status': 'unknown', 'policy': 'unknown_by_design'}, 'trust': {'status': 'first_seen'}, 'errors': [], 'checks': {'transaction': True, 'op_return': True, 'commitment': True, 'commitment_field': True, 'txid': True, 'merkle': True, 'block_header': True, 'height_advisory': True, 'best_chain': True, 'inclusion': True}}"
+    },
+    {
+      "id": "mode_b_untrusted",
+      "pass": true,
+      "detail": "{'transaction_valid': True, 'inclusion_proof_valid': True, 'header_context': 'untrusted', 'status': 'anchor_confirmed', 'extracted_commitment': '82282ed2aebfcbe223a040db5689e569925503f321e643163eeab0ceb47968ae', 'computed_txid': '59fb1a68fe40e8b862c3fbcb1821385fe2ce217ef595a006a0909ced75dbd461'}"
+    },
+    {
+      "id": "mode_a_trusted",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "freshness_unknown",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "rollback_not_provided",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "never_current",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "id_freshness_unknown",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "id_rollback_not_provided",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "id_revocation_unknown",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "id_human_false",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "id_no_current_claim",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "id": "limits_present",
+      "pass": true,
+      "detail": ""
+    }
+  ]
+}

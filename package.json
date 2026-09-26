@@ -1,0 +1,15 @@
+{
+  "name": "bip-353-identity-binding",
+  "version": "0.3.0",
+  "private": true,
+  "description": "Experimental BIP-353 Identity Binding & Continuity — cryptographic milestones",
+  "type": "module",
+  "scripts": {
+    "test:m3": "node test/test_m3_openpgpjs.mjs",
+    "test:m3:v6": "node test/test_m3_v6.mjs",
+    "verify:openpgpjs": "node reference/openpgpjs_verify.mjs"
+  },
+  "dependencies": {
+    "openpgp": "6.3.2"
+  }
+}

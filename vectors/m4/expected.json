@@ -1,0 +1,28 @@
+{
+  "domain": "example.test",
+  "identifier": "alice@example.test",
+  "kroot_fingerprint": "de26bd614a4224ac0b704ed1c8f68e1738268297",
+  "destination_address": "bcrt1q0hfqfy3cqumxuyds905m4arvkggxlhuw653smp",
+  "script_pubkey": "00147dd204923807366e11b02be9baf46cb2106fdf8e",
+  "script_type": "P2WPKH",
+  "payment_hash": "14f8167a7c33729419ba287e02e05804ebe61c2ee515386abe6492f7d2d7106c",
+  "identity_commitment": "82282ed2aebfcbe223a040db5689e569925503f321e643163eeab0ceb47968ae",
+  "txid": "59fb1a68fe40e8b862c3fbcb1821385fe2ce217ef595a006a0909ced75dbd461",
+  "block_hash": "64a83aac325575508f6fa369234f98e20f56145f656fdb26369715dd5d47d316",
+  "block_height": 102,
+  "tx_index": 1,
+  "confirmations": 1,
+  "chain": "regtest",
+  "op_return_tag": "B353ID",
+  "op_return_version": 1,
+  "verification": {
+    "payment_verified": true,
+    "identity_verified": true,
+    "identity_anchored": true,
+    "anchor_included": true,
+    "freshness": "unknown",
+    "human_verified": false
+  },
+  "anchor_candidate": "A",
+  "note": "Real Bitcoin Knots regtest transaction. Not mainnet."
+}

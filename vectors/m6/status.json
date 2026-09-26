@@ -1,0 +1,12 @@
+{
+  "milestone": 6,
+  "title": "Verification Hardening",
+  "fj2": "FIXED",
+  "fj3": "FIXED",
+  "revocation_policy": "unknown_by_design",
+  "freshness": "unknown",
+  "rollback_resistance": "not_provided",
+  "multi_b353id_policy": "reject_ambiguous",
+  "op_return": "PROVISIONAL",
+  "note": "No frozen M1/M4 vector mutations. See MILESTONE_6_VERIFICATION_HARDENING.md"
+}

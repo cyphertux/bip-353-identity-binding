@@ -1,0 +1,10 @@
+{
+  "attack": "F-J3",
+  "expected": "TXID_MISMATCH",
+  "actual_errors": [
+    "TXID_MISMATCH"
+  ],
+  "anchor_included": false,
+  "transaction_valid": false,
+  "pass": true
+}

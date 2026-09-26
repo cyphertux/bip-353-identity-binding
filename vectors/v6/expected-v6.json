@@ -1,0 +1,19 @@
+{
+  "openpgp_version": 6,
+  "domain": "example.test",
+  "identifier": "alice-v6@example.test",
+  "kroot_fingerprint": "06951ac6b194ead55cb3b139a7a3e9d81f78a8c0521b2d65cf9df81ee36427bc",
+  "ksign_fingerprint": "e855280752edb2622febf1da2b633bed3d0d83f01269a320881d1dd9aad32bc9",
+  "kroot_fingerprint_len": 32,
+  "ksign_fingerprint_len": 32,
+  "payment_hash": "35bc7db73b5091938aa3e3c4a3da97e360b6b086fb95f9b084126d665e938629",
+  "identity_commitment": "f23b639adfe69667b5b81ab8793e51fa0d697b833be01b8294530587b9c42e89",
+  "signature_valid_sequoia": true,
+  "created_at": 1790428729,
+  "expires_at": 1821964729,
+  "sequence": 1,
+  "domain_separator_hex": "4249503335332d4944454e544954590001",
+  "message_len": 176,
+  "note": "Independent v6 fixture generated with Sequoia --profile rfc9580. Does not replace M1 v4 vectors. Secret key is NOT stored in vectors/.",
+  "verification_time": 1790432329
+}

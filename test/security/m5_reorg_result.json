@@ -1,0 +1,39 @@
+{
+  "ok": true,
+  "steps": [
+    {
+      "broadcast": "c966d5166cd24a7fa4d653534c71c72e15245a4fd75604402ac45cd97168ac2b"
+    },
+    {
+      "branch_a_block": "57bccf460dff695d5f5f62a38b1e5a0b360f1efb0c52ac3b2fc8f80d73456f1f",
+      "proof_status": "anchor_confirmed",
+      "anchor_included": true,
+      "identity_anchored": true
+    },
+    {
+      "invalidate": "57bccf460dff695d5f5f62a38b1e5a0b360f1efb0c52ac3b2fc8f80d73456f1f",
+      "tip_before": 102,
+      "tip_after": 101
+    },
+    {
+      "after_reorg_api": {
+        "anchor_status": "anchor_orphaned",
+        "anchor_included": false,
+        "errors": [
+          "ORPHANED_ANCHOR"
+        ],
+        "evaluate": "anchor_orphaned"
+      }
+    },
+    {
+      "branch_b_blocks": [
+        "14f7c747584651d568463a7be79166e395e62819895725f72b5105726ce34f0c",
+        "2727642e65951b9748e5caa974a20014fa4d16634132fb8df0a18bd66fef47d9"
+      ],
+      "tip": 103
+    }
+  ],
+  "conclusion": "Reorg detected via wallet tip knowledge \u2192 ANCHOR_ORPHANED. Isolated SPV proof alone cannot observe reorg; wallet must re-check headers. No absolute finality claimed.",
+  "freshness": "unknown",
+  "human_verified": false
+}

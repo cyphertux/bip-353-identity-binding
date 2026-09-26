@@ -1,0 +1,38 @@
+# Dependencies / build
+node_modules/
+.tools/
+.venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+target/
+coverage/
+*.log
+
+# Environment / secrets
+.env
+.env.*
+*.pem
+*.key
+id_rsa*
+id_ed25519*
+*.kbx
+private-keys-v1.d/
+openpgp-revocs.d/
+.gnupg/
+*.gpg
+*secret*
+*private-key*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+*.swp
+*~
+
+# Local tooling artifacts (not part of the BIP)
+*.deb
+sq_*.deb
+test/openpgpjs-signature.bin

@@ -1,0 +1,15 @@
+{
+  "A_stable_ksign_payment": {
+    "base": "82282ed2aebfcbe223a040db5689e569925503f321e643163eeab0ceb47968ae",
+    "after_payment_change": "82282ed2aebfcbe223a040db5689e569925503f321e643163eeab0ceb47968ae",
+    "after_ksign_ignored": "82282ed2aebfcbe223a040db5689e569925503f321e643163eeab0ceb47968ae"
+  },
+  "B_changes_with_payment": {
+    "base": "d210d4192f13e558f928d2af4996cdab29be5abd265377a07db227fe588dab0d",
+    "after_payment_change": "9550bfd16beef337be78de667dc31b7f7d725a4e62b9555d4e6c580669aa5f35"
+  },
+  "C_changes_with_ksign_or_payment": {
+    "base": "c426bf34ce359cc9ca1c1d05202f1a1cf12bd0887635b82bdf0a151412aa5035",
+    "after_ksign_change": "43331857e783d4845498bed0bd2f1c1cf9629ab6ebb6b70896798bb96ac95b64"
+  }
+}

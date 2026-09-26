@@ -1,0 +1,118 @@
+{
+  "sq_version": "sq 1.3.1\nusing sequoia-openpgp 2.1.0\nwith cryptographic backend Nettle 3.10 (Cv448: true, OCB: true)",
+  "cases": [
+    {
+      "fixture": "valid",
+      "expected": "VALID / freshness UNKNOWN",
+      "actual": "VALID CRYPTOGRAPHICALLY",
+      "result": "PASS",
+      "errors": []
+    },
+    {
+      "fixture": "expired",
+      "expected": "IDENTITY_EXPIRED",
+      "actual": "IDENTITY_EXPIRED",
+      "result": "PASS",
+      "errors": [
+        "IDENTITY_EXPIRED"
+      ]
+    },
+    {
+      "fixture": "invalid-signature",
+      "expected": "INVALID_IDENTITY_SIGNATURE",
+      "actual": "INVALID_IDENTITY_SIGNATURE",
+      "result": "PASS",
+      "errors": [
+        "INVALID_IDENTITY_SIGNATURE"
+      ]
+    },
+    {
+      "fixture": "rollback",
+      "expected": "VALID / freshness UNKNOWN",
+      "actual": "VALID / freshness=unknown",
+      "result": "PASS",
+      "errors": []
+    },
+    {
+      "fixture": "sequence-modified",
+      "expected": "INVALID_IDENTITY_SIGNATURE",
+      "actual": "INVALID_IDENTITY_SIGNATURE",
+      "result": "PASS",
+      "errors": [
+        "INVALID_IDENTITY_SIGNATURE"
+      ]
+    },
+    {
+      "fixture": "wrong-anchor",
+      "expected": "ANCHOR_MISMATCH",
+      "actual": "ANCHOR_MISMATCH",
+      "result": "PASS",
+      "errors": [
+        "ANCHOR_MISMATCH"
+      ]
+    },
+    {
+      "fixture": "wrong-domain",
+      "expected": "DOMAIN_IDENTIFIER_INCONSISTENT",
+      "actual": "DOMAIN_IDENTIFIER_INCONSISTENT",
+      "result": "PASS",
+      "errors": [
+        "DOMAIN_IDENTIFIER_INCONSISTENT"
+      ]
+    },
+    {
+      "fixture": "wrong-identifier",
+      "expected": "IDENTIFIER_MISMATCH",
+      "actual": "IDENTIFIER_MISMATCH",
+      "result": "PASS",
+      "errors": [
+        "IDENTIFIER_MISMATCH"
+      ]
+    },
+    {
+      "fixture": "wrong-payment",
+      "expected": "PAYMENT_BINDING_MISMATCH",
+      "actual": "PAYMENT_BINDING_MISMATCH",
+      "result": "PASS",
+      "errors": [
+        "PAYMENT_BINDING_MISMATCH"
+      ]
+    },
+    {
+      "fixture": "wrong-payment-hash",
+      "expected": "INVALID_IDENTITY_SIGNATURE",
+      "actual": "INVALID_IDENTITY_SIGNATURE",
+      "result": "PASS",
+      "errors": [
+        "INVALID_IDENTITY_SIGNATURE"
+      ]
+    },
+    {
+      "fixture": "wrong-root",
+      "expected": "ROOT_KEY_MISMATCH",
+      "actual": "ROOT_KEY_MISMATCH",
+      "result": "PASS",
+      "errors": [
+        "ROOT_KEY_MISMATCH"
+      ]
+    },
+    {
+      "fixture": "wrong-signing-key",
+      "expected": "SIGNING_KEY_MISMATCH",
+      "actual": "SIGNING_KEY_MISMATCH",
+      "result": "PASS",
+      "errors": [
+        "SIGNING_KEY_MISMATCH"
+      ]
+    }
+  ],
+  "checks": {
+    "kroot": true,
+    "ksign": true,
+    "binding_0x18": true,
+    "binding_0x19": true,
+    "gnupg_to_sequoia": true,
+    "sequoia_rejects_invalid_sig": true,
+    "all_vectors": true
+  }
+}

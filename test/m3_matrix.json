@@ -1,0 +1,219 @@
+{
+  "implementations": {
+    "GnuPG": "2.4.8",
+    "Sequoia": "sq 1.3.1 / sequoia-openpgp 2.1.0",
+    "openpgp.js": "6.3.2"
+  },
+  "rows": {
+    "KROOT fingerprint": {
+      "GnuPG": {
+        "result": "PASS",
+        "note": "M1/M2"
+      },
+      "Sequoia": {
+        "result": "PASS",
+        "note": "M2"
+      },
+      "openpgp.js": {
+        "result": "PASS",
+        "note": "de26bd614a4224ac0b704ed1c8f68e1738268297"
+      }
+    },
+    "KSIGN fingerprint": {
+      "GnuPG": {
+        "result": "PASS",
+        "note": "M1/M2"
+      },
+      "Sequoia": {
+        "result": "PASS",
+        "note": "M2"
+      },
+      "openpgp.js": {
+        "result": "PASS",
+        "note": ""
+      }
+    },
+    "binding": {
+      "GnuPG": {
+        "result": "PASS",
+        "note": "0x18/0x19 via list-packets"
+      },
+      "Sequoia": {
+        "result": "PASS",
+        "note": "M2 packet dump + cert lint"
+      },
+      "openpgp.js": {
+        "result": "PASS",
+        "note": "packet inspection of bindingSignatures (API sk.verify unreliable)"
+      }
+    },
+    "signature": {
+      "GnuPG": {
+        "result": "PASS",
+        "note": "M1 verifier"
+      },
+      "Sequoia": {
+        "result": "PASS",
+        "note": "Authenticated signature made by DE26BD614A4224AC0B704ED1C8F68E1738268297 (BIP353 Identity Test <alice@example.test>)\n\n1\u00a0"
+      },
+      "openpgp.js": {
+        "result": "PASS",
+        "note": "{\"valid\": true, \"error\": null, \"keyID\": \"6186d1b88a7badea\", \"messageLength\": 147, \"domainSeparatorHex\": \"4249503335332d4944454e544954590001\"}"
+      }
+    },
+    "wrong-domain": {
+      "GnuPG": {
+        "result": "PASS",
+        "note": "['DOMAIN_IDENTIFIER_INCONSISTENT']"
+      },
+      "Sequoia": {
+        "result": "NOT_APPLICABLE",
+        "note": "OpenPGP intact; failure is protocol-layer"
+      },
+      "openpgp.js": {
+        "result": "NOT_APPLICABLE",
+        "note": "OpenPGP intact; failure is protocol-layer"
+      }
+    },
+    "wrong-identifier": {
+      "GnuPG": {
+        "result": "PASS",
+        "note": "['IDENTIFIER_MISMATCH']"
+      },
+      "Sequoia": {
+        "result": "NOT_APPLICABLE",
+        "note": "OpenPGP intact; failure is protocol-layer"
+      },
+      "openpgp.js": {
+        "result": "NOT_APPLICABLE",
+        "note": "OpenPGP intact; failure is protocol-layer"
+      }
+    },
+    "wrong-root": {
+      "GnuPG": {
+        "result": "PASS",
+        "note": "['ROOT_KEY_MISMATCH']"
+      },
+      "Sequoia": {
+        "result": "NOT_APPLICABLE",
+        "note": "OpenPGP intact; failure is protocol-layer"
+      },
+      "openpgp.js": {
+        "result": "NOT_APPLICABLE",
+        "note": "OpenPGP intact; failure is protocol-layer"
+      }
+    },
+    "wrong-signing-key": {
+      "GnuPG": {
+        "result": "PASS",
+        "note": "['SIGNING_KEY_MISMATCH']"
+      },
+      "Sequoia": {
+        "result": "NOT_APPLICABLE",
+        "note": "OpenPGP intact; failure is protocol-layer"
+      },
+      "openpgp.js": {
+        "result": "NOT_APPLICABLE",
+        "note": "OpenPGP intact; failure is protocol-layer"
+      }
+    },
+    "invalid-signature": {
+      "GnuPG": {
+        "result": "PASS",
+        "note": "['INVALID_IDENTITY_SIGNATURE']"
+      },
+      "Sequoia": {
+        "result": "PASS",
+        "note": "correctly rejected tampered signature"
+      },
+      "openpgp.js": {
+        "result": "PASS",
+        "note": "correctly rejected tampered signature"
+      }
+    },
+    "expired": {
+      "GnuPG": {
+        "result": "PASS",
+        "note": "['IDENTITY_EXPIRED']"
+      },
+      "Sequoia": {
+        "result": "NOT_APPLICABLE",
+        "note": "OpenPGP intact; failure is protocol-layer"
+      },
+      "openpgp.js": {
+        "result": "NOT_APPLICABLE",
+        "note": "OpenPGP intact; failure is protocol-layer"
+      }
+    },
+    "wrong-payment": {
+      "GnuPG": {
+        "result": "PASS",
+        "note": "['PAYMENT_BINDING_MISMATCH']"
+      },
+      "Sequoia": {
+        "result": "NOT_APPLICABLE",
+        "note": "OpenPGP intact; failure is protocol-layer"
+      },
+      "openpgp.js": {
+        "result": "NOT_APPLICABLE",
+        "note": "OpenPGP intact; failure is protocol-layer"
+      }
+    },
+    "wrong-payment-hash": {
+      "GnuPG": {
+        "result": "PASS",
+        "note": "['INVALID_IDENTITY_SIGNATURE']"
+      },
+      "Sequoia": {
+        "result": "NOT_APPLICABLE",
+        "note": "payload+sig still match; document field mutated"
+      },
+      "openpgp.js": {
+        "result": "NOT_APPLICABLE",
+        "note": "payload+sig still match; document field mutated"
+      }
+    },
+    "wrong-anchor": {
+      "GnuPG": {
+        "result": "PASS",
+        "note": "['ANCHOR_MISMATCH']"
+      },
+      "Sequoia": {
+        "result": "NOT_APPLICABLE",
+        "note": "OpenPGP intact; failure is protocol-layer"
+      },
+      "openpgp.js": {
+        "result": "NOT_APPLICABLE",
+        "note": "OpenPGP intact; failure is protocol-layer"
+      }
+    },
+    "sequence-modified": {
+      "GnuPG": {
+        "result": "PASS",
+        "note": "['INVALID_IDENTITY_SIGNATURE']"
+      },
+      "Sequoia": {
+        "result": "NOT_APPLICABLE",
+        "note": "payload+sig still match; document field mutated"
+      },
+      "openpgp.js": {
+        "result": "NOT_APPLICABLE",
+        "note": "payload+sig still match; document field mutated"
+      }
+    },
+    "rollback": {
+      "GnuPG": {
+        "result": "PASS",
+        "note": "VALID / freshness UNKNOWN (protocol)"
+      },
+      "Sequoia": {
+        "result": "PASS",
+        "note": "VALID / freshness UNKNOWN (OpenPGP)"
+      },
+      "openpgp.js": {
+        "result": "PASS",
+        "note": "VALID / freshness UNKNOWN (OpenPGP)"
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "payment_verified": true,
+  "identity_verified": true,
+  "identity_anchored": true,
+  "anchor_included": true,
+  "freshness": "unknown",
+  "human_verified": false,
+  "errors": [],
+  "anchor_status": "anchor_confirmed",
+  "transaction_valid": true,
+  "inclusion_proof_valid": true,
+  "header_context": "trusted",
+  "freshness_status": "unknown",
+  "rollback_resistance": "not_provided"
+}

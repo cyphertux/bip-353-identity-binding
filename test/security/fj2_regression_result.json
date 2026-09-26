@@ -1,0 +1,10 @@
+{
+  "attack": "F-J2",
+  "expected": "WRONG_TX_COMMITMENT",
+  "actual_errors": [
+    "WRONG_TX_COMMITMENT"
+  ],
+  "anchor_included": false,
+  "identity_anchored": false,
+  "pass": true
+}

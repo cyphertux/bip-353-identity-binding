@@ -1,0 +1,211 @@
+{
+  "openpgpjs": "6.3.2",
+  "checks": {
+    "A1_kroot_fingerprint": {
+      "result": "PASS",
+      "detail": "de26bd614a4224ac0b704ed1c8f68e1738268297"
+    },
+    "A1_key_version_4": {
+      "result": "PASS",
+      "detail": "4"
+    },
+    "A1_algo_present": {
+      "result": "PASS",
+      "detail": "22"
+    },
+    "A2_ksign_fingerprint": {
+      "result": "PASS",
+      "detail": "[{\"fingerprint\":\"55f38348c4a60b8ffd7b40c86186d1b88a7badea\",\"version\":4,\"algorithm\":22,\"bindingType\":24,\"hasEmbeddedPrimaryBinding\":true,\"embeddedType\":25}]"
+    },
+    "A3_binding_0x18": {
+      "result": "PASS",
+      "detail": "24"
+    },
+    "A3_binding_0x19": {
+      "result": "PASS",
+      "detail": "25"
+    },
+    "A4_signature_valid": {
+      "result": "PASS",
+      "detail": ""
+    },
+    "H_domain_separator_17_bytes": {
+      "result": "PASS",
+      "detail": ""
+    },
+    "H_domain_separator_hex": {
+      "result": "PASS",
+      "detail": ""
+    },
+    "H_message_length_147": {
+      "result": "PASS",
+      "detail": "147"
+    },
+    "A5_openpgp_wrong-domain": {
+      "result": "PASS",
+      "detail": "expected_openpgp=true actual=true err="
+    },
+    "A5_openpgp_wrong-identifier": {
+      "result": "PASS",
+      "detail": "expected_openpgp=true actual=true err="
+    },
+    "A5_openpgp_wrong-root": {
+      "result": "PASS",
+      "detail": "expected_openpgp=true actual=true err="
+    },
+    "A5_openpgp_wrong-signing-key": {
+      "result": "PASS",
+      "detail": "expected_openpgp=true actual=true err="
+    },
+    "A5_openpgp_invalid-signature": {
+      "result": "PASS",
+      "detail": "expected_openpgp=false actual=false err=Signed digest did not match"
+    },
+    "A5_openpgp_expired": {
+      "result": "PASS",
+      "detail": "expected_openpgp=true actual=true err="
+    },
+    "A5_openpgp_wrong-payment": {
+      "result": "PASS",
+      "detail": "expected_openpgp=true actual=true err="
+    },
+    "A5_openpgp_wrong-payment-hash": {
+      "result": "PASS",
+      "detail": "expected_openpgp=true actual=true err="
+    },
+    "A5_openpgp_wrong-anchor": {
+      "result": "PASS",
+      "detail": "expected_openpgp=true actual=true err="
+    },
+    "A5_openpgp_sequence-modified": {
+      "result": "PASS",
+      "detail": "expected_openpgp=true actual=true err="
+    },
+    "A5_openpgp_rollback": {
+      "result": "PASS",
+      "detail": "expected_openpgp=true actual=true err="
+    },
+    "G_wrong_domain_separator_rejected": {
+      "result": "PASS",
+      "detail": ""
+    },
+    "G_mutated_payload_rejected": {
+      "result": "PASS",
+      "detail": ""
+    },
+    "G_nul_truncated_separator_rejected": {
+      "result": "PASS",
+      "detail": ""
+    },
+    "G_malformed_cert_rejected": {
+      "result": "PASS",
+      "detail": ""
+    },
+    "C_openpgpjs_self_verify": {
+      "result": "PASS",
+      "detail": ""
+    },
+    "C_openpgpjs_to_gnupg": {
+      "result": "PASS",
+      "detail": "[GNUPG:] NEWSIG\n[GNUPG:] KEY_CONSIDERED DE26BD614A4224AC0B704ED1C8F68E1738268297 0\n[GNUPG:] SIG_ID QSIbeJWKCiqankDlPnYZ4llnlK8 2026-09-26 1790428989\n[GNUPG:] GOODSIG 6186D1B88A7BADEA BIP353 Identity T"
+    },
+    "C_openpgpjs_to_sequoia": {
+      "result": "PASS",
+      "detail": "Authenticated signature made by DE26BD614A4224AC0B704ED1C8F68E1738268297 (BIP353 Identity Test <alice@example.test>)\n\n1 authenticated signature.\n"
+    },
+    "D_inline_openpgpjs_verify": {
+      "result": "PASS",
+      "detail": ""
+    },
+    "D_detached_smaller_than_inline": {
+      "result": "PASS",
+      "detail": "detached≈249 inline=359"
+    }
+  },
+  "mutations": [
+    {
+      "fixture": "wrong-domain",
+      "openpgp_signature_valid": true,
+      "expected_openpgp": true,
+      "result": "PASS",
+      "note": "OpenPGP layer intact; protocol failure is elsewhere"
+    },
+    {
+      "fixture": "wrong-identifier",
+      "openpgp_signature_valid": true,
+      "expected_openpgp": true,
+      "result": "PASS",
+      "note": "OpenPGP layer intact; protocol failure is elsewhere"
+    },
+    {
+      "fixture": "wrong-root",
+      "openpgp_signature_valid": true,
+      "expected_openpgp": true,
+      "result": "PASS",
+      "note": "OpenPGP layer intact; protocol failure is elsewhere"
+    },
+    {
+      "fixture": "wrong-signing-key",
+      "openpgp_signature_valid": true,
+      "expected_openpgp": true,
+      "result": "PASS",
+      "note": "OpenPGP layer intact; protocol failure is elsewhere"
+    },
+    {
+      "fixture": "invalid-signature",
+      "openpgp_signature_valid": false,
+      "expected_openpgp": false,
+      "result": "PASS",
+      "note": "OpenPGP signature rejected"
+    },
+    {
+      "fixture": "expired",
+      "openpgp_signature_valid": true,
+      "expected_openpgp": true,
+      "result": "PASS",
+      "note": "OpenPGP layer intact; protocol failure is elsewhere"
+    },
+    {
+      "fixture": "wrong-payment",
+      "openpgp_signature_valid": true,
+      "expected_openpgp": true,
+      "result": "PASS",
+      "note": "OpenPGP layer intact; protocol failure is elsewhere"
+    },
+    {
+      "fixture": "wrong-payment-hash",
+      "openpgp_signature_valid": true,
+      "expected_openpgp": true,
+      "result": "PASS",
+      "note": "OpenPGP layer intact; protocol failure is elsewhere"
+    },
+    {
+      "fixture": "wrong-anchor",
+      "openpgp_signature_valid": true,
+      "expected_openpgp": true,
+      "result": "PASS",
+      "note": "OpenPGP layer intact; protocol failure is elsewhere"
+    },
+    {
+      "fixture": "sequence-modified",
+      "openpgp_signature_valid": true,
+      "expected_openpgp": true,
+      "result": "PASS",
+      "note": "OpenPGP layer intact; protocol failure is elsewhere"
+    },
+    {
+      "fixture": "rollback",
+      "openpgp_signature_valid": true,
+      "expected_openpgp": true,
+      "result": "PASS",
+      "note": "cryptographically valid; freshness unknown"
+    }
+  ],
+  "roundtrip": {
+    "signature_path": "test/openpgpjs-signature.bin",
+    "signature_len": 189,
+    "byte_identical_to_gnupg": false,
+    "detached_total_approx": 249,
+    "inline_message_len": 359
+  }
+}

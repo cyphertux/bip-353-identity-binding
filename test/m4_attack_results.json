@@ -1,0 +1,50 @@
+[
+  {
+    "fixture": "wrong-commitment",
+    "expected_failure": "WRONG_TX_COMMITMENT",
+    "actual": [
+      "WRONG_TX_COMMITMENT"
+    ],
+    "result": "PASS"
+  },
+  {
+    "fixture": "wrong-merkle-proof",
+    "expected_failure": "WRONG_MERKLE_PROOF",
+    "actual": [
+      "WRONG_MERKLE_PROOF"
+    ],
+    "result": "PASS"
+  },
+  {
+    "fixture": "wrong-merkle-root",
+    "expected_failure": "WRONG_MERKLE_PROOF",
+    "actual": [
+      "WRONG_MERKLE_PROOF"
+    ],
+    "result": "PASS"
+  },
+  {
+    "fixture": "orphaned-anchor",
+    "expected_failure": "ORPHANED_ANCHOR",
+    "actual": [
+      "ORPHANED_ANCHOR"
+    ],
+    "result": "PASS"
+  },
+  {
+    "fixture": "reorged-anchor",
+    "expected_failure": "ORPHANED_ANCHOR",
+    "actual": [
+      "ORPHANED_ANCHOR"
+    ],
+    "result": "PASS"
+  },
+  {
+    "fixture": "wrong-opreturn",
+    "expected_failure": "WRONG_TX_COMMITMENT",
+    "actual": [
+      "WRONG_TX_COMMITMENT"
+    ],
+    "result": "PASS"
+  }
+]

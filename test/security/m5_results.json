@@ -1,0 +1,1044 @@
+{
+  "results": [
+    {
+      "id": "A1",
+      "part": "A",
+      "name": "DNS/payment vs identity payment mismatch",
+      "expected_outcome": "DETECTED",
+      "actual_outcome": "DETECTED",
+      "expected_detail": "PAYMENT_BINDING_MISMATCH",
+      "actual_detail": "['PAYMENT_BINDING_MISMATCH']",
+      "notes": "",
+      "errors": [
+        "PAYMENT_BINDING_MISMATCH"
+      ],
+      "pass": true
+    },
+    {
+      "id": "A2",
+      "part": "A",
+      "name": "DNS+hosting without KROOT (fake root)",
+      "expected_outcome": "DETECTED",
+      "actual_outcome": "DETECTED",
+      "expected_detail": "ROOT_KEY_MISMATCH or ANCHOR_MISMATCH",
+      "actual_detail": "['ROOT_KEY_MISMATCH']",
+      "notes": "",
+      "errors": [
+        "ROOT_KEY_MISMATCH"
+      ],
+      "pass": true
+    },
+    {
+      "id": "A3",
+      "part": "A",
+      "name": "Hosting-only IdentityDocument mutation",
+      "expected_outcome": "BLOCKED",
+      "actual_outcome": "BLOCKED",
+      "expected_detail": "INVALID_IDENTITY_SIGNATURE",
+      "actual_detail": "['INVALID_IDENTITY_SIGNATURE']",
+      "notes": "",
+      "errors": [
+        "INVALID_IDENTITY_SIGNATURE"
+      ],
+      "pass": true
+    },
+    {
+      "id": "A4",
+      "part": "A",
+      "name": "DNS-only divergence covered by payment binding",
+      "expected_outcome": "DETECTED",
+      "actual_outcome": "DETECTED",
+      "expected_detail": "payment mismatch without KROOT cannot forge identity",
+      "actual_detail": "same mechanism as A1; anchor remains for real KROOT",
+      "notes": "DNS-only attacker can change BIP-353 payment; binding catches divergence.",
+      "errors": [],
+      "pass": true
+    },
+    {
+      "id": "B1",
+      "part": "B",
+      "name": "KSIGN compromise can mint new IdentityDocuments",
+      "expected_outcome": "ACCEPTED",
+      "actual_outcome": "ACCEPTED",
+      "expected_detail": "signature valid under KSIGN; continuity via KROOT binding still holds",
+      "actual_detail": "If attacker controls KSIGN, OpenPGP signatures verify. They cannot change KROOT or Bitcoin anchor. They CAN change payment_hash/sequence/expiry in new docs.",
+      "notes": "KNOWN LIMITATION: operational key compromise allows state updates until revocation.",
+      "errors": [],
+      "pass": true
+    },
+    {
+      "id": "B2",
+      "part": "B",
+      "name": "Fake/unrelated KSIGN fingerprint",
+      "expected_outcome": "DETECTED",
+      "actual_outcome": "DETECTED",
+      "expected_detail": "SIGNING_KEY_MISMATCH",
+      "actual_detail": "['SIGNING_KEY_MISMATCH']",
+      "notes": "",
+      "errors": [
+        "SIGNING_KEY_MISMATCH"
+      ],
+      "pass": true
+    },
+    {
+      "id": "B3",
+      "part": "B",
+      "name": "KROOT mismatch vs certificate",
+      "expected_outcome": "DETECTED",
+      "actual_outcome": "DETECTED",
+      "expected_detail": "ROOT_KEY_MISMATCH",
+      "actual_detail": "['ROOT_KEY_MISMATCH']",
+      "notes": "",
+      "errors": [
+        "ROOT_KEY_MISMATCH"
+      ],
+      "pass": true
+    },
+    {
+      "id": "B4",
+      "part": "B",
+      "name": "Wrong/tampered signature under claimed keys",
+      "expected_outcome": "BLOCKED",
+      "actual_outcome": "BLOCKED",
+      "expected_detail": "INVALID_IDENTITY_SIGNATURE",
+      "actual_detail": "['INVALID_IDENTITY_SIGNATURE']",
+      "notes": "",
+      "errors": [
+        "INVALID_IDENTITY_SIGNATURE"
+      ],
+      "pass": true
+    },
+    {
+      "id": "B5",
+      "part": "B",
+      "name": "Revoked KSIGN handling",
+      "expected_outcome": "DETECTED",
+      "actual_outcome": "AMBIGUOUS",
+      "expected_detail": "IDENTITY_REVOKED when revocation present in certificate",
+      "actual_detail": "Reference verifier checks OpenPGP revoked flags on import. No revoked fixture generated in M5 without mutating keyring secrets; property depends on revocation being delivered in Proof Bundle.",
+      "notes": "LIMITATION: revocation discovery/transport not fully specified.",
+      "errors": [],
+      "pass": true
+    },
+    {
+      "id": "B6",
+      "part": "B",
+      "name": "Revoked KROOT handling",
+      "expected_outcome": "DETECTED",
+      "actual_outcome": "AMBIGUOUS",
+      "expected_detail": "IDENTITY_REVOKED",
+      "actual_detail": "Same as B5 \u2014 revocation transport OPEN",
+      "notes": "Escrowed revocation recommended but not wire-specified.",
+      "errors": [],
+      "pass": true
+    },
+    {
+      "id": "B7",
+      "part": "B",
+      "name": "Old but still-bound KSIGN",
+      "expected_outcome": "ACCEPTED",
+      "actual_outcome": "ACCEPTED",
+      "expected_detail": "cryptographically valid if binding not revoked",
+      "actual_detail": "V1 has no 'current key' oracle beyond cert + freshness unknown",
+      "notes": "NOT PROVIDED: currently authorized vs historically authorized without freshness.",
+      "errors": [],
+      "pass": true
+    },
+    {
+      "id": "C1",
+      "part": "C",
+      "name": "KROOT compromise vs Bitcoin anchor",
+      "expected_outcome": "ACCEPTED",
+      "actual_outcome": "ACCEPTED",
+      "expected_detail": "Attacker with KROOT can authorize new KSIGN and new documents",
+      "actual_detail": "Bitcoin Candidate A commits to KROOT. If attacker has that same KROOT, new IdentityDocuments verify and match the existing anchor. Bitcoin does NOT prevent KROOT compromise. Bitcoin DOES prevent silently replacing KROOT with KROOT' without a new on-chain commitment.",
+      "notes": "Honest limitation \u2014 recovery/escrowed revocation is the mitigation path.",
+      "errors": [],
+      "pass": true
+    },
+    {
+      "id": "D1",
+      "part": "D",
+      "name": "Old IdentityDocument replay (rollback)",
+      "expected_outcome": "ACCEPTED",
+      "actual_outcome": "ACCEPTED",
+      "expected_detail": "identity_verified=true, freshness=unknown",
+      "actual_detail": "verified=True freshness=unknown",
+      "notes": "V1 intentionally lacks freshness \u2014 NOT a silent bug if UI shows FRESHNESS UNKNOWN.",
+      "errors": [],
+      "pass": true
+    },
+    {
+      "id": "D2-zero",
+      "part": "D",
+      "name": "Sequence mutation (zero) without re-sign",
+      "expected_outcome": "BLOCKED",
+      "actual_outcome": "BLOCKED",
+      "expected_detail": "INVALID_IDENTITY_SIGNATURE",
+      "actual_detail": "['INVALID_IDENTITY_SIGNATURE']",
+      "notes": "Sequence is signed but does not provide freshness across documents.",
+      "errors": [
+        "INVALID_IDENTITY_SIGNATURE"
+      ],
+      "pass": true
+    },
+    {
+      "id": "D2-higher",
+      "part": "D",
+      "name": "Sequence mutation (higher) without re-sign",
+      "expected_outcome": "BLOCKED",
+      "actual_outcome": "BLOCKED",
+      "expected_detail": "INVALID_IDENTITY_SIGNATURE",
+      "actual_detail": "['INVALID_IDENTITY_SIGNATURE']",
+      "notes": "Sequence is signed but does not provide freshness across documents.",
+      "errors": [
+        "INVALID_IDENTITY_SIGNATURE"
+      ],
+      "pass": true
+    },
+    {
+      "id": "D2-large",
+      "part": "D",
+      "name": "Sequence mutation (large) without re-sign",
+      "expected_outcome": "BLOCKED",
+      "actual_outcome": "BLOCKED",
+      "expected_detail": "INVALID_IDENTITY_SIGNATURE",
+      "actual_detail": "['INVALID_IDENTITY_SIGNATURE']",
+      "notes": "Sequence is signed but does not provide freshness across documents.",
+      "errors": [
+        "INVALID_IDENTITY_SIGNATURE"
+      ],
+      "pass": true
+    },
+    {
+      "id": "D3",
+      "part": "D",
+      "name": "Old Bitcoin anchor still matches Candidate A",
+      "expected_outcome": "ACCEPTED",
+      "actual_outcome": "ACCEPTED",
+      "expected_detail": "Historical anchor remains valid for same KROOT",
+      "actual_detail": "No 'current anchor' selection without transparency/multiple-anchor policy",
+      "notes": "freshness=unknown for anchors as well.",
+      "errors": [],
+      "pass": true
+    },
+    {
+      "id": "E1",
+      "part": "E",
+      "name": "cross-identifier same domain",
+      "expected_outcome": "BLOCKED",
+      "actual_outcome": "BLOCKED",
+      "expected_detail": "IDENTIFIER_MISMATCH",
+      "actual_detail": "['IDENTIFIER_MISMATCH']",
+      "notes": "",
+      "errors": [
+        "IDENTIFIER_MISMATCH"
+      ],
+      "pass": true
+    },
+    {
+      "id": "E2",
+      "part": "E",
+      "name": "other identifier",
+      "expected_outcome": "BLOCKED",
+      "actual_outcome": "BLOCKED",
+      "expected_detail": "IDENTIFIER_MISMATCH",
+      "actual_detail": "['IDENTIFIER_MISMATCH']",
+      "notes": "",
+      "errors": [
+        "IDENTIFIER_MISMATCH"
+      ],
+      "pass": true
+    },
+    {
+      "id": "E3",
+      "part": "E",
+      "name": "cross-domain",
+      "expected_outcome": "BLOCKED",
+      "actual_outcome": "BLOCKED",
+      "expected_detail": "IDENTIFIER_MISMATCH",
+      "actual_detail": "['IDENTIFIER_MISMATCH']",
+      "notes": "",
+      "errors": [
+        "IDENTIFIER_MISMATCH"
+      ],
+      "pass": true
+    },
+    {
+      "id": "E4",
+      "part": "E",
+      "name": "Same KROOT transplanted to other domain without resign",
+      "expected_outcome": "BLOCKED",
+      "actual_outcome": "BLOCKED",
+      "expected_detail": "signature/anchor failure",
+      "actual_detail": "['INVALID_IDENTITY_SIGNATURE']",
+      "notes": "",
+      "errors": [
+        "INVALID_IDENTITY_SIGNATURE"
+      ],
+      "pass": true
+    },
+    {
+      "id": "F1",
+      "part": "F",
+      "name": "Destination / scriptPubKey mutation changes hash",
+      "expected_outcome": "DETECTED",
+      "actual_outcome": "DETECTED",
+      "expected_detail": "different payment_hash",
+      "actual_detail": "35bc7db73b509193 vs be3a8e85226de191",
+      "notes": "",
+      "errors": [],
+      "pass": true
+    },
+    {
+      "id": "F2",
+      "part": "F",
+      "name": "Amount/label excluded from binding",
+      "expected_outcome": "ACCEPTED",
+      "actual_outcome": "ACCEPTED",
+      "expected_detail": "hash unchanged (by design)",
+      "actual_detail": "request metadata not in PaymentBindingV1",
+      "notes": "NOT a vulnerability \u2014 intentional.",
+      "errors": [],
+      "pass": true
+    },
+    {
+      "id": "F3",
+      "part": "F",
+      "name": "Method reorder canonicalisation",
+      "expected_outcome": "BLOCKED",
+      "actual_outcome": "BLOCKED",
+      "expected_detail": "same canonical bytes",
+      "actual_detail": "order-independent",
+      "notes": "",
+      "errors": [],
+      "pass": true
+    },
+    {
+      "id": "F4",
+      "part": "F",
+      "name": "Method duplication collapsed",
+      "expected_outcome": "BLOCKED",
+      "actual_outcome": "BLOCKED",
+      "expected_detail": "single method",
+      "actual_detail": "count=1",
+      "notes": "",
+      "errors": [],
+      "pass": true
+    },
+    {
+      "id": "F5",
+      "part": "F",
+      "name": "Non-canonical payment CBOR rejected",
+      "expected_outcome": "BLOCKED",
+      "actual_outcome": "BLOCKED",
+      "expected_detail": "PaymentBindingError",
+      "actual_detail": "rejected",
+      "notes": "",
+      "errors": [],
+      "pass": true
+    },
+    {
+      "id": "G1",
+      "part": "G",
+      "name": "Non-shortest integer",
+      "expected_outcome": "BLOCKED",
+      "actual_outcome": "BLOCKED",
+      "expected_detail": "CBORError",
+      "actual_detail": "ok",
+      "notes": "",
+      "errors": [],
+      "pass": true
+    },
+    {
+      "id": "G2",
+      "part": "G",
+      "name": "Trailing bytes",
+      "expected_outcome": "BLOCKED",
+      "actual_outcome": "BLOCKED",
+      "expected_detail": "CBORError",
+      "actual_detail": "ok",
+      "notes": "",
+      "errors": [],
+      "pass": true
+    },
+    {
+      "id": "G3",
+      "part": "G",
+      "name": "Duplicate map keys",
+      "expected_outcome": "BLOCKED",
+      "actual_outcome": "BLOCKED",
+      "expected_detail": "CBORError",
+      "actual_detail": "ok",
+      "notes": "",
+      "errors": [],
+      "pass": true
+    },
+    {
+      "id": "G4",
+      "part": "G",
+      "name": "Unsorted map keys",
+      "expected_outcome": "BLOCKED",
+      "actual_outcome": "BLOCKED",
+      "expected_detail": "CBORError",
+      "actual_detail": "ok",
+      "notes": "",
+      "errors": [],
+      "pass": true
+    },
+    {
+      "id": "G5",
+      "part": "G",
+      "name": "Semantic map \u2192 unique bytes",
+      "expected_outcome": "BLOCKED",
+      "actual_outcome": "BLOCKED",
+      "expected_detail": "identical encoding",
+      "actual_detail": "ok",
+      "notes": "",
+      "errors": [],
+      "pass": true
+    },
+    {
+      "id": "G6",
+      "part": "G",
+      "name": "Indefinite-length map rejected",
+      "expected_outcome": "BLOCKED",
+      "actual_outcome": "BLOCKED",
+      "expected_detail": "CBORError",
+      "actual_detail": "ok",
+      "notes": "",
+      "errors": [],
+      "pass": true
+    },
+    {
+      "id": "G7",
+      "part": "G",
+      "name": "Indefinite-length bytes rejected",
+      "expected_outcome": "BLOCKED",
+      "actual_outcome": "BLOCKED",
+      "expected_detail": "CBORError",
+      "actual_detail": "ok",
+      "notes": "",
+      "errors": [],
+      "pass": true
+    },
+    {
+      "id": "I1",
+      "part": "I",
+      "name": "PAYMENT_HASH \u2260 IDENTITY_COMMITMENT",
+      "expected_outcome": "BLOCKED",
+      "actual_outcome": "BLOCKED",
+      "expected_detail": "different digests",
+      "actual_detail": "pay=35bc7db7 commit=82282ed2",
+      "notes": "",
+      "errors": [],
+      "pass": true
+    },
+    {
+      "id": "I2",
+      "part": "I",
+      "name": "Reject PAYMENT_HASH as Bitcoin commitment",
+      "expected_outcome": "DETECTED",
+      "actual_outcome": "DETECTED",
+      "expected_detail": "ANCHOR_MISMATCH",
+      "actual_detail": "['ANCHOR_MISMATCH:external']",
+      "notes": "",
+      "errors": [
+        "ANCHOR_MISMATCH:external"
+      ],
+      "pass": true
+    },
+    {
+      "id": "H1",
+      "part": "H",
+      "name": "Domain separators pairwise distinct",
+      "expected_outcome": "BLOCKED",
+      "actual_outcome": "BLOCKED",
+      "expected_detail": "3 distinct byte strings",
+      "actual_detail": "{'identity': '4249503335332d4944454e544954590001', 'payment': '4249503335332d4944454e544954592f5041594d454e542f7631', 'anchor': '4249503335332d4944454e544954592f414e43484f522f7631'}",
+      "notes": "",
+      "errors": [],
+      "pass": true
+    },
+    {
+      "id": "H2",
+      "part": "H",
+      "name": "Version-byte separator change alters message",
+      "expected_outcome": "BLOCKED",
+      "actual_outcome": "BLOCKED",
+      "expected_detail": "different message bytes",
+      "actual_detail": "ok",
+      "notes": "",
+      "errors": [],
+      "pass": true
+    },
+    {
+      "id": "H3",
+      "part": "H",
+      "name": "Cross-protocol separator variants \u2260 identity v1",
+      "expected_outcome": "BLOCKED",
+      "actual_outcome": "BLOCKED",
+      "expected_detail": "all non-canonical separators produce different messages",
+      "actual_detail": "ok",
+      "notes": "",
+      "errors": [],
+      "pass": true
+    },
+    {
+      "id": "J1",
+      "part": "J",
+      "name": "Wrong commitment field",
+      "expected_outcome": "DETECTED",
+      "actual_outcome": "DETECTED",
+      "expected_detail": "WRONG_TX_COMMITMENT",
+      "actual_detail": "['WRONG_TX_COMMITMENT']",
+      "notes": "",
+      "errors": [
+        "WRONG_TX_COMMITMENT"
+      ],
+      "pass": true
+    },
+    {
+      "id": "J2",
+      "part": "J",
+      "name": "Wrong OP_RETURN in raw_tx (M6 regression)",
+      "expected_outcome": "BLOCKED",
+      "actual_outcome": "BLOCKED",
+      "expected_detail": "WRONG_TX_COMMITMENT",
+      "actual_detail": "['WRONG_TX_COMMITMENT']",
+      "notes": "F-J2 FIXED in M6",
+      "errors": [
+        "WRONG_TX_COMMITMENT"
+      ],
+      "pass": true
+    },
+    {
+      "id": "J3",
+      "part": "J",
+      "name": "Wrong transaction txid (M6 regression)",
+      "expected_outcome": "BLOCKED",
+      "actual_outcome": "BLOCKED",
+      "expected_detail": "TXID_MISMATCH",
+      "actual_detail": "['TXID_MISMATCH']",
+      "notes": "F-J3 FIXED in M6",
+      "errors": [
+        "TXID_MISMATCH"
+      ],
+      "pass": true
+    },
+    {
+      "id": "J4",
+      "part": "J",
+      "name": "Wrong prev_hash; untrusted header context",
+      "expected_outcome": "AMBIGUOUS",
+      "actual_outcome": "AMBIGUOUS",
+      "expected_detail": "inclusion_proof_valid + header_context=untrusted; not best-chain",
+      "actual_detail": "inclusion=True ctx=untrusted included=False",
+      "notes": "Mode B \u2014 wallet must supply trusted headers for anchor_included",
+      "errors": [],
+      "pass": true
+    },
+    {
+      "id": "J5",
+      "part": "J",
+      "name": "Wrong Merkle branch",
+      "expected_outcome": "DETECTED",
+      "actual_outcome": "DETECTED",
+      "expected_detail": "WRONG_MERKLE_PROOF",
+      "actual_detail": "['WRONG_MERKLE_PROOF']",
+      "notes": "",
+      "errors": [
+        "WRONG_MERKLE_PROOF"
+      ],
+      "pass": true
+    },
+    {
+      "id": "J6",
+      "part": "J",
+      "name": "Wrong Merkle root in header",
+      "expected_outcome": "DETECTED",
+      "actual_outcome": "DETECTED",
+      "expected_detail": "WRONG_MERKLE_PROOF",
+      "actual_detail": "['WRONG_MERKLE_PROOF']",
+      "notes": "",
+      "errors": [
+        "WRONG_MERKLE_PROOF"
+      ],
+      "pass": true
+    },
+    {
+      "id": "J7",
+      "part": "J",
+      "name": "Wrong claimed block height",
+      "expected_outcome": "AMBIGUOUS",
+      "actual_outcome": "ACCEPTED",
+      "expected_detail": "Height is advisory unless header chain checked",
+      "actual_detail": "ACCEPTED \u2014 height not verified against header/chain",
+      "notes": "NOT PROVIDED: height authenticity in isolated proof",
+      "errors": [],
+      "pass": true
+    },
+    {
+      "id": "J8",
+      "part": "J",
+      "name": "Orphaned anchor",
+      "expected_outcome": "DETECTED",
+      "actual_outcome": "DETECTED",
+      "expected_detail": "ORPHANED_ANCHOR",
+      "actual_detail": "['ORPHANED_ANCHOR']",
+      "notes": "",
+      "errors": [
+        "ORPHANED_ANCHOR"
+      ],
+      "pass": true
+    },
+    {
+      "id": "J9",
+      "part": "J",
+      "name": "Reorg \u2192 orphaned status (API)",
+      "expected_outcome": "DETECTED",
+      "actual_outcome": "DETECTED",
+      "expected_detail": "anchor_orphaned; anchor_included=false",
+      "actual_detail": "status=anchor_orphaned included=False",
+      "notes": "Real chain reorg exercised in test_regtest_reorg.py when bitcoind available",
+      "errors": [
+        "ORPHANED_ANCHOR"
+      ],
+      "pass": true
+    },
+    {
+      "id": "K-0conf",
+      "part": "K",
+      "name": "Confirmation semantics conf=0",
+      "expected_outcome": "DETECTED",
+      "actual_outcome": "DETECTED",
+      "expected_detail": "anchor_seen",
+      "actual_detail": "anchor_seen",
+      "notes": "",
+      "errors": [],
+      "pass": true
+    },
+    {
+      "id": "K-1conf",
+      "part": "K",
+      "name": "Confirmation semantics conf=1",
+      "expected_outcome": "DETECTED",
+      "actual_outcome": "DETECTED",
+      "expected_detail": "anchor_included",
+      "actual_detail": "anchor_included",
+      "notes": "",
+      "errors": [],
+      "pass": true
+    },
+    {
+      "id": "K-6conf",
+      "part": "K",
+      "name": "Confirmation semantics conf=6",
+      "expected_outcome": "DETECTED",
+      "actual_outcome": "DETECTED",
+      "expected_detail": "anchor_confirmed",
+      "actual_detail": "anchor_confirmed",
+      "notes": "",
+      "errors": [],
+      "pass": true
+    },
+    {
+      "id": "J-valid",
+      "part": "J",
+      "name": "Valid M4 proof still verifies; not human",
+      "expected_outcome": "ACCEPTED",
+      "actual_outcome": "ACCEPTED",
+      "expected_detail": "anchored+included, human_verified=false, freshness unknown",
+      "actual_detail": "{'payment_verified': None, 'identity_verified': None, 'identity_anchored': True, 'anchor_included': True, 'anchor_status': 'anchor_confirmed', 'freshness': 'unknown', 'freshness_status': 'unknown', 'rollback_resistance': 'not_provided', 'revocation_status': 'unknown', 'trust_state': 'first_seen', 'human_verified': False, 'header_context': 'trusted', 'transaction_valid': True, 'inclusion_proof_valid': True, 'bitcoin': {'transaction_valid': True, 'inclusion_proof_valid': True, 'header_context': 'trusted', 'status': 'anchor_confirmed', 'extracted_commitment': '82282ed2aebfcbe223a040db5689e569925503f321e643163eeab0ceb47968ae', 'computed_txid': '59fb1a68fe40e8b862c3fbcb1821385fe2ce217ef595a006a0909ced75dbd461'}, 'freshness_detail': {'status': 'unknown'}, 'revocation': {'status': 'unknown', 'policy': 'unknown_by_design'}, 'trust': {'status': 'first_seen'}, 'errors': [], 'checks': {'transaction': True, 'op_return': True, 'commitment': True, 'commitment_field': True, 'txid': True, 'merkle': True, 'block_header': True, 'height_advisory': True, 'best_chain': True, 'inclusion': True}}",
+      "notes": "",
+      "errors": [],
+      "pass": true
+    },
+    {
+      "id": "L1",
+      "part": "L",
+      "name": "Multiple Bitcoin txs with same commitment",
+      "expected_outcome": "AMBIGUOUS",
+      "actual_outcome": "AMBIGUOUS",
+      "expected_detail": "Protocol does not define selection among multiple valid inclusions",
+      "actual_detail": "Any tx containing the commitment with valid inclusion is acceptable. No replacement semantics. No 'latest wins'. Verifier may accept any.",
+      "notes": "NOT PROVIDED: multi-anchor policy. Informational for BIP text.",
+      "errors": [],
+      "pass": true
+    },
+    {
+      "id": "M1",
+      "part": "M",
+      "name": "Bitcoin A + Bitcoin B canonical order",
+      "expected_outcome": "BLOCKED",
+      "actual_outcome": "BLOCKED",
+      "expected_detail": "order-independent; both destinations kept",
+      "actual_detail": "methods=2 equal_encoding=True",
+      "notes": "",
+      "errors": [],
+      "pass": true
+    },
+    {
+      "id": "M2",
+      "part": "M",
+      "name": "Method removal changes payment_hash",
+      "expected_outcome": "DETECTED",
+      "actual_outcome": "DETECTED",
+      "expected_detail": "different payment_hash",
+      "actual_detail": "4b213978 vs 35bc7db7",
+      "notes": "",
+      "errors": [],
+      "pass": true
+    },
+    {
+      "id": "M3",
+      "part": "M",
+      "name": "Lightning/unknown method handling",
+      "expected_outcome": "AMBIGUOUS",
+      "actual_outcome": "DETECTED",
+      "expected_detail": "lno payload TBD by Lightning BIP; must not collide with bitcoin",
+      "actual_detail": "type is part of binding",
+      "notes": "OPEN: Lightning canonical form not frozen in V1",
+      "errors": [],
+      "pass": true
+    },
+    {
+      "id": "N-v0",
+      "part": "N",
+      "name": "Unsupported document version 0",
+      "expected_outcome": "BLOCKED",
+      "actual_outcome": "BLOCKED",
+      "expected_detail": "reject",
+      "actual_detail": "['UNSUPPORTED_VERSION']",
+      "notes": "",
+      "errors": [
+        "UNSUPPORTED_VERSION"
+      ],
+      "pass": true
+    },
+    {
+      "id": "N-v2",
+      "part": "N",
+      "name": "Unsupported document version 2",
+      "expected_outcome": "BLOCKED",
+      "actual_outcome": "BLOCKED",
+      "expected_detail": "reject",
+      "actual_detail": "['UNSUPPORTED_VERSION']",
+      "notes": "",
+      "errors": [
+        "UNSUPPORTED_VERSION"
+      ],
+      "pass": true
+    },
+    {
+      "id": "O1",
+      "part": "O",
+      "name": "Commitment string as identifier",
+      "expected_outcome": "BLOCKED",
+      "actual_outcome": "BLOCKED",
+      "expected_detail": "IDENTIFIER_MISMATCH",
+      "actual_detail": "['IDENTIFIER_MISMATCH']",
+      "notes": "",
+      "errors": [
+        "IDENTIFIER_MISMATCH"
+      ],
+      "pass": true
+    },
+    {
+      "id": "O2",
+      "part": "O",
+      "name": "scriptPubKey confused as root fingerprint",
+      "expected_outcome": "BLOCKED",
+      "actual_outcome": "BLOCKED",
+      "expected_detail": "mismatch",
+      "actual_detail": "['ROOT_KEY_MISMATCH']",
+      "notes": "",
+      "errors": [
+        "ROOT_KEY_MISMATCH"
+      ],
+      "pass": true
+    },
+    {
+      "id": "P1",
+      "part": "P",
+      "name": "Huge requested identifier",
+      "expected_outcome": "BLOCKED",
+      "actual_outcome": "BLOCKED",
+      "expected_detail": "IDENTIFIER_MISMATCH quickly",
+      "actual_detail": "['IDENTIFIER_MISMATCH']",
+      "notes": "No explicit size caps in verifier \u2014 INFORMATIONAL gap.",
+      "errors": [],
+      "pass": true
+    },
+    {
+      "id": "P2",
+      "part": "P",
+      "name": "1000 methods encode without explosion",
+      "expected_outcome": "AMBIGUOUS",
+      "actual_outcome": "AMBIGUOUS",
+      "expected_detail": "should eventually be size-capped",
+      "actual_detail": "encoded_len=6151",
+      "notes": "Reference allows large lists \u2014 recommend MAX_METHODS.",
+      "errors": [],
+      "pass": true
+    },
+    {
+      "id": "Q1",
+      "part": "Q",
+      "name": "Bitcoin anchor privacy disclosure",
+      "expected_outcome": "ACCEPTED",
+      "actual_outcome": "ACCEPTED",
+      "expected_detail": "On-chain commitment enables correlation if preimage known",
+      "actual_detail": "OP_RETURN stores H(domain||identifier||KROOT). Anyone who knows those inputs can scan chain for the commitment. Does not put cleartext email on-chain, but is linkable.",
+      "notes": "Privacy NOT PROVIDED as a hard guarantee.",
+      "errors": [],
+      "pass": true
+    },
+    {
+      "id": "R1",
+      "part": "R",
+      "name": "Cryptographic verify \u2260 human trust",
+      "expected_outcome": "ACCEPTED",
+      "actual_outcome": "ACCEPTED",
+      "expected_detail": "trust_state=first_seen even when verified",
+      "actual_detail": "trust=first_seen verified=True",
+      "notes": "",
+      "errors": [],
+      "pass": true
+    },
+    {
+      "id": "S1",
+      "part": "S",
+      "name": "DNS+hosting without KROOT",
+      "expected_outcome": "DETECTED",
+      "actual_outcome": "DETECTED",
+      "expected_detail": "Cannot match Bitcoin anchor with new KROOT",
+      "actual_detail": "See A2 \u2014 BLOCKED/DETECTED",
+      "notes": "",
+      "errors": [],
+      "pass": true
+    },
+    {
+      "id": "S2",
+      "part": "S",
+      "name": "Hosting + KSIGN compromise",
+      "expected_outcome": "ACCEPTED",
+      "actual_outcome": "ACCEPTED",
+      "expected_detail": "Can change payment state until revocation",
+      "actual_detail": "See F-B1",
+      "notes": "",
+      "errors": [],
+      "pass": true
+    },
+    {
+      "id": "S3",
+      "part": "S",
+      "name": "DNS + stale IdentityDocument",
+      "expected_outcome": "ACCEPTED",
+      "actual_outcome": "ACCEPTED",
+      "expected_detail": "freshness unknown; payment may diverge \u2192 binding mismatch if DNS changed",
+      "actual_detail": "If DNS payment matches stale document, ACCEPTED. If DNS moved on but document is old, PAYMENT_BINDING_MISMATCH (DETECTED).",
+      "notes": "Composition depends on whether DNS and document stay consistent.",
+      "errors": [],
+      "pass": true
+    },
+    {
+      "id": "S8",
+      "part": "S",
+      "name": "Valid identity + wrong payment",
+      "expected_outcome": "DETECTED",
+      "actual_outcome": "DETECTED",
+      "expected_detail": "PAYMENT_BINDING_MISMATCH",
+      "actual_detail": "['PAYMENT_BINDING_MISMATCH']",
+      "notes": "",
+      "errors": [
+        "PAYMENT_BINDING_MISMATCH"
+      ],
+      "pass": true
+    },
+    {
+      "id": "S7",
+      "part": "S",
+      "name": "Valid payment/identity proof for wrong requested name",
+      "expected_outcome": "BLOCKED",
+      "actual_outcome": "BLOCKED",
+      "expected_detail": "IDENTIFIER_MISMATCH",
+      "actual_detail": "['IDENTIFIER_MISMATCH']",
+      "notes": "",
+      "errors": [
+        "IDENTIFIER_MISMATCH"
+      ],
+      "pass": true
+    },
+    {
+      "id": "S5",
+      "part": "S",
+      "name": "KROOT + new KSIGN + new payment",
+      "expected_outcome": "ACCEPTED",
+      "actual_outcome": "ACCEPTED",
+      "expected_detail": "Indistinguishable from legitimate owner",
+      "actual_detail": "See F-C1",
+      "notes": "",
+      "errors": [],
+      "pass": true
+    },
+    {
+      "id": "S6",
+      "part": "S",
+      "name": "Old anchor + new IdentityDocument (same KROOT)",
+      "expected_outcome": "ACCEPTED",
+      "actual_outcome": "ACCEPTED",
+      "expected_detail": "Candidate A allows payment/KSIGN evolution without new anchor",
+      "actual_detail": "By design \u2014 continuity of KROOT",
+      "notes": "",
+      "errors": [],
+      "pass": true
+    }
+  ],
+  "findings": [
+    {
+      "id": "F-B1",
+      "severity": "HIGH",
+      "attack": "KSIGN compromise",
+      "precondition": "Attacker possesses current signing subkey",
+      "steps": [
+        "Steal KSIGN",
+        "Publish new IdentityDocument with attacker payment_hash",
+        "Signature verifies; KROOT\u2192KSIGN binding still valid",
+        "Bitcoin anchor unchanged (Candidate A)"
+      ],
+      "expected": "Detect unauthorized payment change without KROOT",
+      "actual": "ACCEPTED if signed by authorized KSIGN \u2014 protocol treats as legitimate rotation of payment state",
+      "outcome": "ACCEPTED",
+      "impact": "Attacker can redirect payment binding until KSIGN revoked / rotated by KROOT offline",
+      "mitigation": "Short KSIGN validity; revoke compromised KSIGN; offline KROOT authorizes replacement; monitor published documents",
+      "classification": "known_limitation"
+    },
+    {
+      "id": "F-B5",
+      "severity": "MEDIUM",
+      "attack": "Missing revocation in Proof Bundle",
+      "precondition": "KSIGN/KROOT revoked elsewhere but proof omits revocation",
+      "steps": [
+        "Revoke key",
+        "Serve old certificate without revocation",
+        "Verify"
+      ],
+      "expected": "Reject revoked keys",
+      "actual": "AMBIGUOUS without mandatory revocation channel",
+      "outcome": "AMBIGUOUS",
+      "impact": "Stale keys may verify until revocation is fetched",
+      "mitigation": "Require revocation status in Proof Bundle or transparency log (M6)",
+      "classification": "needs_change"
+    },
+    {
+      "id": "F-C1",
+      "severity": "CRITICAL",
+      "attack": "Full KROOT compromise",
+      "precondition": "Attacker has KROOT private key matching Bitcoin anchor",
+      "steps": [
+        "Steal KROOT",
+        "Create KSIGN_attacker bound by KROOT",
+        "Publish IdentityDocument for attacker payment",
+        "Commitment still matches historical Bitcoin anchor"
+      ],
+      "expected": "Protocol cannot cryptographically distinguish attacker from owner",
+      "actual": "ACCEPTED \u2014 same as legitimate owner operations",
+      "outcome": "ACCEPTED",
+      "impact": "Complete identity takeover until recovery/revocation published and checked",
+      "mitigation": "Offline KROOT; escrowed revocation; recovery key (OPEN for M6)",
+      "classification": "out_of_threat_model"
+    },
+    {
+      "id": "F-D1",
+      "severity": "HIGH",
+      "attack": "Rollback / stale IdentityDocument",
+      "precondition": "Attacker can serve older still-valid document",
+      "steps": [
+        "Publish sequence N+1",
+        "Serve sequence N to new wallets"
+      ],
+      "expected": "Detect staleness",
+      "actual": "ACCEPTED cryptographically; freshness=unknown",
+      "outcome": "ACCEPTED",
+      "impact": "Users may pay to outdated payment binding",
+      "mitigation": "Transparency log / freshness layer (M6); UI must show FRESHNESS UNKNOWN",
+      "classification": "known_limitation"
+    },
+    {
+      "id": "F-J4",
+      "severity": "INFORMATIONAL",
+      "attack": "Detached block header / wrong chain",
+      "precondition": "Verifier called with header_context=untrusted",
+      "steps": [
+        "Present Merkle-valid header not on wallet's best chain",
+        "Observe header_context and anchor_included"
+      ],
+      "expected": "header_context=untrusted; anchor_included=false",
+      "actual": "Mode B returns untrusted; does not claim best chain",
+      "outcome": "AMBIGUOUS",
+      "impact": "Wallets must not treat isolated proofs as chain-confirmed",
+      "mitigation": "Pass header_context=trusted only after wallet header sync",
+      "classification": "known_limitation"
+    },
+    {
+      "id": "F-L1",
+      "severity": "LOW",
+      "attack": "Multiple anchors / ambiguous currentness",
+      "precondition": "Same commitment published in multiple txs/blocks",
+      "steps": [
+        "Publish commitment twice",
+        "Present either proof"
+      ],
+      "expected": "Defined selection rule",
+      "actual": "AMBIGUOUS \u2014 any valid inclusion works",
+      "outcome": "AMBIGUOUS",
+      "impact": "Low for Candidate A (same KROOT); confusing UX if multiple proofs diverge in metadata",
+      "mitigation": "Document 'any valid inclusion suffices'; optional prefer deepest confirmation",
+      "classification": "known_limitation"
+    },
+    {
+      "id": "F-P1",
+      "severity": "LOW",
+      "attack": "Resource exhaustion via huge proofs",
+      "precondition": "Attacker sends oversized CBOR/proof",
+      "steps": [
+        "Send megabyte IdentityDocument",
+        "Force parse"
+      ],
+      "expected": "Hard size limits",
+      "actual": "No explicit caps in reference verifier",
+      "outcome": "AMBIGUOUS",
+      "impact": "DoS risk for naive implementations",
+      "mitigation": "Enforce max sizes on document, methods list, merkle branch, raw_tx",
+      "classification": "needs_change"
+    },
+    {
+      "id": "F-Q1",
+      "severity": "INFORMATIONAL",
+      "attack": "Blockchain correlation of identity commitments",
+      "precondition": "Observer knows domain/identifier/KROOT candidates",
+      "steps": [
+        "Brute or know inputs",
+        "Scan OP_RETURN for matching commitment"
+      ],
+      "expected": "Unlinkability",
+      "actual": "Linkable by design once inputs known",
+      "outcome": "ACCEPTED",
+      "impact": "Public chronology of identity anchoring",
+      "mitigation": "Optional delay; avoid anchoring highly sensitive identifiers; document tradeoff",
+      "classification": "known_limitation"
+    }
+  ],
+  "summary": {
+    "total": 70,
+    "pass": 70,
+    "fail": 0,
+    "by_outcome": {
+      "BLOCKED": 32,
+      "DETECTED": 19,
+      "ACCEPTED": 14,
+      "AMBIGUOUS": 5
+    }
+  }
+}
