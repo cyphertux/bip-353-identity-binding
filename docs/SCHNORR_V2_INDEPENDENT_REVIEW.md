@@ -4,8 +4,8 @@
 
 | Field | Value |
 |-------|--------|
-| Frozen snapshot tag | `schnorr-v2-experimental-1` |
-| Tag commit | unchanged (not moved) |
+| Historical freeze tag | `schnorr-v2-experimental-1` (unchanged) |
+| Reconciled snapshot | `schnorr-v2-experimental-2` (Phase 9) |
 | Independent tree | `independent/schnorr_v2/` |
 | Reference tree | `reference/schnorr_v2/` (not imported) |
 
@@ -36,20 +36,20 @@
 | Block header | hand (merkle_root field) | V1 BlockHeader | **YES** |
 | Dual-binding | hand full path | `bitcoin_proof.py` | **YES** |
 | Negative tests | all INVALID / BTC-INVALID | harness | **YES** |
-| Full vectors | 14/14 | fixtures | **YES** (see ambiguity) |
+| Full vectors | all current `V2-*.json` | fixtures | **YES** (see legacy note) |
 
-## Vector results
+## Phase 8 finding (preserved)
 
-All frozen `vectors/schnorr/V2-*.json` files: **PASS** under independent verification
-(`independent/schnorr_v2/independent-results.json` generated locally; not required in git).
+`V2-VALID-001.expected.identity_anchored=true` is a **LEGACY FROZEN** field from
+`schnorr-v2-experimental-1` (pre–F-S1). Independent verification correctly yields
+`identity_anchored=false` without `bitcoin_proof`. Phase 8 remains **PASS**.
 
-## Ambiguities
+Phase 9 adds:
 
-1. **`V2-VALID-001.expected.identity_anchored`**
-   - Phase-4 JSON still records `identity_anchored: true` with only a logical `op_return`.
-   - Mini-spec § dual-binding (Phase 6.1) requires a full `bitcoin_proof` for `identity_anchored=true`.
-   - Independent verifier: crypto checks **PASS**; `identity_anchored=false` without BTC proof.
-   - **No silent change** to the frozen vector JSON (snapshot immutability).
+* `V2-VALID-002` — dual-binding → `identity_anchored=true`
+* `V2-VALID-003` — non-anchored → `identity_anchored=false`
+
+See [`SCHNORR_V2_VECTOR_RECONCILIATION.md`](SCHNORR_V2_VECTOR_RECONCILIATION.md).
 
 ## Divergences
 
@@ -57,7 +57,7 @@ All frozen `vectors/schnorr/V2-*.json` files: **PASS** under independent verific
 
 ## Security interpretation
 
-Independent reproduction: **PASS** (cryptographic / protocol results).
+Independent reproduction: **PASS**.
 
 Still explicitly:
 
@@ -71,3 +71,4 @@ Still explicitly:
 ## Conclusion
 
 V2 has been independently reproduced against the frozen experimental snapshot.
+The reconciled vector set explicitly separates `identity_verified` from `identity_anchored`.

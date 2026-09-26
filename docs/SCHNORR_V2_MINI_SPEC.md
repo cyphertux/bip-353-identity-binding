@@ -343,7 +343,14 @@ A logical OP_RETURN script check alone MUST NOT set `identity_anchored`.
 
 Header best-chain / PoW validation remains wallet-local (`header_context`); absolute finality is **NOT PROVIDED**.
 
-Reference: `reference/schnorr_v2/bitcoin_proof.py`. Fixtures: `vectors/schnorr/V2-BTC-*`.
+Reference: `reference/schnorr_v2/bitcoin_proof.py`. Fixtures: `vectors/schnorr/V2-BTC-*`,
+`V2-VALID-002` (anchored), `V2-VALID-003` (non-anchored).
+
+**Vector note (Phase 9):** `V2-VALID-001` is a **LEGACY FROZEN** fixture from
+`schnorr-v2-experimental-1`. Its JSON field `expected.identity_anchored=true` predates
+F-S1 dual-binding and MUST NOT be rewritten. Hardened verification without
+`bitcoin_proof` yields `identity_anchored=false`. See
+[`SCHNORR_V2_VECTOR_RECONCILIATION.md`](SCHNORR_V2_VECTOR_RECONCILIATION.md).
 
 ---
 
@@ -443,7 +450,9 @@ An attacker who alters DNS-resolved destinations or IdentityDocument fields cann
 
 | ID | Intent |
 |----|--------|
-| `V2-VALID-001` | Valid doc + binding + payment + anchor |
+| `V2-VALID-001` | **LEGACY FROZEN** (pre-F-S1 expected.identity_anchored); crypto + logical OP_RETURN |
+| `V2-VALID-002` | Valid identity + dual-binding → `identity_anchored=true` |
+| `V2-VALID-003` | Valid identity, no BTC proof → `identity_anchored=false` |
 | `V2-INVALID-001` | Signing key replaced without new binding |
 | `V2-INVALID-002` | IdentityDocument mutated after signature |
 | `V2-INVALID-003` | Anchor commitment for a different `root_pubkey` |

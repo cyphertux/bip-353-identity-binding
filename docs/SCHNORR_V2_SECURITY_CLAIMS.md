@@ -76,6 +76,11 @@ Do not read **TESTED** as “production-audited” or “universally proven.”
 
 Stack: Node.js + `@noble/curves` / `@noble/hashes` (not Python/embit).
 
+Phase 8 discovered the `V2-VALID-001` / dual-binding expectation drift; that detection
+is preserved as a positive independence result. Phase 9 reconciles with new vectors
+(`V2-VALID-002`, `V2-VALID-003`) without rewriting `schnorr-v2-experimental-1` —
+see [`SCHNORR_V2_VECTOR_RECONCILIATION.md`](SCHNORR_V2_VECTOR_RECONCILIATION.md).
+
 Still explicitly:
 
 * No formal proof  

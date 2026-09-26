@@ -34,15 +34,18 @@ Do **not** treat this branch as production-ready, standard, accepted BIP, or a d
 
 ## Experimental Freeze
 
-This branch is frozen as an **experimental snapshot**.
+This branch carries **experimental snapshots** (non-normative):
 
-The freeze means that the documented implementation and vectors are
-**reproducible and internally consistent** at tag `schnorr-v2-experimental-1`.
+| Tag | Role |
+|-----|------|
+| `schnorr-v2-experimental-1` | Historical freeze (Phase 7) — immutable |
+| `schnorr-v2-experimental-2` | Reconciled vectors/spec alignment (Phase 9) |
 
-It does **NOT** mean that the protocol is standardized, production-ready,
-security-audited, or an official BIP.
+A freeze means the tagged tree is **reproducible**. It does **NOT** mean the
+protocol is standardized, production-ready, security-audited, or an official BIP.
 
-See [`docs/SCHNORR_V2_SECURITY_CLAIMS.md`](docs/SCHNORR_V2_SECURITY_CLAIMS.md).
+See [`docs/SCHNORR_V2_SECURITY_CLAIMS.md`](docs/SCHNORR_V2_SECURITY_CLAIMS.md) and
+[`docs/SCHNORR_V2_VECTOR_RECONCILIATION.md`](docs/SCHNORR_V2_VECTOR_RECONCILIATION.md).
 
 ---
 
@@ -239,14 +242,18 @@ Directory: [`vectors/schnorr/`](vectors/schnorr/)
 
 | Vector | Intent |
 |--------|--------|
-| `V2-VALID-001` | Full binding + payment + document + anchor verifies |
+| `V2-VALID-001` | **LEGACY FROZEN** (`schnorr-v2-experimental-1`); crypto OK; historical `expected.identity_anchored` |
+| `V2-VALID-002` | Dual-binding → `identity_anchored=true` |
+| `V2-VALID-003` | Crypto valid, no BTC proof → `identity_anchored=false` |
 | `V2-INVALID-001` | Signing key substituted → `INVALID_SUBKEY_BINDING` |
 | `V2-INVALID-002` | Document mutated after sign → `INVALID_IDENTITY_SIGNATURE` |
 | `V2-INVALID-003` | Wrong-root anchor → `ANCHOR_MISMATCH` |
 | `V2-INVALID-004` | PaymentBinding mutated → `PAYMENT_BINDING_MISMATCH` |
 | `V2-INVALID-005` | Wrong TaggedHash tag → `INVALID_IDENTITY_SIGNATURE` |
+| `V2-BTC-*` | Dual-binding Bitcoin proof matrix |
 
-Checksums: [`vectors/schnorr/SCHNORR_V2_CHECKSUMS.txt`](vectors/schnorr/SCHNORR_V2_CHECKSUMS.txt)  
+Historical checksums: [`vectors/schnorr/SCHNORR_V2_CHECKSUMS.txt`](vectors/schnorr/SCHNORR_V2_CHECKSUMS.txt)  
+Reconciled checksums: [`vectors/schnorr/SCHNORR_V2_RECONCILED_CHECKSUMS.txt`](vectors/schnorr/SCHNORR_V2_RECONCILED_CHECKSUMS.txt)  
 (Independent of [`vectors/M7_CHECKSUMS.txt`](vectors/M7_CHECKSUMS.txt).)
 
 ### Verify frozen fixtures (does **not** call the generator)

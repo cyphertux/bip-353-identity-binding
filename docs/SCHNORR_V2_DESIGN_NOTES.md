@@ -331,7 +331,11 @@ That file is **EXPERIMENTAL / NON-NORMATIVE / NOT FROZEN / NOT PART OF V1**.
 
 **No further protocol development** unless a new experimental phase is explicitly opened.
 
-Snapshot tag (local): `schnorr-v2-experimental-1`  
+Snapshot tags (local):
+
+* `schnorr-v2-experimental-1` — historical freeze (immutable)
+* `schnorr-v2-experimental-2` — reconciled vectors (Phase 9)
+
 Meaning: reproducible experimental state — **not** a standard, **not** production-ready.
 
 

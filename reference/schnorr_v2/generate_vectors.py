@@ -307,6 +307,7 @@ def invalid_005(b: dict[str, Any]) -> dict[str, Any]:
 
 
 def assert_valid_verifies(b: dict[str, Any]) -> None:
+    # Logical OP_RETURN alone: identity/payment only (F-S1 / Phase 9)
     result = verify(
         root_pubkey=b["root"].pubkey,
         signing_pubkey=b["signing"].pubkey,
@@ -318,7 +319,8 @@ def assert_valid_verifies(b: dict[str, Any]) -> None:
         now=NOW,
     )
     assert result["identity_verified"] and result["payment_verified"]
-    assert result["identity_anchored"] and result["continuity_verified"]
+    assert result["identity_anchored"] is False
+    assert result["continuity_verified"] is False
 
 
 def generate_all() -> list[Path]:

@@ -122,7 +122,57 @@
         "signed_cbor_match": true,
         "payment_in_doc": true,
         "anchor_commitment": true,
-        "op_return": true
+        "op_return": true,
+        "dual_binding": false
+      },
+      "error": null,
+      "actual": {
+        "identity_verified": true,
+        "payment_verified": true,
+        "identity_anchored": false,
+        "continuity_verified": false
+      },
+      "legacy_frozen": true,
+      "result": "pass"
+    },
+    {
+      "id": "V2-VALID-002",
+      "checks": {
+        "binding_hash": true,
+        "binding_sig": true,
+        "binding_cbor_roundtrip": true,
+        "payment_hash": true,
+        "identity_hash": true,
+        "identity_sig": true,
+        "signed_cbor_match": true,
+        "payment_in_doc": true,
+        "anchor_commitment": true,
+        "op_return": true,
+        "dual_binding": true
+      },
+      "error": null,
+      "actual": {
+        "identity_verified": true,
+        "payment_verified": true,
+        "identity_anchored": true,
+        "continuity_verified": true
+      },
+      "result": "pass"
+    },
+    {
+      "id": "V2-VALID-003",
+      "checks": {
+        "binding_hash": true,
+        "binding_sig": true,
+        "binding_cbor_roundtrip": true,
+        "payment_hash": true,
+        "identity_hash": true,
+        "identity_sig": true,
+        "signed_cbor_match": true,
+        "payment_in_doc": true,
+        "anchor_commitment": true,
+        "op_return": true,
+        "dual_binding": false
       },
       "error": null,
       "actual": {
@@ -135,11 +185,11 @@
     }
   ],
   "ambiguities": [
-    "V2-VALID-001: expected.identity_anchored=true in Phase-4 JSON, but mini-spec dual-binding requires bitcoin_proof; independent sets identity_anchored=false"
+    "V2-VALID-001: LEGACY FROZEN VECTOR (schnorr-v2-experimental-1); expected.identity_anchored=true is historical/pre-F-S1; hardened verify yields identity_anchored=false"
   ],
   "divergences": [],
   "summary": {
-    "vector_pass": 14,
+    "vector_pass": 16,
     "vector_fail": 0,
     "fail_ids": [],
     "cbor_pass": true
