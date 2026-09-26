@@ -136,6 +136,15 @@ See [`SCHNORR_V2_PUBLICATION.md`](SCHNORR_V2_PUBLICATION.md) and the repository 
 
 ---
 
+## External red-team simulation (Phase 16)
+
+See [`SCHNORR_V2_EXTERNAL_REDTEAM.md`](SCHNORR_V2_EXTERNAL_REDTEAM.md).
+
+Hostile review of bounded claims: no CRITICAL/HIGH/MEDIUM falsification of stated
+security claims; residual LOW/INFO documentation and implementation notes only.
+
+---
+
 ## Reproducibility (lab)
 
 ```bash
