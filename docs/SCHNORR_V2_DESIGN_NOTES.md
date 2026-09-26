@@ -6,13 +6,14 @@
 |-------|--------|
 | Working title | Experimental Schnorr Identity Root |
 | Branch | `experiment/schnorr-identity-v2` |
-| Phase | 1 — Inventory & open questions |
-| Status | Research notes only |
+| Phase | 2 — Mini-spec decisions recorded |
+| Status | Design notes + pointer to experimental mini-spec |
 | Normative authority | **None.** V1 remains `BIP-XXX.md` / `PROTOCOL_FREEZE_V1.md` |
+| Decisions document | [`docs/SCHNORR_V2_MINI_SPEC.md`](SCHNORR_V2_MINI_SPEC.md) (**EXPERIMENTAL**, not frozen) |
 
-This document does **not** define a protocol version 2.  
-It does **not** freeze wire formats, hashes, tags, or cryptography.  
-It explores whether a BIP-340 Schnorr identity root can reproduce the **necessary guarantees** of V1 with a simpler architecture.
+This document does **not** define a normative protocol version 2.  
+Phase 1 captured inventory and open questions.  
+Phase 2 **experimental decisions** live in `SCHNORR_V2_MINI_SPEC.md` — still **non-normative** and **not frozen**.
 
 Schnorr is **not** asserted to be automatically “better” than OpenPGP.  
 Trade-offs (ecosystem interop vs wallet-native primitives) remain open.
@@ -318,13 +319,24 @@ This phase / experiment does **not** aim to:
 
 ---
 
-## 9. Next Phase
+## 9. Phase 2 decision pointer
 
-**Phase 2 — Mini-spec decisions** (still non-implementing until decisions are written down):
+Phase 2 decisions (root key, Option B binding, tags, IdentityDocument fields, payment hash tagging, anchor Option A, continuity, failures, claim matrix, MVP scenario, future vector IDs) are recorded in:
 
-1. Choose provisional answers for Q1–Q5 (root object, binding body, signature input, anchor option, separators/tags).
-2. Write a short **experimental** decision list (still marked non-normative until deliberately frozen).
-3. Only then consider a tiny reference stub + new vector directory **outside** V1 paths.
+**[`docs/SCHNORR_V2_MINI_SPEC.md`](SCHNORR_V2_MINI_SPEC.md)**
+
+That file is **EXPERIMENTAL / NON-NORMATIVE / NOT FROZEN / NOT PART OF V1**.
+
+### Next Phase
+
+**Phase 3 — Minimal reference implementation** (code + new paths only; never modify V1):
+
+1. BIP-340 helpers + TaggedHash.
+2. SubkeyBinding sign/verify (Option B).
+3. IdentityDocument sign/verify.
+4. Payment hash via `TAG_PAYMENT`.
+5. Anchor commitment via `TAG_ANCHOR`.
+6. Later: `V2-VALID-001` / `V2-INVALID-00x` under a **new** directory (not `vectors/` V1 trees).
 
 **Success criterion for the overall experiment:**  
 Show that a Schnorr construction can reproduce V1’s *necessary* verifier guarantees (payment binding under a root; optional historical continuity) with less parsing surface — without pretending the hard problems (freshness, root theft, first contact) disappeared.
