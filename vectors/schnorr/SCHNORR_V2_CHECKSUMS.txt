@@ -3,6 +3,14 @@
 # Format: <sha256_hex>  <path-relative-to-repo-root>
 # Do not modify vectors/M7_CHECKSUMS.txt
 
+4f7618e1d283b67f27700dde7c3d84afa65ea519f1dfb1fcdd6c1a2148499c45  vectors/schnorr/V2-BTC-INVALID-001.json
+9bb16e63a24075ecd212f1a97738982fcc2a7ab450c2c1442d57f1cafb655bf7  vectors/schnorr/V2-BTC-INVALID-002.json
+e7eb8d3ab4f6333ce7e955e5686b5aa0d77c9a1e9ce53155395dc7f4b59a8c12  vectors/schnorr/V2-BTC-INVALID-003.json
+721a0922bce23319311cab62439c5a5ab08cb7a6390f72cb0977ea766207313d  vectors/schnorr/V2-BTC-INVALID-004.json
+36b1bf156eeb966df38885d937f2ad8af8bdefe1cc4ec41cf27a42988631b860  vectors/schnorr/V2-BTC-INVALID-005.json
+9bbce0db3e347bf722e3f260ac7d88f080266857dcd5f8b906062daea0c9ff29  vectors/schnorr/V2-BTC-INVALID-006.json
+d549c40955f9f6199bd10ac5f51b67244c20c4864da7ac64d6dc2a7f4126a0bc  vectors/schnorr/V2-BTC-INVALID-007.json
+8f27a74b31eec2bcb60ccb021f9015541310e20943abddf1b5b7b21e4f416d7e  vectors/schnorr/V2-BTC-VALID-001.json
 6d3591252640b86cf527fdc64be99a64567d95c4d7e6fba9d430fe3d4b82727a  vectors/schnorr/V2-INVALID-001.json
 333d2e94376e74ecb68f75e5886b6b9339d35cde3817d23d7b183e23ef7ccc67  vectors/schnorr/V2-INVALID-002.json
 b075509113c2a8fb71c4830c9a2aebedfaf5548877dddfb572603b9a9786c994  vectors/schnorr/V2-INVALID-003.json

@@ -1,0 +1,26 @@
+{
+  "id": "V2-BTC-INVALID-007",
+  "description": "Two matching B353S2 outputs in one transaction.",
+  "root_pubkey": "1b84c5567b126440995d3ed5aaba0565d71e1834604819ff9c17f5e9d5dd078f",
+  "domain": "example.test",
+  "identifier": "alice@example.test",
+  "anchor_commitment": "c7334a150e5d436e6b62fcf6cf7fb9e6853cda44c26c4187f9f6529d24372768",
+  "bitcoin_proof": {
+    "chain": "regtest",
+    "raw_tx": "02000000010000000000000000000000000000000000000000000000000000000000000000ffffffff00ffffffff020000000000000000296a2742333533533201c7334a150e5d436e6b62fcf6cf7fb9e6853cda44c26c4187f9f6529d243727680000000000000000296a2742333533533201c7334a150e5d436e6b62fcf6cf7fb9e6853cda44c26c4187f9f6529d2437276800000000",
+    "txid": "c2a9caa4a0a7c5b9a8e41f87bc95ba01d01b1db18794be1be43b0756b8875e10",
+    "txid_internal": "105e87b856073be41bbe9487b11d1bd001ba95bc871fe4a8b9c5a7a0a4caa9c2",
+    "block_header": "000000200000000000000000000000000000000000000000000000000000000000000000105e87b856073be41bbe9487b11d1bd001ba95bc871fe4a8b9c5a7a0a4caa9c200f15365ffff7f2000000000",
+    "tx_index": 0,
+    "merkle_branch": [],
+    "commitment": "c7334a150e5d436e6b62fcf6cf7fb9e6853cda44c26c4187f9f6529d24372768",
+    "block_height": 0,
+    "header_context": "trusted",
+    "op_return_tag": "B353S2",
+    "op_return_version": 1
+  },
+  "expected": {
+    "result": "invalid",
+    "error_code": "AMBIGUOUS_B353S2_OUTPUTS"
+  }
+}

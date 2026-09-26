@@ -57,7 +57,12 @@ NOT FOR PRODUCTION
 
 ```bash
 PYTHONPATH=. reference/schnorr_v2/.venv/bin/python test/schnorr_v2/test_vectors.py
+PYTHONPATH=. reference/schnorr_v2/.venv/bin/python test/schnorr_v2/test_bitcoin_proof.py
 ```
+
+Note: Phase 4 `V2-VALID-001` verifies identity/payment cryptography and logical OP_RETURN
+consistency. **`identity_anchored=true` requires a dual-binding `bitcoin_proof`**
+(see `V2-BTC-VALID-001`).
 
 The test **loads frozen JSON** from this directory and must **not** call
 `reference.schnorr_v2.generate_vectors`.

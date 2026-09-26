@@ -43,8 +43,9 @@ def _verify_from_vector(vec: dict, *, opreturn: bytes | None) -> dict:
         binding_signature=_unhex(vec["subkey_binding_signature"]),
         identity_document=document,
         payment_binding=payment,
-        opreturn_script=opreturn,
         now=int(vec["now"]),
+        opreturn_script=opreturn,
+        bitcoin_proof=None,
     )
 
 
@@ -86,9 +87,21 @@ def test_valid_001() -> None:
     result = _verify_from_vector(vec, opreturn=_unhex(vec["op_return"]))
     assert result["identity_verified"] is True
     assert result["payment_verified"] is True
-    assert result["identity_anchored"] is True
-    assert result["continuity_verified"] is True
-    print("V2-VALID-001: PASS")
+    # Phase 4 fixtures are logical-only: dual-binding required for identity_anchored (F-S1)
+    assert result["identity_anchored"] is False
+    assert result["continuity_verified"] is False
+    # Logical OP_RETURN in the fixture still matches recomputed commitment
+    from reference.schnorr_v2.anchor import verify_anchor_logical
+    from reference.schnorr_v2.key import keypair_from_secret
+
+    root = keypair_from_secret(bytes.fromhex(vec["root_private_key"]))
+    verify_anchor_logical(
+        domain=vec["domain"],
+        identifier=vec["identifier"],
+        root_pubkey=root.pubkey,
+        opreturn_script=_unhex(vec["op_return"]),
+    )
+    print("V2-VALID-001: PASS (crypto + logical OP_RETURN; anchored=false without BTC proof)")
 
 
 def _expect_error(name: str, code: str, *, opreturn_field: str | None = "op_return") -> None:

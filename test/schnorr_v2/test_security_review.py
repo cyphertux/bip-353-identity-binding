@@ -351,9 +351,9 @@ def main() -> int:
     for p in Path("reference/schnorr_v2").glob("*.py"):
         text += p.read_text(encoding="utf-8")
     record(
-        "gap-no-raw-tx-merkle",
-        ("raw_tx" not in text) and ("merkle" not in text.lower()),
-        "expected: dual-binding not implemented in schnorr_v2",
+        "dual-binding-present",
+        ("raw_tx" in text) and ("merkle" in text.lower()) and ("B353S2" in text or "b353s2" in text.lower()),
+        "F-S1 dual-binding modules present",
     )
 
     # Happy path still works
@@ -364,13 +364,48 @@ def main() -> int:
         binding_signature=bsig,
         identity_document=doc,
         payment_binding=pay,
-        opreturn_script=op,
         now=NOW,
+        opreturn_script=op,
+        bitcoin_proof=None,
     )
     record(
-        "happy-path",
+        "happy-path-logical-not-anchored",
+        out["identity_verified"]
+        and out["payment_verified"]
+        and out["identity_anchored"] is False,
+    )
+
+    from reference.schnorr_v2.bitcoin_proof import (
+        build_minimal_legacy_tx,
+        proof_from_parts,
+        proof_to_jsonable,
+    )
+
+    raw = build_minimal_legacy_tx(opreturn_script=op)
+    from reference.schnorr_v2.anchor import anchor_commitment, build_anchor_message
+
+    commitment = anchor_commitment(
+        build_anchor_message(
+            domain="example.test",
+            identifier="alice@example.test",
+            root_pubkey=root.pubkey,
+        )
+    )
+    btc = proof_to_jsonable(proof_from_parts(raw_tx=raw, expected_commitment=commitment))
+    out2 = verify(
+        root_pubkey=root.pubkey,
+        signing_pubkey=signing.pubkey,
+        binding_body=body,
+        binding_signature=bsig,
+        identity_document=doc,
+        payment_binding=pay,
+        now=NOW,
+        bitcoin_proof=btc,
+    )
+    record(
+        "happy-path-dual-binding",
         all(
-            out[k]
+            out2[k]
             for k in (
                 "identity_verified",
                 "payment_verified",

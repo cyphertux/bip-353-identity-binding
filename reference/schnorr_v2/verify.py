@@ -8,6 +8,11 @@ from reference.schnorr_v2 import anchor as anchor_mod
 from reference.schnorr_v2 import binding as binding_mod
 from reference.schnorr_v2 import identity as identity_mod
 from reference.schnorr_v2 import payment as payment_mod
+from reference.schnorr_v2.bitcoin_proof import (
+    BitcoinProofError,
+    proof_from_jsonable,
+    verify_bitcoin_anchor_proof_v2,
+)
 from reference.schnorr_v2.key import KeyErrorV2, validate_xonly_pubkey
 
 
@@ -25,10 +30,18 @@ def verify(
     binding_signature: bytes,
     identity_document: dict[int, Any],
     payment_binding: dict[int, Any],
-    opreturn_script: bytes | None,
     now: int,
+    bitcoin_proof: dict[str, Any] | None = None,
+    opreturn_script: bytes | None = None,
 ) -> dict[str, bool | list[str]]:
-    """Return claim flags; raise VerifyError on hard failure."""
+    """Return claim flags; raise VerifyError on hard failure.
+
+    ``identity_anchored`` / ``continuity_verified`` require a full dual-binding
+    ``bitcoin_proof`` (raw_tx → txid → Merkle → header AND raw_tx → B353S2).
+
+    A lone ``opreturn_script`` is accepted only as a logical consistency check
+    helper and does **not** set ``identity_anchored`` (F-S1 hardening).
+    """
     errors: list[str] = []
 
     try:
@@ -40,7 +53,6 @@ def verify(
     except KeyErrorV2 as exc:
         raise VerifyError("INVALID_SIGNING_PUBKEY", str(exc)) from exc
 
-    # Binding
     try:
         binding_mod.verify_binding(
             root_pubkey=root_pubkey,
@@ -62,12 +74,10 @@ def verify(
     if identity_document.get(identity_mod.K_SIGNING) != signing_pubkey:
         raise VerifyError("INVALID_SUBKEY_BINDING")
 
-    # Payment
     expected_hash = payment_mod.payment_hash_v2(payment_binding)
     if identity_document.get(identity_mod.K_PAYMENT_HASH) != expected_hash:
         raise VerifyError("PAYMENT_BINDING_MISMATCH")
 
-    # Identity signature + fields
     try:
         identity_mod.verify_identity_signature(identity_document)
     except identity_mod.IdentityError as exc:
@@ -84,8 +94,7 @@ def verify(
     identity_verified = True
     payment_verified = True
 
-    identity_anchored = False
-    continuity_verified = False
+    # Optional logical OP_RETURN consistency (does not grant identity_anchored)
     if opreturn_script is not None:
         try:
             anchor_mod.verify_anchor_logical(
@@ -94,10 +103,28 @@ def verify(
                 root_pubkey=root_pubkey,
                 opreturn_script=opreturn_script,
             )
-            identity_anchored = True
-            continuity_verified = True
         except anchor_mod.AnchorError as exc:
             raise VerifyError("ANCHOR_MISMATCH", str(exc)) from exc
+
+    identity_anchored = False
+    continuity_verified = False
+    if bitcoin_proof is not None:
+        expected_commitment = anchor_mod.anchor_commitment(
+            anchor_mod.build_anchor_message(
+                domain=identity_document[identity_mod.K_DOMAIN],
+                identifier=identity_document[identity_mod.K_IDENTIFIER],
+                root_pubkey=root_pubkey,
+            )
+        )
+        try:
+            proof_obj = proof_from_jsonable(bitcoin_proof)
+            verify_bitcoin_anchor_proof_v2(
+                proof_obj, expected_commitment=expected_commitment
+            )
+        except BitcoinProofError as exc:
+            raise VerifyError(exc.code, str(exc)) from exc
+        identity_anchored = True
+        continuity_verified = True
 
     return {
         "identity_verified": identity_verified,

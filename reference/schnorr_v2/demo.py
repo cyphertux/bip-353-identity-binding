@@ -10,6 +10,11 @@ from reference.schnorr_v2 import anchor as anchor_mod
 from reference.schnorr_v2 import binding as binding_mod
 from reference.schnorr_v2 import identity as identity_mod
 from reference.schnorr_v2 import payment as payment_mod
+from reference.schnorr_v2.bitcoin_proof import (
+    build_minimal_legacy_tx,
+    proof_from_parts,
+    proof_to_jsonable,
+)
 from reference.schnorr_v2.key import generate_keypair
 from reference.schnorr_v2.tags import (
     OP_RETURN_TAG,
@@ -62,6 +67,10 @@ def run() -> dict:
     )
     commitment = anchor_mod.anchor_commitment(am)
     opreturn = anchor_mod.build_opreturn_script(commitment)
+    raw_tx = build_minimal_legacy_tx(opreturn_script=opreturn)
+    btc_proof = proof_to_jsonable(
+        proof_from_parts(raw_tx=raw_tx, expected_commitment=commitment)
+    )
 
     result = verify(
         root_pubkey=root.pubkey,
@@ -70,8 +79,9 @@ def run() -> dict:
         binding_signature=binding_sig,
         identity_document=document,
         payment_binding=pay,
-        opreturn_script=opreturn,
         now=now,
+        opreturn_script=opreturn,
+        bitcoin_proof=btc_proof,
     )
 
     return {
@@ -88,6 +98,7 @@ def run() -> dict:
         "payment_hash": pay_hash.hex(),
         "commitment": commitment.hex(),
         "opreturn_script": opreturn.hex(),
+        "bitcoin_proof": btc_proof,
         "verify": result,
     }
 
