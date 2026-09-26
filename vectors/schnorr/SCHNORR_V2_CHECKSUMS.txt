@@ -1,0 +1,11 @@
+# Experimental Schnorr V2 vector checksums
+# EXPERIMENTAL — NON-NORMATIVE — NOT PART OF V1
+# Format: <sha256_hex>  <path-relative-to-repo-root>
+# Do not modify vectors/M7_CHECKSUMS.txt
+
+6d3591252640b86cf527fdc64be99a64567d95c4d7e6fba9d430fe3d4b82727a  vectors/schnorr/V2-INVALID-001.json
+333d2e94376e74ecb68f75e5886b6b9339d35cde3817d23d7b183e23ef7ccc67  vectors/schnorr/V2-INVALID-002.json
+b075509113c2a8fb71c4830c9a2aebedfaf5548877dddfb572603b9a9786c994  vectors/schnorr/V2-INVALID-003.json
+26bd5f573bf4b0b46667c07df854f5bdb0d27ba0ffaa698b492dea1887db5037  vectors/schnorr/V2-INVALID-004.json
+3feba2fecbac9441b89e66efefeeafcce333ba0a6ae523d96dd79629a243d62f  vectors/schnorr/V2-INVALID-005.json
+f1b9617824d29b58ecc4f9eea3df5a440accac87ee24ea0552f9b5d56402e014  vectors/schnorr/V2-VALID-001.json
