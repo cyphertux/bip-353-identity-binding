@@ -45,12 +45,20 @@ NOT FOR PRODUCTION
 
 | File | Expected |
 |------|----------|
-| `V2-VALID-001.json` | full proof verifies |
+| `V2-VALID-001.json` | Phase 4 crypto + logical OP_RETURN (not dual-binding) |
 | `V2-INVALID-001.json` | `INVALID_SUBKEY_BINDING` |
 | `V2-INVALID-002.json` | `INVALID_IDENTITY_SIGNATURE` |
 | `V2-INVALID-003.json` | `ANCHOR_MISMATCH` |
 | `V2-INVALID-004.json` | `PAYMENT_BINDING_MISMATCH` |
 | `V2-INVALID-005.json` | `INVALID_IDENTITY_SIGNATURE` (wrong tag) |
+| `V2-BTC-VALID-001.json` | Dual-binding Bitcoin proof PASS |
+| `V2-BTC-INVALID-001.json` | `TXID_MISMATCH` |
+| `V2-BTC-INVALID-002.json` | `WRONG_MERKLE_PROOF` |
+| `V2-BTC-INVALID-003.json` | `WRONG_MERKLE_PROOF` |
+| `V2-BTC-INVALID-004.json` | `WRONG_MERKLE_PROOF` |
+| `V2-BTC-INVALID-005.json` | `WRONG_TX_COMMITMENT` |
+| `V2-BTC-INVALID-006.json` | `NO_B353S2_OUTPUT` |
+| `V2-BTC-INVALID-007.json` | `AMBIGUOUS_B353S2_OUTPUTS` |
 | `SCHNORR_V2_CHECKSUMS.txt` | SHA-256 of the JSON fixtures |
 
 ## Verify (independent of generator)
@@ -71,6 +79,7 @@ The test **loads frozen JSON** from this directory and must **not** call
 
 ```bash
 PYTHONPATH=. reference/schnorr_v2/.venv/bin/python -m reference.schnorr_v2.generate_vectors --write
+PYTHONPATH=. reference/schnorr_v2/.venv/bin/python -m reference.schnorr_v2.generate_btc_vectors --write
 ```
 
 After regeneration, update `SCHNORR_V2_CHECKSUMS.txt` (the generator writes it) and review the diff. **Do not silently overwrite** published experimental vectors without an explicit decision.
